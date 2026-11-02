@@ -59,23 +59,23 @@
         </button>
       </div>
 
-      <p class="palette-hint">Click a circle to assign to selected slot, or drag directly onto the CD.</p>
+      <p class="palette-hint">Drag any color directly onto the Dynamo to mix, or click to assign.</p>
 
       <!-- Circle Color Options Grid -->
       <div class="color-circles-grid" id="colorCirclesGrid">
         <!-- Injected via JavaScript with rich colors and data attributes -->
       </div>
 
-      <!-- Custom Color Picker Circle Option -->
+      <!-- Custom Color Picker Circle Option (Draggable onto Dynamo) -->
       <div class="custom-color-row">
-        <label for="customColorInput" class="custom-color-circle-wrapper" title="Pick any custom color">
+        <div class="custom-color-circle-wrapper" id="customColorDraggable" draggable="true" title="Drag this custom color onto the dynamo or click to pick">
           <input type="color" id="customColorInput" value="#FF007F" />
-          <span class="custom-color-ring"></span>
+          <span class="custom-color-ring" id="customColorRing"></span>
           <span class="custom-color-label">Custom Hex</span>
-        </label>
+        </div>
         <div class="custom-color-info">
           <span id="customColorHex">#FF007F</span>
-          <button type="button" id="applyCustomBtn" class="mini-btn">Apply to Slot</button>
+          <button type="button" id="applyCustomBtn" class="mini-btn">Apply</button>
         </div>
       </div>
     </aside>
@@ -83,8 +83,13 @@
     <!-- Center Stage: The Dynamo Machine & CD Disc -->
     <main class="dynamo-stage">
       <div class="stage-scaffold">
-        <!-- Dynamo Motor Assembly -->
-        <div class="dynamo-assembly">
+        <!-- Dynamo Motor Assembly (Interactive Drop Target) -->
+        <div class="dynamo-assembly" id="dynamoAssembly" data-drop-zone="dynamo">
+          <!-- Dynamo Drag Indicator Pill -->
+          <div class="dynamo-drag-status-pill" id="dynamoDragPill">
+            <span>⚡ DROP COLOR ONTO DYNAMO</span>
+          </div>
+
           <!-- Dynamo Top Mounting Bracket & Bearings -->
           <div class="dynamo-bracket bracket-top">
             <div class="bolt bolt-1"></div>
@@ -127,6 +132,10 @@
                     <span class="slot-tag">Color 1</span>
                     <span class="sector-hex" id="sectorHex1">#FF3B30</span>
                   </div>
+                  <div class="sector-drag-cue">
+                    <span class="cue-icon">📥</span>
+                    <span class="cue-text">SLOT 1</span>
+                  </div>
                 </div>
 
                 <!-- Color Sector 2 (Half B: 180deg to 360deg) -->
@@ -135,6 +144,10 @@
                   <div class="sector-drop-overlay">
                     <span class="slot-tag">Color 2</span>
                     <span class="sector-hex" id="sectorHex2">#007AFF</span>
+                  </div>
+                  <div class="sector-drag-cue">
+                    <span class="cue-icon">📥</span>
+                    <span class="cue-text">SLOT 2</span>
                   </div>
                 </div>
 

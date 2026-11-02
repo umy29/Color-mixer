@@ -12,10 +12,16 @@ An interactive single-page web application featuring an industrial motor apparat
 - **Rectangular Container**: Prominently boxed in the upper-right corner.
 - **Circular Swatches**: 16 curated color choices presented as tactile circular buttons with 3D spherical shading and hover magnification.
 - **Dual Slot Control**: Switch between **CD Slot 1** and **CD Slot 2** with active slot indicator dots, plus a one-click **Swap Colors (⇄)** button.
-- **Custom Color Picker**: A circular rainbow spectrum ring connected to a native color picker to mix any custom HEX color.
-- **Drag & Drop**: Drag any circular color option directly onto Sector 1 or Sector 2 of the CD.
+- **Draggable to Dynamo**: Every circular color swatch—as well as the custom color ring—can be dragged directly onto the Dynamo motor assembly or CD disc!
+- **Custom Color Picker**: A circular color ring connected to a native color picker to mix any custom HEX color and drag it directly to the dynamo.
+- **Universal Input**: Supports both HTML5 native drag-and-drop and pointer-based touch drag with floating ghost feedback.
 
-### 2. ⚙️ Central Dynamo & Dual-Sector CD
+### 2. ⚙️ Central Dynamo & Dual-Sector CD (Drop Target)
+- **Interactive Dynamo Drop Zone**: Dragging any color over the Dynamo apparatus highlights it with an electric aura and an active status pill.
+- **Intelligent Slot Target**:
+  - Dragging to the **left half of the Dynamo** targets **Slot 1**.
+  - Dragging to the **right half of the Dynamo** targets **Slot 2**.
+  - Direct drop onto either CD sector assigns directly to that sector.
 - **Industrial Dynamo Assembly**: Top mounting bracket, cooling fins, copper motor windings, core window with dynamic RPM lighting, and weighted base stand.
 - **Two-Color CD Disc**:
   - **Sector 1 (Left 0°–180°)**: Holds Color 1.
@@ -67,3 +73,4 @@ Color-mixer/
 ├── script.js        # Motor simulation, color math & interactivity
 └── README.md        # Documentation
 ```
+

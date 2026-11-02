@@ -166,12 +166,15 @@ const elements = {
   dotSlot1: document.getElementById('dotSlot1'),
   dotSlot2: document.getElementById('dotSlot2'),
   colorCirclesGrid: document.getElementById('colorCirclesGrid'),
+  customColorDraggable: document.getElementById('customColorDraggable'),
   customColorInput: document.getElementById('customColorInput'),
+  customColorRing: document.getElementById('customColorRing'),
   customColorHex: document.getElementById('customColorHex'),
   applyCustomBtn: document.getElementById('applyCustomBtn'),
 
   // Dynamo & CD Disc
-  dynamoAssembly: document.querySelector('.dynamo-assembly'),
+  dynamoAssembly: document.getElementById('dynamoAssembly') || document.querySelector('.dynamo-assembly'),
+  dynamoDragPill: document.getElementById('dynamoDragPill'),
   cdDisc: document.getElementById('cdDisc'),
   cdSector1: document.getElementById('cdSector1'),
   cdSector2: document.getElementById('cdSector2'),
@@ -345,6 +348,135 @@ function getNearestColorName(hex) {
 // UI RENDERING & SYNCHRONIZATION
 // ============================================================================
 
+// Global Drag State
+let currentDraggedColor = null;
+let currentDraggedName = null;
+
+function startDragging(hex, name, sourceEl) {
+  currentDraggedColor = hex;
+  currentDraggedName = name;
+  document.body.classList.add('is-dragging-color');
+  if (sourceEl) sourceEl.classList.add('dragging');
+}
+
+function endDragging(sourceEl) {
+  currentDraggedColor = null;
+  currentDraggedName = null;
+  document.body.classList.remove('is-dragging-color');
+  if (sourceEl) sourceEl.classList.remove('dragging');
+  clearAllDragHighlights();
+}
+
+function clearAllDragHighlights() {
+  if (elements.cdSector1) elements.cdSector1.classList.remove('drag-over');
+  if (elements.cdSector2) elements.cdSector2.classList.remove('drag-over');
+  if (elements.dynamoAssembly) elements.dynamoAssembly.classList.remove('drag-hover-dynamo');
+}
+
+function getTargetSlotFromCoords(clientX, clientY) {
+  if (!elements.dynamoAssembly) return 1;
+  const rect = elements.dynamoAssembly.getBoundingClientRect();
+  const midX = rect.left + rect.width / 2;
+  return clientX < midX ? 1 : 2;
+}
+
+function triggerDynamoDropPulse(slotNum) {
+  if (!elements.dynamoAssembly) return;
+  elements.dynamoAssembly.classList.add('dynamo-pulse-drop');
+  const sector = slotNum === 1 ? elements.cdSector1 : elements.cdSector2;
+  if (sector) sector.classList.add('sector-pulse-drop');
+  setTimeout(() => {
+    elements.dynamoAssembly.classList.remove('dynamo-pulse-drop');
+    if (sector) sector.classList.remove('sector-pulse-drop');
+  }, 400);
+}
+
+function enablePointerDrag(element, getColorFn, getNameFn) {
+  element.addEventListener('pointerdown', (e) => {
+    // Only primary button / touch
+    if (e.button !== 0 && e.pointerType === 'mouse') return;
+    const startX = e.clientX;
+    const startY = e.clientY;
+    let isDragging = false;
+    let ghost = null;
+    const hex = typeof getColorFn === 'function' ? getColorFn() : getColorFn;
+    const name = typeof getNameFn === 'function' ? getNameFn() : (getNameFn || 'Color');
+
+    function onPointerMove(moveEvent) {
+      const dx = moveEvent.clientX - startX;
+      const dy = moveEvent.clientY - startY;
+
+      if (!isDragging && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+        isDragging = true;
+        startDragging(hex, name, element);
+
+        ghost = document.createElement('div');
+        ghost.className = 'custom-drag-ghost';
+        ghost.style.backgroundColor = hex;
+        ghost.textContent = '⚡';
+        document.body.appendChild(ghost);
+      }
+
+      if (isDragging && ghost) {
+        ghost.style.left = `${moveEvent.clientX}px`;
+        ghost.style.top = `${moveEvent.clientY}px`;
+
+        if (elements.dynamoAssembly) {
+          const rect = elements.dynamoAssembly.getBoundingClientRect();
+          if (
+            moveEvent.clientX >= rect.left &&
+            moveEvent.clientX <= rect.right &&
+            moveEvent.clientY >= rect.top &&
+            moveEvent.clientY <= rect.bottom
+          ) {
+            const slot = getTargetSlotFromCoords(moveEvent.clientX, moveEvent.clientY);
+            if (slot === 1) {
+              elements.cdSector1.classList.add('drag-over');
+              elements.cdSector2.classList.remove('drag-over');
+            } else {
+              elements.cdSector2.classList.add('drag-over');
+              elements.cdSector1.classList.remove('drag-over');
+            }
+            elements.dynamoAssembly.classList.add('drag-hover-dynamo');
+          } else {
+            clearAllDragHighlights();
+          }
+        }
+      }
+    }
+
+    function onPointerUp(upEvent) {
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+
+      if (isDragging) {
+        if (elements.dynamoAssembly) {
+          const rect = elements.dynamoAssembly.getBoundingClientRect();
+          if (
+            upEvent.clientX >= rect.left &&
+            upEvent.clientX <= rect.right &&
+            upEvent.clientY >= rect.top &&
+            upEvent.clientY <= rect.bottom
+          ) {
+            const slot = getTargetSlotFromCoords(upEvent.clientX, upEvent.clientY);
+            assignColorToSlot(slot, hex);
+            setActiveSlot(slot);
+            triggerDynamoDropPulse(slot);
+            showToast(`⚡ Absorbed ${hex} into Dynamo Slot ${slot}!`);
+          }
+        }
+
+        if (ghost) ghost.remove();
+        clearAllDragHighlights();
+        endDragging(element);
+      }
+    }
+
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+  });
+}
+
 function renderPaletteSwatches() {
   elements.colorCirclesGrid.innerHTML = '';
 
@@ -353,7 +485,7 @@ function renderPaletteSwatches() {
     btn.type = 'button';
     btn.className = 'color-circle-btn';
     btn.style.setProperty('--btn-color', preset.hex);
-    btn.setAttribute('title', `${preset.name} (${preset.hex})`);
+    btn.setAttribute('title', `${preset.name} (${preset.hex}) - Drag onto Dynamo or click to assign`);
     btn.setAttribute('aria-label', `${preset.name}: ${preset.hex}`);
     btn.setAttribute('data-color', preset.hex);
     btn.setAttribute('data-name', preset.name);
@@ -367,16 +499,22 @@ function renderPaletteSwatches() {
       assignColorToSlot(state.activeSlot, preset.hex);
     });
 
-    // Drag and Drop handlers
+    // Native HTML5 Drag and Drop handlers
     btn.addEventListener('dragstart', (e) => {
-      btn.classList.add('dragging');
-      e.dataTransfer.setData('text/plain', preset.hex);
-      e.dataTransfer.effectAllowed = 'copy';
+      startDragging(preset.hex, preset.name, btn);
+      if (e.dataTransfer) {
+        e.dataTransfer.setData('text/plain', preset.hex);
+        e.dataTransfer.setData('text/hex', preset.hex);
+        e.dataTransfer.effectAllowed = 'copy';
+      }
     });
 
     btn.addEventListener('dragend', () => {
-      btn.classList.remove('dragging');
+      endDragging(btn);
     });
+
+    // Pointer-based drag for universal touch and mouse support
+    enablePointerDrag(btn, () => preset.hex, preset.name);
 
     elements.colorCirclesGrid.appendChild(btn);
   });
@@ -643,16 +781,68 @@ function setupCopyButtons() {
 }
 
 // ============================================================================
-// SETUP DRAG & DROP ON CD SECTORS
+// SETUP DRAG & DROP ON DYNAMO & CD SECTORS
 // ============================================================================
 
 function setupDragAndDrop() {
+  // 1. Dynamo Assembly as a Master Drop Zone
+  if (elements.dynamoAssembly) {
+    elements.dynamoAssembly.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
+
+      const slot = getTargetSlotFromCoords(e.clientX, e.clientY);
+      if (slot === 1) {
+        elements.cdSector1.classList.add('drag-over');
+        elements.cdSector2.classList.remove('drag-over');
+      } else {
+        elements.cdSector2.classList.add('drag-over');
+        elements.cdSector1.classList.remove('drag-over');
+      }
+      elements.dynamoAssembly.classList.add('drag-hover-dynamo');
+    });
+
+    elements.dynamoAssembly.addEventListener('dragleave', (e) => {
+      const rect = elements.dynamoAssembly.getBoundingClientRect();
+      if (
+        e.clientX < rect.left ||
+        e.clientX > rect.right ||
+        e.clientY < rect.top ||
+        e.clientY > rect.bottom
+      ) {
+        clearAllDragHighlights();
+      }
+    });
+
+    elements.dynamoAssembly.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const hex =
+        (e.dataTransfer && (e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/hex'))) ||
+        currentDraggedColor;
+
+      if (hex && /^#[0-9A-F]{3,6}$/i.test(hex)) {
+        const slot = getTargetSlotFromCoords(e.clientX, e.clientY);
+        assignColorToSlot(slot, hex);
+        setActiveSlot(slot);
+        triggerDynamoDropPulse(slot);
+        showToast(`⚡ Absorbed ${hex} into Dynamo Slot ${slot}!`);
+      }
+
+      clearAllDragHighlights();
+      endDragging();
+    });
+  }
+
+  // 2. Individual CD Sectors Direct Drops
   [elements.cdSector1, elements.cdSector2].forEach((sector) => {
+    if (!sector) return;
     const slotNum = parseInt(sector.getAttribute('data-slot'), 10);
 
     sector.addEventListener('dragover', (e) => {
       e.preventDefault();
-      e.dataTransfer.dropEffect = 'copy';
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
       sector.classList.add('drag-over');
     });
 
@@ -662,13 +852,22 @@ function setupDragAndDrop() {
 
     sector.addEventListener('drop', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       sector.classList.remove('drag-over');
-      const hex = e.dataTransfer.getData('text/plain');
+
+      const hex =
+        (e.dataTransfer && (e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/hex'))) ||
+        currentDraggedColor;
+
       if (hex && /^#[0-9A-F]{3,6}$/i.test(hex)) {
         assignColorToSlot(slotNum, hex);
         setActiveSlot(slotNum);
-        showToast(`Assigned ${hex} to CD Slot ${slotNum}`);
+        triggerDynamoDropPulse(slotNum);
+        showToast(`⚡ Injected ${hex} into CD Slot ${slotNum}!`);
       }
+
+      clearAllDragHighlights();
+      endDragging();
     });
 
     // Clicking a sector makes it active target
@@ -679,12 +878,37 @@ function setupDragAndDrop() {
   });
 
   // Clicking on CD when idle can toggle slot or give feedback
-  elements.cdDisc.addEventListener('click', () => {
-    if (!state.isSpinning) {
-      // Toggle active slot
-      setActiveSlot(state.activeSlot === 1 ? 2 : 1);
-    }
-  });
+  if (elements.cdDisc) {
+    elements.cdDisc.addEventListener('click', () => {
+      if (!state.isSpinning) {
+        setActiveSlot(state.activeSlot === 1 ? 2 : 1);
+      }
+    });
+  }
+
+  // 3. Custom Color Picker Drag & Drop
+  if (elements.customColorDraggable) {
+    elements.customColorDraggable.addEventListener('dragstart', (e) => {
+      const hex = elements.customColorInput.value.toUpperCase();
+      startDragging(hex, 'Custom Hex', elements.customColorDraggable);
+      if (e.dataTransfer) {
+        e.dataTransfer.setData('text/plain', hex);
+        e.dataTransfer.setData('text/hex', hex);
+        e.dataTransfer.effectAllowed = 'copy';
+      }
+    });
+
+    elements.customColorDraggable.addEventListener('dragend', () => {
+      endDragging(elements.customColorDraggable);
+    });
+
+    // Pointer-based touch/mouse drag for custom picker
+    enablePointerDrag(
+      elements.customColorDraggable,
+      () => elements.customColorInput.value.toUpperCase(),
+      'Custom Hex'
+    );
+  }
 }
 
 // ============================================================================
@@ -697,10 +921,20 @@ function setupEventListeners() {
   elements.tabSlot2.addEventListener('click', () => setActiveSlot(2));
   elements.swapSlotsBtn.addEventListener('click', swapColors);
 
-  // Custom Color Input
+  // Custom Color Input & Ring Click
+  if (elements.customColorRing) {
+    elements.customColorRing.addEventListener('click', () => {
+      elements.customColorInput.click();
+    });
+  }
+
   elements.customColorInput.addEventListener('input', (e) => {
     const hex = e.target.value.toUpperCase();
     elements.customColorHex.textContent = hex;
+    if (elements.customColorRing) {
+      elements.customColorRing.style.background = hex;
+      elements.customColorRing.style.boxShadow = `0 0 12px ${hex}`;
+    }
   });
 
   elements.applyCustomBtn.addEventListener('click', () => {
