@@ -22,7 +22,7 @@ An interactive single-page web application featuring an industrial motor apparat
   - Dragging to the **left half of the Dynamo** targets **Slot 1**.
   - Dragging to the **right half of the Dynamo** targets **Slot 2**.
   - Direct drop onto either CD sector assigns directly to that sector.
-- **Industrial Dynamo Assembly**: Top mounting bracket, cooling fins, copper motor windings, core window with dynamic RPM lighting, and weighted base stand.
+- **Centered Turntable Assembly**: Central rotor spindle with dynamic electromagnetic glow aura and compact disc hub.
 - **Two-Color CD Disc**:
   - **Sector 1 (Left 0°–180°)**: Holds Color 1.
   - **Sector 2 (Right 180°–360°)**: Holds Color 2.
