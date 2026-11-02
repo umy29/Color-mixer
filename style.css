@@ -1296,27 +1296,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   box-shadow: 0 0 10px var(--accent-cyan);
 }
 
-.sound-toggle-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: var(--text-secondary);
-  padding: 5px 12px;
-  border-radius: 20px;
-  font-size: 0.74rem;
-  font-family: var(--font-body);
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.2s ease;
-}
-
-.sound-toggle-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
 .output-content-grid {
   display: grid;
   grid-template-columns: 200px 1fr;

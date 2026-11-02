@@ -33,7 +33,6 @@ An interactive single-page web application featuring an industrial motor apparat
 - **Heavy-Duty ON/OFF Switch**: Industrial toggle with green glow, voltage pulses, and status readouts.
 - **Rotational Physics**: Smooth acceleration from 0 up to 3600 RPM using `requestAnimationFrame`.
 - **Optical Persistence of Vision**: As the dynamo accelerates past ~600 RPM, the two distinct sectors blend smoothly into the perceived composite color.
-- **Synthesized Motor Audio**: Built-in mechanical whirr using the Web Audio API that scales frequency and rumble with RPM (includes mute/unmute toggle).
 - **Shortcut**: Press <kbd>Spacebar</kbd> anytime to toggle the dynamo ON/OFF.
 
 ### 4. 🧪 Output & Color Analysis Station

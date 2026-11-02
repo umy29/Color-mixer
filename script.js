@@ -66,90 +66,8 @@ const state = {
   currentRpm: 0,
   angle: 0,
   mixMode: 'optical', // 'optical' or 'pigment'
-  soundEnabled: true,
   recentMixes: []
 };
-
-// Web Audio API Motor Synthesizer
-let audioCtx = null;
-let motorOsc = null;
-let motorGain = null;
-let motorFilter = null;
-let subOsc = null;
-let subGain = null;
-
-function initAudio() {
-  if (audioCtx) return;
-  try {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContext) return;
-    audioCtx = new AudioContext();
-
-    // Master motor oscillator (triangle wave for whirring hum)
-    motorOsc = audioCtx.createOscillator();
-    motorOsc.type = 'sawtooth';
-    motorOsc.frequency.setValueAtTime(40, audioCtx.currentTime);
-
-    // Sub rumble oscillator
-    subOsc = audioCtx.createOscillator();
-    subOsc.type = 'sine';
-    subOsc.frequency.setValueAtTime(25, audioCtx.currentTime);
-
-    // Lowpass filter to muffle raw saw into realistic mechanical drone
-    motorFilter = audioCtx.createBiquadFilter();
-    motorFilter.type = 'lowpass';
-    motorFilter.frequency.setValueAtTime(120, audioCtx.currentTime);
-
-    // Motor Gain
-    motorGain = audioCtx.createGain();
-    motorGain.gain.setValueAtTime(0, audioCtx.currentTime);
-
-    // Sub Gain
-    subGain = audioCtx.createGain();
-    subGain.gain.setValueAtTime(0, audioCtx.currentTime);
-
-    motorOsc.connect(motorFilter);
-    motorFilter.connect(motorGain);
-    motorGain.connect(audioCtx.destination);
-
-    subOsc.connect(subGain);
-    subGain.connect(audioCtx.destination);
-
-    motorOsc.start();
-    subOsc.start();
-  } catch (err) {
-    console.warn('AudioContext not allowed or not supported:', err);
-  }
-}
-
-function updateAudio(rpmRatio) {
-  if (!audioCtx || !state.soundEnabled) {
-    if (motorGain && audioCtx) {
-      motorGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
-      subGain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.05);
-    }
-    return;
-  }
-
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-
-  const now = audioCtx.currentTime;
-  const targetGain = rpmRatio > 0.02 ? 0.07 * rpmRatio : 0;
-  const targetSubGain = rpmRatio > 0.02 ? 0.05 * rpmRatio : 0;
-
-  // Frequency scales dynamically with dynamo speed
-  const targetFreq = 40 + rpmRatio * 180; // 40Hz to 220Hz
-  const filterFreq = 100 + rpmRatio * 650;
-
-  motorOsc.frequency.setTargetAtTime(targetFreq, now, 0.08);
-  subOsc.frequency.setTargetAtTime(targetFreq * 0.5, now, 0.08);
-  motorFilter.frequency.setTargetAtTime(filterFreq, now, 0.08);
-
-  motorGain.gain.setTargetAtTime(targetGain, now, 0.08);
-  subGain.gain.setTargetAtTime(targetSubGain, now, 0.08);
-}
 
 // DOM References
 const elements = {
@@ -194,8 +112,6 @@ const elements = {
   modePigment: document.getElementById('modePigment'),
 
   // Output Station
-  soundToggleBtn: document.getElementById('soundToggleBtn'),
-  soundIcon: document.getElementById('soundIcon'),
   outputColorPreview: document.getElementById('outputColorPreview'),
   outputColorName: document.getElementById('outputColorName'),
   blendModelBadge: document.getElementById('blendModelBadge'),
@@ -676,7 +592,6 @@ function renderRecentMixes() {
 let lastTimestamp = 0;
 
 function toggleDynamoPower() {
-  initAudio();
   state.isSpinning = !state.isSpinning;
 
   if (state.isSpinning) {
@@ -737,10 +652,6 @@ function animationLoop(timestamp) {
   }
 
   elements.cdOpticalBlend.style.opacity = blendOpacity.toFixed(3);
-
-  // Audio update
-  const rpmRatio = state.currentRpm / 3600;
-  updateAudio(rpmRatio);
 
   requestAnimationFrame(animationLoop);
 }
@@ -972,14 +883,6 @@ function setupEventListeners() {
     elements.modeOptical.classList.remove('active');
     updateOutputDisplay();
     showToast("Switched to Pigment Subtractive mixing");
-  });
-
-  // Sound Toggle
-  elements.soundToggleBtn.addEventListener('click', () => {
-    state.soundEnabled = !state.soundEnabled;
-    elements.soundIcon.textContent = state.soundEnabled ? '🔊' : '🔇';
-    elements.soundToggleBtn.classList.toggle('active', state.soundEnabled);
-    showToast(state.soundEnabled ? 'Motor audio enabled' : 'Motor audio muted');
   });
 
   // Clear History
