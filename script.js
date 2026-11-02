@@ -3,24 +3,68 @@
  * Optical Persistence & Pigment Mixing Laboratory
  */
 
-// Preset Color Choices for the Rectangle Palette Holder
+// Preset Color Choices for the Rectangle Palette Holder (45 Diverse Colors)
 const COLOR_PRESETS = [
+  // Reds & Corals
   { name: 'Crimson Red', hex: '#FF3B30' },
-  { name: 'Electric Blue', hex: '#007AFF' },
-  { name: 'Sunshine Yellow', hex: '#FFCC00' },
-  { name: 'Emerald Green', hex: '#34C759' },
-  { name: 'Neon Cyan', hex: '#32ADE6' },
-  { name: 'Deep Purple', hex: '#5856D6' },
-  { name: 'Vivid Magenta', hex: '#AF52DE' },
-  { name: 'Tangerine Orange', hex: '#FF9500' },
+  { name: 'Scarlet Ruby', hex: '#E60026' },
+  { name: 'Cherry Red', hex: '#D90429' },
+  { name: 'Coral Flame', hex: '#FF4500' },
   { name: 'Hot Coral Pink', hex: '#FF2D55' },
-  { name: 'Electric Lime', hex: '#A4E739' },
+  { name: 'Deep Burgundy', hex: '#8B0000' },
+  { name: 'Rose Petal', hex: '#FF6B8B' },
+
+  // Oranges & Ambers
+  { name: 'Tangerine Orange', hex: '#FF9500' },
   { name: 'Amber Gold', hex: '#FF9F0A' },
-  { name: 'Mint Seafoam', hex: '#30B0C7' },
-  { name: 'Pure White', hex: '#FFFFFF' },
-  { name: 'Charcoal Noir', hex: '#1C1C1E' },
+  { name: 'Sunset Copper', hex: '#FF7A00' },
   { name: 'Warm Terracotta', hex: '#E06D53' },
-  { name: 'Deep Ultramarine', hex: '#1B1464' }
+  { name: 'Burnt Sienna', hex: '#C85A17' },
+  { name: 'Apricot Peach', hex: '#FFA07A' },
+
+  // Yellows & Golds
+  { name: 'Sunshine Yellow', hex: '#FFCC00' },
+  { name: 'Canary Lemon', hex: '#FFEE32' },
+  { name: 'Cyber Neon Yellow', hex: '#FAFF00' },
+  { name: 'Goldenrod', hex: '#DAA520' },
+  { name: 'Pale Vanilla', hex: '#FFF3B0' },
+
+  // Greens & Limes
+  { name: 'Electric Lime', hex: '#A4E739' },
+  { name: 'Chartreuse Volt', hex: '#76FF03' },
+  { name: 'Emerald Green', hex: '#34C759' },
+  { name: 'Spring Mint', hex: '#00E676' },
+  { name: 'Forest Evergreen', hex: '#0B6623' },
+  { name: 'Olive Sage', hex: '#556B2F' },
+
+  // Cyans & Aquas
+  { name: 'Neon Aqua', hex: '#00F2FE' },
+  { name: 'Electric Cyan', hex: '#32ADE6' },
+  { name: 'Caribbean Teal', hex: '#00B4D8' },
+  { name: 'Mint Seafoam', hex: '#30B0C7' },
+  { name: 'Deep Turquoise', hex: '#007791' },
+
+  // Blues & Indigos
+  { name: 'Electric Blue', hex: '#007AFF' },
+  { name: 'Royal Cobalt', hex: '#1E40AF' },
+  { name: 'Sky Azure', hex: '#38BDF8' },
+  { name: 'Deep Ultramarine', hex: '#1B1464' },
+  { name: 'Midnight Navy', hex: '#0B192C' },
+  { name: 'Glacier Blue', hex: '#A5F3FC' },
+
+  // Purples & Magentas
+  { name: 'Vivid Magenta', hex: '#AF52DE' },
+  { name: 'Fuchsia Shock', hex: '#FF007F' },
+  { name: 'Deep Violet', hex: '#5856D6' },
+  { name: 'Amethyst Purple', hex: '#8B5CF6' },
+  { name: 'Lavender Mist', hex: '#C4B5FD' },
+  { name: 'Royal Plum', hex: '#4A0E4E' },
+
+  // Monochromes & Neutrals
+  { name: 'Pure White', hex: '#FFFFFF' },
+  { name: 'Platinum Silver', hex: '#CBD5E1' },
+  { name: 'Slate Gray', hex: '#64748B' },
+  { name: 'Charcoal Noir', hex: '#1C1C1E' }
 ];
 
 // Curated Named Colors Dictionary for Nearest Color Name Matching
@@ -78,13 +122,14 @@ const elements = {
 
   // Palette Holder
   paletteHolder: document.getElementById('paletteHolder'),
+  paletteBadge: document.getElementById('paletteBadge'),
   tabSlot1: document.getElementById('tabSlot1'),
   tabSlot2: document.getElementById('tabSlot2'),
   swapSlotsBtn: document.getElementById('swapSlotsBtn'),
   dotSlot1: document.getElementById('dotSlot1'),
   dotSlot2: document.getElementById('dotSlot2'),
   colorCirclesGrid: document.getElementById('colorCirclesGrid'),
-  customColorDraggable: document.getElementById('customColorDraggable'),
+  customColorWrapper: document.getElementById('customColorWrapper'),
   customColorInput: document.getElementById('customColorInput'),
   customColorRing: document.getElementById('customColorRing'),
   customColorHex: document.getElementById('customColorHex'),
@@ -92,7 +137,6 @@ const elements = {
 
   // Dynamo & CD Disc
   dynamoAssembly: document.getElementById('dynamoAssembly') || document.querySelector('.dynamo-assembly'),
-  dynamoDragPill: document.getElementById('dynamoDragPill'),
   cdDisc: document.getElementById('cdDisc'),
   cdSector1: document.getElementById('cdSector1'),
   cdSector2: document.getElementById('cdSector2'),
@@ -264,148 +308,22 @@ function getNearestColorName(hex) {
 // UI RENDERING & SYNCHRONIZATION
 // ============================================================================
 
-// Global Drag State
-let currentDraggedColor = null;
-let currentDraggedName = null;
-
-function startDragging(hex, name, sourceEl) {
-  currentDraggedColor = hex;
-  currentDraggedName = name;
-  document.body.classList.add('is-dragging-color');
-  if (sourceEl) sourceEl.classList.add('dragging');
-}
-
-function endDragging(sourceEl) {
-  currentDraggedColor = null;
-  currentDraggedName = null;
-  document.body.classList.remove('is-dragging-color');
-  if (sourceEl) sourceEl.classList.remove('dragging');
-  clearAllDragHighlights();
-}
-
-function clearAllDragHighlights() {
-  if (elements.cdSector1) elements.cdSector1.classList.remove('drag-over');
-  if (elements.cdSector2) elements.cdSector2.classList.remove('drag-over');
-  if (elements.dynamoAssembly) elements.dynamoAssembly.classList.remove('drag-hover-dynamo');
-}
-
-function getTargetSlotFromCoords(clientX, clientY) {
-  if (!elements.dynamoAssembly) return 1;
-  const rect = elements.dynamoAssembly.getBoundingClientRect();
-  const midX = rect.left + rect.width / 2;
-  return clientX < midX ? 1 : 2;
-}
-
-function triggerDynamoDropPulse(slotNum) {
-  if (!elements.dynamoAssembly) return;
-  elements.dynamoAssembly.classList.add('dynamo-pulse-drop');
-  const sector = slotNum === 1 ? elements.cdSector1 : elements.cdSector2;
-  if (sector) sector.classList.add('sector-pulse-drop');
-  setTimeout(() => {
-    elements.dynamoAssembly.classList.remove('dynamo-pulse-drop');
-    if (sector) sector.classList.remove('sector-pulse-drop');
-  }, 400);
-}
-
-function enablePointerDrag(element, getColorFn, getNameFn) {
-  element.addEventListener('pointerdown', (e) => {
-    // Only primary button / touch
-    if (e.button !== 0 && e.pointerType === 'mouse') return;
-    const startX = e.clientX;
-    const startY = e.clientY;
-    let isDragging = false;
-    let ghost = null;
-    const hex = typeof getColorFn === 'function' ? getColorFn() : getColorFn;
-    const name = typeof getNameFn === 'function' ? getNameFn() : (getNameFn || 'Color');
-
-    function onPointerMove(moveEvent) {
-      const dx = moveEvent.clientX - startX;
-      const dy = moveEvent.clientY - startY;
-
-      if (!isDragging && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
-        isDragging = true;
-        startDragging(hex, name, element);
-
-        ghost = document.createElement('div');
-        ghost.className = 'custom-drag-ghost';
-        ghost.style.backgroundColor = hex;
-        ghost.textContent = '⚡';
-        document.body.appendChild(ghost);
-      }
-
-      if (isDragging && ghost) {
-        ghost.style.left = `${moveEvent.clientX}px`;
-        ghost.style.top = `${moveEvent.clientY}px`;
-
-        if (elements.dynamoAssembly) {
-          const rect = elements.dynamoAssembly.getBoundingClientRect();
-          if (
-            moveEvent.clientX >= rect.left &&
-            moveEvent.clientX <= rect.right &&
-            moveEvent.clientY >= rect.top &&
-            moveEvent.clientY <= rect.bottom
-          ) {
-            const slot = getTargetSlotFromCoords(moveEvent.clientX, moveEvent.clientY);
-            if (slot === 1) {
-              elements.cdSector1.classList.add('drag-over');
-              elements.cdSector2.classList.remove('drag-over');
-            } else {
-              elements.cdSector2.classList.add('drag-over');
-              elements.cdSector1.classList.remove('drag-over');
-            }
-            elements.dynamoAssembly.classList.add('drag-hover-dynamo');
-          } else {
-            clearAllDragHighlights();
-          }
-        }
-      }
-    }
-
-    function onPointerUp(upEvent) {
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-
-      if (isDragging) {
-        if (elements.dynamoAssembly) {
-          const rect = elements.dynamoAssembly.getBoundingClientRect();
-          if (
-            upEvent.clientX >= rect.left &&
-            upEvent.clientX <= rect.right &&
-            upEvent.clientY >= rect.top &&
-            upEvent.clientY <= rect.bottom
-          ) {
-            const slot = getTargetSlotFromCoords(upEvent.clientX, upEvent.clientY);
-            assignColorToSlot(slot, hex);
-            setActiveSlot(slot);
-            triggerDynamoDropPulse(slot);
-            showToast(`⚡ Absorbed ${hex} into Dynamo Slot ${slot}!`);
-          }
-        }
-
-        if (ghost) ghost.remove();
-        clearAllDragHighlights();
-        endDragging(element);
-      }
-    }
-
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
-  });
-}
-
 function renderPaletteSwatches() {
+  if (elements.paletteBadge) {
+    elements.paletteBadge.textContent = `${COLOR_PRESETS.length} Colors`;
+  }
+
   elements.colorCirclesGrid.innerHTML = '';
 
-  COLOR_PRESETS.forEach((preset, index) => {
+  COLOR_PRESETS.forEach((preset) => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'color-circle-btn';
     btn.style.setProperty('--btn-color', preset.hex);
-    btn.setAttribute('title', `${preset.name} (${preset.hex}) - Drag onto Dynamo or click to assign`);
+    btn.setAttribute('title', `${preset.name} (${preset.hex}) - Click to assign to Slot ${state.activeSlot}`);
     btn.setAttribute('aria-label', `${preset.name}: ${preset.hex}`);
     btn.setAttribute('data-color', preset.hex);
     btn.setAttribute('data-name', preset.name);
-    btn.draggable = true;
 
     // Highlight if currently assigned to any slot
     updateButtonSlotIndicator(btn, preset.hex);
@@ -413,24 +331,8 @@ function renderPaletteSwatches() {
     // Click handler to assign to current active slot
     btn.addEventListener('click', () => {
       assignColorToSlot(state.activeSlot, preset.hex);
+      showToast(`Applied ${preset.name} to Slot ${state.activeSlot}`);
     });
-
-    // Native HTML5 Drag and Drop handlers
-    btn.addEventListener('dragstart', (e) => {
-      startDragging(preset.hex, preset.name, btn);
-      if (e.dataTransfer) {
-        e.dataTransfer.setData('text/plain', preset.hex);
-        e.dataTransfer.setData('text/hex', preset.hex);
-        e.dataTransfer.effectAllowed = 'copy';
-      }
-    });
-
-    btn.addEventListener('dragend', () => {
-      endDragging(btn);
-    });
-
-    // Pointer-based drag for universal touch and mouse support
-    enablePointerDrag(btn, () => preset.hex, preset.name);
 
     elements.colorCirclesGrid.appendChild(btn);
   });
@@ -692,133 +594,37 @@ function setupCopyButtons() {
 }
 
 // ============================================================================
-// SETUP DRAG & DROP ON DYNAMO & CD SECTORS
+// SETUP INTERACTION ON CD SECTORS
 // ============================================================================
 
-function setupDragAndDrop() {
-  // 1. Dynamo Assembly as a Master Drop Zone
-  if (elements.dynamoAssembly) {
-    elements.dynamoAssembly.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
-
-      const slot = getTargetSlotFromCoords(e.clientX, e.clientY);
-      if (slot === 1) {
-        elements.cdSector1.classList.add('drag-over');
-        elements.cdSector2.classList.remove('drag-over');
-      } else {
-        elements.cdSector2.classList.add('drag-over');
-        elements.cdSector1.classList.remove('drag-over');
-      }
-      elements.dynamoAssembly.classList.add('drag-hover-dynamo');
-    });
-
-    elements.dynamoAssembly.addEventListener('dragleave', (e) => {
-      const rect = elements.dynamoAssembly.getBoundingClientRect();
-      if (
-        e.clientX < rect.left ||
-        e.clientX > rect.right ||
-        e.clientY < rect.top ||
-        e.clientY > rect.bottom
-      ) {
-        clearAllDragHighlights();
-      }
-    });
-
-    elements.dynamoAssembly.addEventListener('drop', (e) => {
-      e.preventDefault();
+function setupSectorClickHandlers() {
+  // Clicking Sector 1 selects Slot 1 as active target
+  if (elements.cdSector1) {
+    elements.cdSector1.addEventListener('click', (e) => {
       e.stopPropagation();
-
-      const hex =
-        (e.dataTransfer && (e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/hex'))) ||
-        currentDraggedColor;
-
-      if (hex && /^#[0-9A-F]{3,6}$/i.test(hex)) {
-        const slot = getTargetSlotFromCoords(e.clientX, e.clientY);
-        assignColorToSlot(slot, hex);
-        setActiveSlot(slot);
-        triggerDynamoDropPulse(slot);
-        showToast(`⚡ Absorbed ${hex} into Dynamo Slot ${slot}!`);
-      }
-
-      clearAllDragHighlights();
-      endDragging();
+      setActiveSlot(1);
+      showToast('Selected CD Slot 1 - Pick a color');
     });
   }
 
-  // 2. Individual CD Sectors Direct Drops
-  [elements.cdSector1, elements.cdSector2].forEach((sector) => {
-    if (!sector) return;
-    const slotNum = parseInt(sector.getAttribute('data-slot'), 10);
-
-    sector.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy';
-      sector.classList.add('drag-over');
-    });
-
-    sector.addEventListener('dragleave', () => {
-      sector.classList.remove('drag-over');
-    });
-
-    sector.addEventListener('drop', (e) => {
-      e.preventDefault();
+  // Clicking Sector 2 selects Slot 2 as active target
+  if (elements.cdSector2) {
+    elements.cdSector2.addEventListener('click', (e) => {
       e.stopPropagation();
-      sector.classList.remove('drag-over');
-
-      const hex =
-        (e.dataTransfer && (e.dataTransfer.getData('text/plain') || e.dataTransfer.getData('text/hex'))) ||
-        currentDraggedColor;
-
-      if (hex && /^#[0-9A-F]{3,6}$/i.test(hex)) {
-        assignColorToSlot(slotNum, hex);
-        setActiveSlot(slotNum);
-        triggerDynamoDropPulse(slotNum);
-        showToast(`⚡ Injected ${hex} into CD Slot ${slotNum}!`);
-      }
-
-      clearAllDragHighlights();
-      endDragging();
+      setActiveSlot(2);
+      showToast('Selected CD Slot 2 - Pick a color');
     });
+  }
 
-    // Clicking a sector makes it active target
-    sector.addEventListener('click', (e) => {
-      e.stopPropagation();
-      setActiveSlot(slotNum);
-    });
-  });
-
-  // Clicking on CD when idle can toggle slot or give feedback
+  // Clicking anywhere on the CD when idle toggles the active slot
   if (elements.cdDisc) {
     elements.cdDisc.addEventListener('click', () => {
       if (!state.isSpinning) {
-        setActiveSlot(state.activeSlot === 1 ? 2 : 1);
+        const next = state.activeSlot === 1 ? 2 : 1;
+        setActiveSlot(next);
+        showToast(`Switched to CD Slot ${next}`);
       }
     });
-  }
-
-  // 3. Custom Color Picker Drag & Drop
-  if (elements.customColorDraggable) {
-    elements.customColorDraggable.addEventListener('dragstart', (e) => {
-      const hex = elements.customColorInput.value.toUpperCase();
-      startDragging(hex, 'Custom Hex', elements.customColorDraggable);
-      if (e.dataTransfer) {
-        e.dataTransfer.setData('text/plain', hex);
-        e.dataTransfer.setData('text/hex', hex);
-        e.dataTransfer.effectAllowed = 'copy';
-      }
-    });
-
-    elements.customColorDraggable.addEventListener('dragend', () => {
-      endDragging(elements.customColorDraggable);
-    });
-
-    // Pointer-based touch/mouse drag for custom picker
-    enablePointerDrag(
-      elements.customColorDraggable,
-      () => elements.customColorInput.value.toUpperCase(),
-      'Custom Hex'
-    );
   }
 }
 
@@ -908,7 +714,7 @@ function setupEventListeners() {
 function init() {
   renderPaletteSwatches();
   setActiveSlot(1);
-  setupDragAndDrop();
+  setupSectorClickHandlers();
   setupCopyButtons();
   setupEventListeners();
   updateOutputDisplay();

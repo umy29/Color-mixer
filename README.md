@@ -10,22 +10,16 @@ An interactive single-page web application featuring an industrial motor apparat
 
 ### 1. 📐 Top-Right Rectangular Color Palette Holder
 - **Rectangular Container**: Prominently boxed in the upper-right corner.
-- **Circular Swatches**: 16 curated color choices presented as tactile circular buttons with 3D spherical shading and hover magnification.
-- **Dual Slot Control**: Switch between **CD Slot 1** and **CD Slot 2** with active slot indicator dots, plus a one-click **Swap Colors (⇄)** button.
-- **Draggable to Dynamo**: Every circular color swatch—as well as the custom color ring—can be dragged directly onto the Dynamo motor assembly or CD disc!
-- **Custom Color Picker**: A circular color ring connected to a native color picker to mix any custom HEX color and drag it directly to the dynamo.
-- **Universal Input**: Supports both HTML5 native drag-and-drop and pointer-based touch drag with floating ghost feedback.
+- **45 Circular Color Choices**: An expanded, rich collection of 45 curated colors spanning vibrant reds, warm oranges, brilliant yellows, fresh greens, radiant cyans, rich blues, vivid purples, and balanced neutrals.
+- **Instant Click-to-Assign**: Select **CD Slot 1** or **CD Slot 2**, then click any circular swatch to instantly assign that color.
+- **Dual Slot Control**: Switch between **CD Slot 1** and **CD Slot 2** with active indicator dots, plus a one-click **Swap Colors (⇄)** button.
+- **Custom Color Picker**: A circular color ring connected to a native color picker to mix and apply any custom HEX color.
 
-### 2. ⚙️ Central Dynamo & Dual-Sector CD (Drop Target)
-- **Interactive Dynamo Drop Zone**: Dragging any color over the Dynamo apparatus highlights it with an electric aura and an active status pill.
-- **Intelligent Slot Target**:
-  - Dragging to the **left half of the Dynamo** targets **Slot 1**.
-  - Dragging to the **right half of the Dynamo** targets **Slot 2**.
-  - Direct drop onto either CD sector assigns directly to that sector.
-- **Centered Turntable Assembly**: Central rotor spindle with dynamic electromagnetic glow aura and compact disc hub.
+### 2. ⚙️ Central Dynamo & Dual-Sector CD
+- **Centered Turntable Assembly**: Smooth central rotor spindle with dynamic electromagnetic glow aura and compact disc hub.
 - **Two-Color CD Disc**:
-  - **Sector 1 (Left 0°–180°)**: Holds Color 1.
-  - **Sector 2 (Right 180°–360°)**: Holds Color 2.
+  - **Sector 1 (Left 0°–180°)**: Holds Color 1 (click to select as target).
+  - **Sector 2 (Right 180°–360°)**: Holds Color 2 (click to select as target).
   - **Holographic Sheen & Grooves**: Realistic iridescent radial reflection that turns with the disc.
   - **Center Hub & Spindle**: Chrome dynamo shaft tip and acrylic clamp.
 
