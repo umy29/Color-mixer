@@ -33,7 +33,6 @@ An interactive single-page web application featuring an industrial motor apparat
 - **Chamber Preview**: Dynamic preview with subtle energy ripples and animated gradient borders.
 - **Nearest-Color Naming Algorithm**: Intelligently identifies color names like *Amethyst Violet*, *Sunset Orange*, *Kelly Green*, and *Royal Indigo*.
 - **Color Values**: Real-time HEX, RGB, and HSL readouts with 1-click **Copy** buttons.
-- **WCAG Text Contrast Preview**: Live accessibility calculation showing white vs black text contrast ratios and recommendations.
 - **Mixing Modes**:
   - **👁️ Optical Disc**: Maxwell's disc additive temporal photon summation (e.g. Electric Blue + Sunshine Yellow blends to neutral Silver Mist/Gray).
   - **🎨 Pigment Dye**: Subtractive CMY paint/dye mixing (e.g. Blue + Yellow blends to Green).

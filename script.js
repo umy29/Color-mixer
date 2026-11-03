@@ -175,9 +175,6 @@ const elements = {
   hexVal: document.getElementById('hexVal'),
   rgbVal: document.getElementById('rgbVal'),
   hslVal: document.getElementById('hslVal'),
-  wcagRating: document.getElementById('wcagRating'),
-  wcagWhite: document.getElementById('wcagWhite'),
-  wcagBlack: document.getElementById('wcagBlack'),
   recentChips: document.getElementById('recentChips'),
   clearHistoryBtn: document.getElementById('clearHistoryBtn'),
 
@@ -466,20 +463,6 @@ function updateOutputDisplay() {
   elements.eqSlot2Name.textContent = s2Name;
   elements.eqResultDot.style.backgroundColor = mixedHex;
   elements.eqResultName.textContent = colorName;
-
-  // Calculate WCAG relative luminance & contrast ratio
-  const lum = (0.299 * mixedRgb.r + 0.587 * mixedRgb.g + 0.114 * mixedRgb.b) / 255;
-  if (lum > 0.52) {
-    elements.wcagRating.textContent = 'Optimal: Black Text';
-    elements.wcagRating.style.color = '#f59e0b';
-    elements.wcagBlack.style.outline = '2px solid var(--accent-cyan)';
-    elements.wcagWhite.style.outline = 'none';
-  } else {
-    elements.wcagRating.textContent = 'Optimal: White Text';
-    elements.wcagRating.style.color = '#10b981';
-    elements.wcagWhite.style.outline = '2px solid var(--accent-cyan)';
-    elements.wcagBlack.style.outline = 'none';
-  }
 }
 
 function swapColors() {
