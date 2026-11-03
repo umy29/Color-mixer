@@ -403,9 +403,10 @@ function updateOutputDisplay() {
   const colorName = getNearestColorName(mixedHex);
 
   document.documentElement.style.setProperty('--mixed-color', mixedHex);
+  document.documentElement.style.setProperty('--mixed-glow', `${mixedHex}45`);
 
   elements.outputColorPreview.style.backgroundColor = mixedHex;
-  elements.outputColorPreview.style.boxShadow = `0 15px 35px rgba(0, 0, 0, 0.5), 0 0 30px ${mixedHex}88`;
+  elements.outputColorPreview.style.boxShadow = '';
 
   if (state.isSpinning) {
     elements.outputColorName.textContent = colorName;
