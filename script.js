@@ -716,6 +716,14 @@ function applyTheme(theme) {
 function toggleTheme() {
   const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
   const newTheme = current === 'light' ? 'dark' : 'light';
+
+  if (elements.themeIcon) {
+    elements.themeIcon.classList.add('theme-icon-spin');
+    setTimeout(() => {
+      elements.themeIcon.classList.remove('theme-icon-spin');
+    }, 450);
+  }
+
   applyTheme(newTheme);
   showToast(`Switched to ${newTheme === 'light' ? 'Light' : 'Dark'} Mode`);
 }

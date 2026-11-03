@@ -42,9 +42,40 @@
   padding: 0;
 }
 
-html, body {
+html {
   min-height: 100vh;
   background-color: var(--bg-deep);
+  transition: background-color 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  transition: background-color 0.45s cubic-bezier(0.4, 0, 0.2, 1), color 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ambient Pattern Backgrounds with Smooth Cross-Fade */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dark Mode Grid & Ambient Lighting */
+body::before {
   background-image: 
     radial-gradient(circle at 50% 25%, rgba(20, 45, 90, 0.28) 0%, transparent 65%),
     radial-gradient(circle at 90% 12%, rgba(0, 242, 254, 0.08) 0%, transparent 45%),
@@ -52,22 +83,99 @@ html, body {
     linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
-  color: var(--text-primary);
-  font-family: var(--font-body);
-  line-height: 1.5;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
+  opacity: 1;
+}
+
+/* Light Mode Grid & Ambient Lighting */
+body::after {
+  background-image: 
+    radial-gradient(circle at 50% 20%, rgba(2, 132, 199, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 90% 10%, rgba(59, 130, 246, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 10% 85%, rgba(244, 63, 94, 0.04) 0%, transparent 50%),
+    linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+  opacity: 0;
+}
+
+[data-theme="light"] body::before {
+  opacity: 0;
+}
+
+[data-theme="light"] body::after {
+  opacity: 1;
 }
 
 /* Master App Container */
 .app-container {
   position: relative;
+  z-index: 1;
   max-width: 1560px;
   margin: 0 auto;
   padding: 20px 28px 24px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   GLOBAL SMOOTH THEME TRANSITION
+   -------------------------------------------------------------------------- */
+.app-header,
+.brand-icon,
+.brand h1,
+.action-btn,
+.system-status,
+.status-rpm,
+.color-equation-ribbon,
+.eq-item,
+.dynamo-control-desk,
+.switch-bezel,
+.switch-toggle,
+.speed-preset-btn,
+.output-card,
+.station-badge,
+.color-name,
+.data-row,
+.copy-pill-btn,
+.palette-rectangle-holder,
+.palette-title-group h2,
+.palette-badge,
+.slot-target-selector,
+.slot-tab,
+.swap-slots-btn,
+.palette-filter-row,
+.filter-pill,
+.custom-color-row,
+.app-footer,
+.shortcut-pill,
+kbd,
+.modal-card,
+.modal-header,
+.modal-footer,
+.modal-title-wrap h2,
+.modal-section h4,
+.modal-body,
+.modal-callout,
+.tachometer-outer-ring,
+.sector-drop-overlay,
+.toast {
+  transition: 
+    background-color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes iconSpinFade {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  50% { transform: scale(0.65) rotate(90deg); opacity: 0.35; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.theme-icon-spin {
+  animation: iconSpinFade 0.45s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* --------------------------------------------------------------------------
@@ -1724,13 +1832,6 @@ kbd {
 
 [data-theme="light"] body {
   background-color: var(--bg-deep);
-  background-image: 
-    radial-gradient(circle at 50% 20%, rgba(2, 132, 199, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 90% 10%, rgba(59, 130, 246, 0.06) 0%, transparent 45%),
-    radial-gradient(circle at 10% 85%, rgba(244, 63, 94, 0.04) 0%, transparent 50%),
-    linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px);
-  background-size: 100% 100%, 100% 100%, 100% 100%, 36px 36px, 36px 36px;
   color: var(--text-primary);
 }
 
