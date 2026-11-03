@@ -401,16 +401,32 @@ function updateOutputDisplay() {
     elements.cdBlendOverlay.style.backgroundColor = mixedHex;
   }
 
-  // Update Equation Ribbon
+  // Update Equation Ribbon inputs (Slot 1 and Slot 2)
   const s1Name = getNearestColorName(state.slot1Color);
   const s2Name = getNearestColorName(state.slot2Color);
   if (elements.eqSlot1Dot) elements.eqSlot1Dot.style.backgroundColor = state.slot1Color;
   if (elements.eqSlot1Name) elements.eqSlot1Name.textContent = s1Name;
   if (elements.eqSlot2Dot) elements.eqSlot2Dot.style.backgroundColor = state.slot2Color;
   if (elements.eqSlot2Name) elements.eqSlot2Name.textContent = s2Name;
-  if (elements.eqResultDot) elements.eqResultDot.style.backgroundColor = mixedHex;
-  if (elements.eqResultName) elements.eqResultName.textContent = colorName;
-  if (elements.eqResultHex) elements.eqResultHex.textContent = mixedHex;
+
+  // Reveal or Conceal Equation Result depending on whether dynamo is turned on
+  if (elements.eqResultItem) {
+    if (state.isSpinning) {
+      elements.eqResultItem.classList.remove('unrevealed');
+      elements.eqResultItem.classList.add('revealed');
+      elements.eqResultItem.setAttribute('title', `Mixed: ${colorName} (${mixedHex}) - Click to copy HEX`);
+      if (elements.eqResultDot) elements.eqResultDot.style.backgroundColor = mixedHex;
+      if (elements.eqResultName) elements.eqResultName.textContent = colorName;
+      if (elements.eqResultHex) elements.eqResultHex.textContent = mixedHex;
+    } else {
+      elements.eqResultItem.classList.remove('revealed');
+      elements.eqResultItem.classList.add('unrevealed');
+      elements.eqResultItem.setAttribute('title', 'Turn on the dynamo to mix and reveal color combo (or click here)');
+      if (elements.eqResultDot) elements.eqResultDot.style.backgroundColor = 'transparent';
+      if (elements.eqResultName) elements.eqResultName.textContent = 'Spin to Reveal';
+      if (elements.eqResultHex) elements.eqResultHex.textContent = '???';
+    }
+  }
 }
 
 function swapColors() {
@@ -515,6 +531,8 @@ function toggleDynamoPower() {
     elements.statusText.textContent = 'DYNAMO STANDBY';
     elements.dynamoAssembly.classList.remove('dynamo-active');
   }
+
+  updateOutputDisplay();
 }
 
 function animationLoop(timestamp) {
@@ -791,9 +809,13 @@ function setupEventListeners() {
   });
 
 
-  // Click on Equation Result to Copy HEX
+  // Click on Equation Result: Copy HEX if revealed, or start dynamo to mix & reveal if unrevealed
   if (elements.eqResultItem) {
     elements.eqResultItem.addEventListener('click', () => {
+      if (!state.isSpinning) {
+        toggleDynamoPower();
+        return;
+      }
       const hex = calculateCurrentMix();
       const name = getNearestColorName(hex);
       if (navigator.clipboard && navigator.clipboard.writeText) {
