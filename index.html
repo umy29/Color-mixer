@@ -77,67 +77,9 @@
       </div>
     </header>
 
-    <!-- Main Workspace: 3-Zone Ergonomic Layout -->
+    <!-- Main Workspace Layout -->
     <div class="workspace-layout">
-
-      <!-- ZONE A (LEFT): Color Palette Selector -->
-      <aside class="palette-rectangle-holder" id="paletteHolder" aria-label="Color Palette Choices">
-        <div class="palette-header">
-          <div class="palette-title-group">
-            <span class="palette-icon">🎨</span>
-            <h2>Color Options</h2>
-          </div>
-          <span class="palette-badge" id="paletteBadge">45 Colors</span>
-        </div>
-
-        <!-- Category Filter Pills -->
-        <div class="palette-filter-row" aria-label="Filter Palette by Category">
-          <button type="button" class="filter-pill active" data-filter="all">All</button>
-          <button type="button" class="filter-pill" data-filter="warm">Warm</button>
-          <button type="button" class="filter-pill" data-filter="cool">Cool</button>
-          <button type="button" class="filter-pill" data-filter="vibrant">Vivid</button>
-          <button type="button" class="filter-pill" data-filter="earth">Earth</button>
-        </div>
-
-        <!-- Target Slot Selection Tabs & Quick Swap -->
-        <div class="slot-target-row">
-          <div class="slot-target-selector">
-            <button type="button" class="slot-tab active" id="tabSlot1" data-target-slot="1" title="Select Slot 1 to change its color (Hotkey: 1)">
-              <span class="slot-dot" id="dotSlot1"></span>
-              <span>CD Slot 1</span>
-            </button>
-            <button type="button" class="slot-tab" id="tabSlot2" data-target-slot="2" title="Select Slot 2 to change its color (Hotkey: 2)">
-              <span class="slot-dot" id="dotSlot2"></span>
-              <span>CD Slot 2</span>
-            </button>
-          </div>
-          <button type="button" class="swap-slots-btn" id="swapSlotsBtn" title="Swap Slot 1 and Slot 2 Colors (Hotkey: S)">
-            ⇄
-          </button>
-        </div>
-
-        <p class="palette-hint">Pick a slot above, then tap a color to paint that half.</p>
-
-        <!-- Circle Color Options Grid -->
-        <div class="color-circles-grid" id="colorCirclesGrid">
-          <!-- Injected via JavaScript with rich colors and data attributes -->
-        </div>
-
-        <!-- Custom Color Picker Circle Option -->
-        <div class="custom-color-row">
-          <div class="custom-color-circle-wrapper" id="customColorWrapper" title="Pick any custom color">
-            <input type="color" id="customColorInput" value="#FF007F" />
-            <span class="custom-color-ring" id="customColorRing"></span>
-            <span class="custom-color-label">Custom Hex</span>
-          </div>
-          <div class="custom-color-info">
-            <span id="customColorHex">#FF007F</span>
-            <button type="button" id="applyCustomBtn" class="mini-btn">Apply</button>
-          </div>
-        </div>
-      </aside>
-
-      <!-- ZONE B (CENTER): Dynamo Disc + Controls -->
+      <!-- Center Stage: The Dynamo Machine & CD Disc -->
       <main class="dynamo-stage">
         <!-- Live Color Equation Ribbon -->
         <div class="color-equation-ribbon" aria-label="Current Color Mix Formulation">
@@ -151,9 +93,10 @@
             <span class="eq-label" id="eqSlot2Name">Electric Blue</span>
           </div>
           <span class="eq-operator">➜</span>
-          <div class="eq-item eq-result">
+          <div class="eq-item eq-result" id="eqResultItem" title="Click to copy HEX color">
             <span class="eq-swatch" id="eqResultDot"></span>
             <span class="eq-label" id="eqResultName">Amethyst Violet</span>
+            <span class="eq-hex-badge" id="eqResultHex">#805ab5</span>
           </div>
         </div>
 
@@ -245,68 +188,62 @@
         </div>
       </main>
 
-      <!-- ZONE C (RIGHT): Mixed Color Output -->
-      <section class="mixed-output-station" id="outputStation" aria-live="polite">
-        <div class="output-card">
-          <div class="output-card-header">
-            <div class="station-badge">
-              <span class="pulse-dot"></span>
-              <span>MIXED COLOR OUTPUT</span>
-            </div>
-            <span class="output-ratio-badge">50% + 50%</span>
+      <!-- Upper Right: Color Palette Rectangle Holder -->
+      <aside class="palette-rectangle-holder" id="paletteHolder" aria-label="Color Palette Choices">
+        <div class="palette-header">
+          <div class="palette-title-group">
+            <span class="palette-icon">🎨</span>
+            <h2>Color Options</h2>
           </div>
+          <span class="palette-badge" id="paletteBadge">45 Colors</span>
+        </div>
 
-          <!-- Large Color Output Preview Chamber -->
-          <div class="output-swatch-chamber">
-            <div class="output-swatch-preview" id="outputColorPreview" title="Current Subtractive Mixed Color">
-              <div class="swatch-highlight"></div>
-            </div>
-            <div class="output-tags">
-              <span class="output-tag-eyebrow">Mixed Result</span>
-              <span class="color-name" id="outputColorName">Awaiting Spin...</span>
-            </div>
+        <!-- Category Filter Pills -->
+        <div class="palette-filter-row" aria-label="Filter Palette by Category">
+          <button type="button" class="filter-pill active" data-filter="all">All</button>
+          <button type="button" class="filter-pill" data-filter="warm">Warm</button>
+          <button type="button" class="filter-pill" data-filter="cool">Cool</button>
+          <button type="button" class="filter-pill" data-filter="vibrant">Vivid</button>
+          <button type="button" class="filter-pill" data-filter="earth">Earth</button>
+        </div>
+
+        <!-- Target Slot Selection Tabs & Quick Swap -->
+        <div class="slot-target-row">
+          <div class="slot-target-selector">
+            <button type="button" class="slot-tab active" id="tabSlot1" data-target-slot="1" title="Select Slot 1 to change its color (Hotkey: 1)">
+              <span class="slot-dot" id="dotSlot1"></span>
+              <span>CD Slot 1</span>
+            </button>
+            <button type="button" class="slot-tab" id="tabSlot2" data-target-slot="2" title="Select Slot 2 to change its color (Hotkey: 2)">
+              <span class="slot-dot" id="dotSlot2"></span>
+              <span>CD Slot 2</span>
+            </button>
           </div>
+          <button type="button" class="swap-slots-btn" id="swapSlotsBtn" title="Swap Slot 1 and Slot 2 Colors (Hotkey: S)">
+            ⇄
+          </button>
+        </div>
 
-          <!-- Detailed Color Values & Copy Controls -->
-          <div class="output-data-panel">
-            <div class="data-row">
-              <div class="data-item">
-                <span class="data-key">HEX</span>
-                <span class="data-val" id="hexVal">#------</span>
-              </div>
-              <button type="button" class="copy-pill-btn" data-copy-target="hexVal" title="Copy HEX value">Copy</button>
-            </div>
+        <p class="palette-hint">Pick a slot above, then tap a color to paint that half.</p>
 
-            <div class="data-row">
-              <div class="data-item">
-                <span class="data-key">RGB</span>
-                <span class="data-val" id="rgbVal">rgb(--, --, --)</span>
-              </div>
-              <button type="button" class="copy-pill-btn" data-copy-target="rgbVal" title="Copy RGB value">Copy</button>
-            </div>
+        <!-- Circle Color Options Grid -->
+        <div class="color-circles-grid" id="colorCirclesGrid">
+          <!-- Injected via JavaScript with rich colors and data attributes -->
+        </div>
 
-            <div class="data-row">
-              <div class="data-item">
-                <span class="data-key">HSL</span>
-                <span class="data-val" id="hslVal">hsl(--, --%, --%)</span>
-              </div>
-              <button type="button" class="copy-pill-btn" data-copy-target="hslVal" title="Copy HSL value">Copy</button>
-            </div>
-
-            <!-- History / Recent Mixes Mini Strip -->
-            <div class="recent-mixes-wrap">
-              <div class="recent-header">
-                <span>Recent Mix History</span>
-                <button type="button" id="clearHistoryBtn" class="text-link">Clear</button>
-              </div>
-              <div class="recent-chips" id="recentChips">
-                <span class="empty-history-text">Spin the dynamo to save mixes</span>
-              </div>
-            </div>
+        <!-- Custom Color Picker Circle Option -->
+        <div class="custom-color-row">
+          <div class="custom-color-circle-wrapper" id="customColorWrapper" title="Pick any custom color">
+            <input type="color" id="customColorInput" value="#FF007F" />
+            <span class="custom-color-ring" id="customColorRing"></span>
+            <span class="custom-color-label">Custom Hex</span>
+          </div>
+          <div class="custom-color-info">
+            <span id="customColorHex">#FF007F</span>
+            <button type="button" id="applyCustomBtn" class="mini-btn">Apply</button>
           </div>
         </div>
-      </section>
-
+      </aside>
     </div>
 
     <!-- Keyboard Shortcuts Bottom Bar -->

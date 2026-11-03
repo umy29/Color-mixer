@@ -132,6 +132,8 @@ const elements = {
   eqSlot2Name: document.getElementById('eqSlot2Name'),
   eqResultDot: document.getElementById('eqResultDot'),
   eqResultName: document.getElementById('eqResultName'),
+  eqResultItem: document.getElementById('eqResultItem'),
+  eqResultHex: document.getElementById('eqResultHex'),
 
   // Palette Holder
   paletteHolder: document.getElementById('paletteHolder'),
@@ -166,15 +168,6 @@ const elements = {
   powerStateSubtext: document.getElementById('powerStateSubtext'),
   speedSlider: document.getElementById('speedSlider'),
   speedBadge: document.getElementById('speedBadge'),
-
-  // Output Station
-  outputColorPreview: document.getElementById('outputColorPreview'),
-  outputColorName: document.getElementById('outputColorName'),
-  hexVal: document.getElementById('hexVal'),
-  rgbVal: document.getElementById('rgbVal'),
-  hslVal: document.getElementById('hslVal'),
-  recentChips: document.getElementById('recentChips'),
-  clearHistoryBtn: document.getElementById('clearHistoryBtn'),
 
   // Modal & Toast
   infoModal: document.getElementById('infoModal'),
@@ -398,25 +391,10 @@ function setActiveSlot(slotNumber) {
 
 function updateOutputDisplay() {
   const mixedHex = calculateCurrentMix();
-  const mixedRgb = hexToRgb(mixedHex);
-  const mixedHsl = rgbToHsl(mixedRgb.r, mixedRgb.g, mixedRgb.b);
   const colorName = getNearestColorName(mixedHex);
 
   document.documentElement.style.setProperty('--mixed-color', mixedHex);
   document.documentElement.style.setProperty('--mixed-glow', `${mixedHex}45`);
-
-  elements.outputColorPreview.style.backgroundColor = mixedHex;
-  elements.outputColorPreview.style.boxShadow = '';
-
-  if (state.isSpinning) {
-    elements.outputColorName.textContent = colorName;
-  } else {
-    elements.outputColorName.textContent = `${colorName} (Ready)`;
-  }
-
-  elements.hexVal.textContent = mixedHex;
-  elements.rgbVal.textContent = `rgb(${mixedRgb.r}, ${mixedRgb.g}, ${mixedRgb.b})`;
-  elements.hslVal.textContent = `hsl(${mixedHsl.h}, ${mixedHsl.s}%, ${mixedHsl.l}%)`;
 
   // Update blend overlay background on CD
   if (elements.cdBlendOverlay) {
@@ -426,12 +404,13 @@ function updateOutputDisplay() {
   // Update Equation Ribbon
   const s1Name = getNearestColorName(state.slot1Color);
   const s2Name = getNearestColorName(state.slot2Color);
-  elements.eqSlot1Dot.style.backgroundColor = state.slot1Color;
-  elements.eqSlot1Name.textContent = s1Name;
-  elements.eqSlot2Dot.style.backgroundColor = state.slot2Color;
-  elements.eqSlot2Name.textContent = s2Name;
-  elements.eqResultDot.style.backgroundColor = mixedHex;
-  elements.eqResultName.textContent = colorName;
+  if (elements.eqSlot1Dot) elements.eqSlot1Dot.style.backgroundColor = state.slot1Color;
+  if (elements.eqSlot1Name) elements.eqSlot1Name.textContent = s1Name;
+  if (elements.eqSlot2Dot) elements.eqSlot2Dot.style.backgroundColor = state.slot2Color;
+  if (elements.eqSlot2Name) elements.eqSlot2Name.textContent = s2Name;
+  if (elements.eqResultDot) elements.eqResultDot.style.backgroundColor = mixedHex;
+  if (elements.eqResultName) elements.eqResultName.textContent = colorName;
+  if (elements.eqResultHex) elements.eqResultHex.textContent = mixedHex;
 }
 
 function swapColors() {
@@ -469,6 +448,7 @@ function addRecentMixToHistory(hex, name) {
 }
 
 function renderRecentMixes() {
+  if (!elements.recentChips) return;
   if (state.recentMixes.length === 0) {
     elements.recentChips.innerHTML = '<span class="empty-history-text">Spin the dynamo to save mixes</span>';
     return;
@@ -811,12 +791,31 @@ function setupEventListeners() {
   });
 
 
+  // Click on Equation Result to Copy HEX
+  if (elements.eqResultItem) {
+    elements.eqResultItem.addEventListener('click', () => {
+      const hex = calculateCurrentMix();
+      const name = getNearestColorName(hex);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(hex).then(() => {
+          showToast(`Copied ${name} (${hex}) to clipboard!`);
+        }).catch(() => {
+          showToast(`${name}: ${hex}`);
+        });
+      } else {
+        showToast(`${name}: ${hex}`);
+      }
+    });
+  }
+
   // Clear History
-  elements.clearHistoryBtn.addEventListener('click', () => {
-    state.recentMixes = [];
-    renderRecentMixes();
-    showToast('Recent history cleared');
-  });
+  if (elements.clearHistoryBtn) {
+    elements.clearHistoryBtn.addEventListener('click', () => {
+      state.recentMixes = [];
+      renderRecentMixes();
+      showToast('Recent history cleared');
+    });
+  }
 
   // Global Keyboard Shortcuts
   window.addEventListener('keydown', (e) => {
