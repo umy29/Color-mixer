@@ -3,68 +3,68 @@
  * Optical Persistence & Pigment Mixing Laboratory
  */
 
-// Preset Color Choices for the Rectangle Palette Holder (45 Diverse Colors)
+// Preset Color Choices for the Rectangle Palette Holder (45 Diverse Categorized Colors)
 const COLOR_PRESETS = [
-  // Reds & Corals
-  { name: 'Crimson Red', hex: '#FF3B30' },
-  { name: 'Scarlet Ruby', hex: '#E60026' },
-  { name: 'Cherry Red', hex: '#D90429' },
-  { name: 'Coral Flame', hex: '#FF4500' },
-  { name: 'Hot Coral Pink', hex: '#FF2D55' },
-  { name: 'Deep Burgundy', hex: '#8B0000' },
-  { name: 'Rose Petal', hex: '#FF6B8B' },
+  // Reds & Corals (Warm / Vibrant)
+  { name: 'Crimson Red', hex: '#FF3B30', cat: 'warm' },
+  { name: 'Scarlet Ruby', hex: '#E60026', cat: 'warm' },
+  { name: 'Cherry Red', hex: '#D90429', cat: 'warm' },
+  { name: 'Coral Flame', hex: '#FF4500', cat: 'warm' },
+  { name: 'Hot Coral Pink', hex: '#FF2D55', cat: 'vibrant' },
+  { name: 'Deep Burgundy', hex: '#8B0000', cat: 'warm' },
+  { name: 'Rose Petal', hex: '#FF6B8B', cat: 'vibrant' },
 
-  // Oranges & Ambers
-  { name: 'Tangerine Orange', hex: '#FF9500' },
-  { name: 'Amber Gold', hex: '#FF9F0A' },
-  { name: 'Sunset Copper', hex: '#FF7A00' },
-  { name: 'Warm Terracotta', hex: '#E06D53' },
-  { name: 'Burnt Sienna', hex: '#C85A17' },
-  { name: 'Apricot Peach', hex: '#FFA07A' },
+  // Oranges & Ambers (Warm)
+  { name: 'Tangerine Orange', hex: '#FF9500', cat: 'warm' },
+  { name: 'Amber Gold', hex: '#FF9F0A', cat: 'warm' },
+  { name: 'Sunset Copper', hex: '#FF7A00', cat: 'warm' },
+  { name: 'Warm Terracotta', hex: '#E06D53', cat: 'warm' },
+  { name: 'Burnt Sienna', hex: '#C85A17', cat: 'warm' },
+  { name: 'Apricot Peach', hex: '#FFA07A', cat: 'warm' },
 
-  // Yellows & Golds
-  { name: 'Sunshine Yellow', hex: '#FFCC00' },
-  { name: 'Canary Lemon', hex: '#FFEE32' },
-  { name: 'Cyber Neon Yellow', hex: '#FAFF00' },
-  { name: 'Goldenrod', hex: '#DAA520' },
-  { name: 'Pale Vanilla', hex: '#FFF3B0' },
+  // Yellows & Golds (Warm / Vibrant)
+  { name: 'Sunshine Yellow', hex: '#FFCC00', cat: 'warm' },
+  { name: 'Canary Lemon', hex: '#FFEE32', cat: 'warm' },
+  { name: 'Cyber Neon Yellow', hex: '#FAFF00', cat: 'vibrant' },
+  { name: 'Goldenrod', hex: '#DAA520', cat: 'warm' },
+  { name: 'Pale Vanilla', hex: '#FFF3B0', cat: 'neutral' },
 
-  // Greens & Limes
-  { name: 'Electric Lime', hex: '#A4E739' },
-  { name: 'Chartreuse Volt', hex: '#76FF03' },
-  { name: 'Emerald Green', hex: '#34C759' },
-  { name: 'Spring Mint', hex: '#00E676' },
-  { name: 'Forest Evergreen', hex: '#0B6623' },
-  { name: 'Olive Sage', hex: '#556B2F' },
+  // Greens & Limes (Nature / Vibrant)
+  { name: 'Electric Lime', hex: '#A4E739', cat: 'vibrant' },
+  { name: 'Chartreuse Volt', hex: '#76FF03', cat: 'vibrant' },
+  { name: 'Emerald Green', hex: '#34C759', cat: 'nature' },
+  { name: 'Spring Mint', hex: '#00E676', cat: 'nature' },
+  { name: 'Forest Evergreen', hex: '#0B6623', cat: 'nature' },
+  { name: 'Olive Sage', hex: '#556B2F', cat: 'nature' },
 
-  // Cyans & Aquas
-  { name: 'Neon Aqua', hex: '#00F2FE' },
-  { name: 'Electric Cyan', hex: '#32ADE6' },
-  { name: 'Caribbean Teal', hex: '#00B4D8' },
-  { name: 'Mint Seafoam', hex: '#30B0C7' },
-  { name: 'Deep Turquoise', hex: '#007791' },
+  // Cyans & Aquas (Cool / Vibrant)
+  { name: 'Neon Aqua', hex: '#00F2FE', cat: 'vibrant' },
+  { name: 'Electric Cyan', hex: '#32ADE6', cat: 'cool' },
+  { name: 'Caribbean Teal', hex: '#00B4D8', cat: 'cool' },
+  { name: 'Mint Seafoam', hex: '#30B0C7', cat: 'cool' },
+  { name: 'Deep Turquoise', hex: '#007791', cat: 'cool' },
 
-  // Blues & Indigos
-  { name: 'Electric Blue', hex: '#007AFF' },
-  { name: 'Royal Cobalt', hex: '#1E40AF' },
-  { name: 'Sky Azure', hex: '#38BDF8' },
-  { name: 'Deep Ultramarine', hex: '#1B1464' },
-  { name: 'Midnight Navy', hex: '#0B192C' },
-  { name: 'Glacier Blue', hex: '#A5F3FC' },
+  // Blues & Indigos (Cool)
+  { name: 'Electric Blue', hex: '#007AFF', cat: 'cool' },
+  { name: 'Royal Cobalt', hex: '#1E40AF', cat: 'cool' },
+  { name: 'Sky Azure', hex: '#38BDF8', cat: 'cool' },
+  { name: 'Deep Ultramarine', hex: '#1B1464', cat: 'cool' },
+  { name: 'Midnight Navy', hex: '#0B192C', cat: 'cool' },
+  { name: 'Glacier Blue', hex: '#A5F3FC', cat: 'cool' },
 
-  // Purples & Magentas
-  { name: 'Vivid Magenta', hex: '#AF52DE' },
-  { name: 'Fuchsia Shock', hex: '#FF007F' },
-  { name: 'Deep Violet', hex: '#5856D6' },
-  { name: 'Amethyst Purple', hex: '#8B5CF6' },
-  { name: 'Lavender Mist', hex: '#C4B5FD' },
-  { name: 'Royal Plum', hex: '#4A0E4E' },
+  // Purples & Magentas (Vibrant / Cool)
+  { name: 'Vivid Magenta', hex: '#AF52DE', cat: 'vibrant' },
+  { name: 'Fuchsia Shock', hex: '#FF007F', cat: 'vibrant' },
+  { name: 'Deep Violet', hex: '#5856D6', cat: 'cool' },
+  { name: 'Amethyst Purple', hex: '#8B5CF6', cat: 'vibrant' },
+  { name: 'Lavender Mist', hex: '#C4B5FD', cat: 'vibrant' },
+  { name: 'Royal Plum', hex: '#4A0E4E', cat: 'cool' },
 
-  // Monochromes & Neutrals
-  { name: 'Pure White', hex: '#FFFFFF' },
-  { name: 'Platinum Silver', hex: '#CBD5E1' },
-  { name: 'Slate Gray', hex: '#64748B' },
-  { name: 'Charcoal Noir', hex: '#1C1C1E' }
+  // Monochromes & Neutrals (Neutral)
+  { name: 'Pure White', hex: '#FFFFFF', cat: 'neutral' },
+  { name: 'Platinum Silver', hex: '#CBD5E1', cat: 'neutral' },
+  { name: 'Slate Gray', hex: '#64748B', cat: 'neutral' },
+  { name: 'Charcoal Noir', hex: '#1C1C1E', cat: 'neutral' }
 ];
 
 // Curated Named Colors Dictionary for Nearest Color Name Matching
@@ -105,6 +105,7 @@ const state = {
   slot1Color: '#FF3B30',
   slot2Color: '#007AFF',
   activeSlot: 1, // 1 or 2
+  activeFilter: 'all',
   isSpinning: false,
   targetRpm: 1800,
   currentRpm: 0,
@@ -119,6 +120,16 @@ const elements = {
   statusIndicator: document.getElementById('statusIndicator'),
   statusText: document.getElementById('statusText'),
   rpmDisplay: document.getElementById('rpmDisplay'),
+  randomBtn: document.getElementById('randomBtn'),
+  infoBtn: document.getElementById('infoBtn'),
+
+  // Equation Ribbon
+  eqSlot1Dot: document.getElementById('eqSlot1Dot'),
+  eqSlot1Name: document.getElementById('eqSlot1Name'),
+  eqSlot2Dot: document.getElementById('eqSlot2Dot'),
+  eqSlot2Name: document.getElementById('eqSlot2Name'),
+  eqResultDot: document.getElementById('eqResultDot'),
+  eqResultName: document.getElementById('eqResultName'),
 
   // Palette Holder
   paletteHolder: document.getElementById('paletteHolder'),
@@ -137,6 +148,7 @@ const elements = {
 
   // Dynamo & CD Disc
   dynamoAssembly: document.getElementById('dynamoAssembly') || document.querySelector('.dynamo-assembly'),
+  tachometerRing: document.getElementById('tachometerRing'),
   cdDisc: document.getElementById('cdDisc'),
   cdSector1: document.getElementById('cdSector1'),
   cdSector2: document.getElementById('cdSector2'),
@@ -154,6 +166,7 @@ const elements = {
   speedBadge: document.getElementById('speedBadge'),
   modeOptical: document.getElementById('modeOptical'),
   modePigment: document.getElementById('modePigment'),
+  modeNote: document.getElementById('modeNote'),
 
   // Output Station
   outputColorPreview: document.getElementById('outputColorPreview'),
@@ -162,8 +175,16 @@ const elements = {
   hexVal: document.getElementById('hexVal'),
   rgbVal: document.getElementById('rgbVal'),
   hslVal: document.getElementById('hslVal'),
+  wcagRating: document.getElementById('wcagRating'),
+  wcagWhite: document.getElementById('wcagWhite'),
+  wcagBlack: document.getElementById('wcagBlack'),
   recentChips: document.getElementById('recentChips'),
   clearHistoryBtn: document.getElementById('clearHistoryBtn'),
+
+  // Modal & Toast
+  infoModal: document.getElementById('infoModal'),
+  closeModalBtn: document.getElementById('closeModalBtn'),
+  modalUnderstoodBtn: document.getElementById('modalUnderstoodBtn'),
   toastContainer: document.getElementById('toastContainer')
 };
 
@@ -309,18 +330,24 @@ function getNearestColorName(hex) {
 // ============================================================================
 
 function renderPaletteSwatches() {
+  const filtered = state.activeFilter === 'all'
+    ? COLOR_PRESETS
+    : (state.activeFilter === 'earth' || state.activeFilter === 'neutral')
+      ? COLOR_PRESETS.filter(p => p.cat === 'nature' || p.cat === 'neutral')
+      : COLOR_PRESETS.filter(p => p.cat === state.activeFilter);
+
   if (elements.paletteBadge) {
-    elements.paletteBadge.textContent = `${COLOR_PRESETS.length} Colors`;
+    elements.paletteBadge.textContent = `${filtered.length} Colors`;
   }
 
   elements.colorCirclesGrid.innerHTML = '';
 
-  COLOR_PRESETS.forEach((preset) => {
+  filtered.forEach((preset) => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'color-circle-btn';
     btn.style.setProperty('--btn-color', preset.hex);
-    btn.setAttribute('title', `${preset.name} (${preset.hex}) - Click to assign to Slot ${state.activeSlot}`);
+    btn.setAttribute('title', `${preset.name} (${preset.hex}) - Click to paint Slot ${state.activeSlot}`);
     btn.setAttribute('aria-label', `${preset.name}: ${preset.hex}`);
     btn.setAttribute('data-color', preset.hex);
     btn.setAttribute('data-name', preset.name);
@@ -381,7 +408,7 @@ function assignColorToSlot(slotNumber, hex) {
   updateAllPaletteIndicators();
   updateOutputDisplay();
 
-  // If spinning, play dynamic transition
+  // If spinning, trigger physical visual response
   if (state.isSpinning) {
     triggerDiscRipple();
   }
@@ -400,6 +427,7 @@ function setActiveSlot(slotNumber) {
     elements.cdSector2.classList.add('slot-active-target');
     elements.cdSector1.classList.remove('slot-active-target');
   }
+  updateAllPaletteIndicators();
 }
 
 function updateOutputDisplay() {
@@ -428,6 +456,30 @@ function updateOutputDisplay() {
 
   // Update optical blend overlay background on CD
   elements.cdOpticalBlend.style.backgroundColor = mixedHex;
+
+  // Update Equation Ribbon
+  const s1Name = getNearestColorName(state.slot1Color);
+  const s2Name = getNearestColorName(state.slot2Color);
+  elements.eqSlot1Dot.style.backgroundColor = state.slot1Color;
+  elements.eqSlot1Name.textContent = s1Name;
+  elements.eqSlot2Dot.style.backgroundColor = state.slot2Color;
+  elements.eqSlot2Name.textContent = s2Name;
+  elements.eqResultDot.style.backgroundColor = mixedHex;
+  elements.eqResultName.textContent = colorName;
+
+  // Calculate WCAG relative luminance & contrast ratio
+  const lum = (0.299 * mixedRgb.r + 0.587 * mixedRgb.g + 0.114 * mixedRgb.b) / 255;
+  if (lum > 0.52) {
+    elements.wcagRating.textContent = 'Optimal: Black Text';
+    elements.wcagRating.style.color = '#f59e0b';
+    elements.wcagBlack.style.outline = '2px solid var(--accent-cyan)';
+    elements.wcagWhite.style.outline = 'none';
+  } else {
+    elements.wcagRating.textContent = 'Optimal: White Text';
+    elements.wcagRating.style.color = '#10b981';
+    elements.wcagWhite.style.outline = '2px solid var(--accent-cyan)';
+    elements.wcagBlack.style.outline = 'none';
+  }
 }
 
 function swapColors() {
@@ -487,6 +539,21 @@ function renderRecentMixes() {
   });
 }
 
+function randomizeColorPair() {
+  const idx1 = Math.floor(Math.random() * COLOR_PRESETS.length);
+  let idx2 = Math.floor(Math.random() * COLOR_PRESETS.length);
+  while (idx2 === idx1) {
+    idx2 = Math.floor(Math.random() * COLOR_PRESETS.length);
+  }
+
+  const p1 = COLOR_PRESETS[idx1];
+  const p2 = COLOR_PRESETS[idx2];
+  assignColorToSlot(1, p1.hex);
+  assignColorToSlot(2, p2.hex);
+  triggerDiscRipple();
+  showToast(`🎲 Surprise Pair: ${p1.name} + ${p2.name}!`);
+}
+
 // ============================================================================
 // DYNAMO MOTOR SIMULATION & ANIMATION LOOP
 // ============================================================================
@@ -501,19 +568,19 @@ function toggleDynamoPower() {
     elements.powerBtnText.textContent = 'STOP DYNAMO';
     elements.powerStateSubtext.textContent = 'Dynamo active • Generating RPM';
     elements.statusIndicator.classList.add('active');
-    elements.statusText.textContent = 'DYNAMO ENERGIZED';
+    elements.statusText.textContent = 'DYNAMO ROTATING';
     elements.dynamoAssembly.classList.add('dynamo-active');
 
     const mixedHex = calculateCurrentMix();
     const name = getNearestColorName(mixedHex);
     addRecentMixToHistory(mixedHex, name);
-    showToast(`Dynamo engaged! Mixing ${name}...`);
+    showToast(`⚡ Dynamo engaged! Mixing ${name}...`);
   } else {
     elements.powerBtn.classList.remove('active');
     elements.powerBtnText.textContent = 'TURN ON';
     elements.powerStateSubtext.textContent = 'Press to engage dynamo';
     elements.statusIndicator.classList.remove('active');
-    elements.statusText.textContent = 'DYNAMO IDLE';
+    elements.statusText.textContent = 'DYNAMO STANDBY';
     elements.dynamoAssembly.classList.remove('dynamo-active');
   }
 }
@@ -523,9 +590,9 @@ function animationLoop(timestamp) {
   const dt = Math.min((timestamp - lastTimestamp) / 1000, 0.1); // clamp dt to avoid jumps
   lastTimestamp = timestamp;
 
-  // Smooth acceleration / deceleration
+  // Smooth physical acceleration / deceleration
   const target = state.isSpinning ? state.targetRpm : 0;
-  const accelRate = state.isSpinning ? 1800 : 900; // RPM per second
+  const accelRate = state.isSpinning ? 2000 : 1000; // RPM per second
 
   if (state.currentRpm < target) {
     state.currentRpm = Math.min(target, state.currentRpm + accelRate * dt);
@@ -544,9 +611,9 @@ function animationLoop(timestamp) {
   }
 
   // Optical persistence blend curve
-  // Human eyes blend color sectors together when passing ~600-1200 RPM
+  // Human retina integrates temporal wavelengths above ~500-1400 RPM
   const blendThreshold = 500;
-  const fullBlendRpm = 1600;
+  const fullBlendRpm = 1500;
   let blendOpacity = 0;
 
   if (state.currentRpm > blendThreshold) {
@@ -585,6 +652,8 @@ function setupCopyButtons() {
         const textToCopy = targetEl.textContent.trim();
         navigator.clipboard.writeText(textToCopy).then(() => {
           showToast(`Copied ${textToCopy} to clipboard!`);
+          btn.textContent = '✓ Copied';
+          setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
         }).catch(() => {
           showToast(`Copy failed. Value: ${textToCopy}`);
         });
@@ -594,7 +663,7 @@ function setupCopyButtons() {
 }
 
 // ============================================================================
-// SETUP INTERACTION ON CD SECTORS
+// SETUP INTERACTION ON CD SECTORS & PRESETS
 // ============================================================================
 
 function setupSectorClickHandlers() {
@@ -626,6 +695,45 @@ function setupSectorClickHandlers() {
       }
     });
   }
+
+  // Harmony preset pills in left sidebar
+  document.querySelectorAll('.harmony-pill').forEach((pill) => {
+    pill.addEventListener('click', () => {
+      const c1 = pill.getAttribute('data-c1');
+      const c2 = pill.getAttribute('data-c2');
+      assignColorToSlot(1, c1);
+      assignColorToSlot(2, c2);
+      triggerDiscRipple();
+      const name = pill.querySelector('.harmony-name').textContent;
+      showToast(`Loaded "${name}" (${c1} + ${c2})`);
+    });
+  });
+
+  // Filter pills in palette holder
+  document.querySelectorAll('.filter-pill').forEach((pill) => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      state.activeFilter = pill.getAttribute('data-filter');
+      renderPaletteSwatches();
+    });
+  });
+
+  // Speed preset buttons
+  document.querySelectorAll('.speed-preset-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.speed-preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const rpm = parseInt(btn.getAttribute('data-preset-rpm'), 10);
+      state.targetRpm = rpm;
+      elements.speedSlider.value = rpm;
+      let label = 'Medium';
+      if (rpm < 1200) label = 'Slow';
+      else if (rpm >= 2400) label = 'Turbo';
+      else if (rpm >= 1600) label = 'Fast';
+      elements.speedBadge.textContent = `${label} (${rpm} RPM)`;
+    });
+  });
 }
 
 // ============================================================================
@@ -637,6 +745,31 @@ function setupEventListeners() {
   elements.tabSlot1.addEventListener('click', () => setActiveSlot(1));
   elements.tabSlot2.addEventListener('click', () => setActiveSlot(2));
   elements.swapSlotsBtn.addEventListener('click', swapColors);
+
+  // Randomize Pair Button
+  if (elements.randomBtn) {
+    elements.randomBtn.addEventListener('click', randomizeColorPair);
+  }
+
+  // Color Theory Modal Handlers
+  if (elements.infoBtn && elements.infoModal) {
+    elements.infoBtn.addEventListener('click', () => {
+      elements.infoModal.classList.add('open');
+      elements.infoModal.setAttribute('aria-hidden', 'false');
+    });
+
+    const closeModal = () => {
+      elements.infoModal.classList.remove('open');
+      elements.infoModal.setAttribute('aria-hidden', 'true');
+    };
+
+    if (elements.closeModalBtn) elements.closeModalBtn.addEventListener('click', closeModal);
+    if (elements.modalUnderstoodBtn) elements.modalUnderstoodBtn.addEventListener('click', closeModal);
+
+    elements.infoModal.addEventListener('click', (e) => {
+      if (e.target === elements.infoModal) closeModal();
+    });
+  }
 
   // Custom Color Input & Ring Click
   if (elements.customColorRing) {
@@ -672,6 +805,11 @@ function setupEventListeners() {
     else if (val >= 2400) label = 'Turbo';
     else if (val >= 1600) label = 'Fast';
     elements.speedBadge.textContent = `${label} (${val} RPM)`;
+
+    // Sync speed preset pills
+    document.querySelectorAll('.speed-preset-btn').forEach(btn => {
+      btn.classList.toggle('active', parseInt(btn.getAttribute('data-preset-rpm'), 10) === val);
+    });
   });
 
   // Mixing Algorithm Mode Toggle
@@ -679,6 +817,7 @@ function setupEventListeners() {
     state.mixMode = 'optical';
     elements.modeOptical.classList.add('active');
     elements.modePigment.classList.remove('active');
+    elements.modeNote.textContent = 'Light summation model (Persistence of vision)';
     updateOutputDisplay();
     showToast("Switched to Maxwell's Optical Disc mixing");
   });
@@ -687,6 +826,7 @@ function setupEventListeners() {
     state.mixMode = 'pigment';
     elements.modePigment.classList.add('active');
     elements.modeOptical.classList.remove('active');
+    elements.modeNote.textContent = 'Subtractive pigment model (Paint & dye fusion)';
     updateOutputDisplay();
     showToast("Switched to Pigment Subtractive mixing");
   });
@@ -698,11 +838,27 @@ function setupEventListeners() {
     showToast('Recent history cleared');
   });
 
-  // Keyboard shortcut: Spacebar toggles dynamo power
+  // Global Keyboard Shortcuts
   window.addEventListener('keydown', (e) => {
-    if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'BUTTON') {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON') return;
+
+    if (e.code === 'Space') {
       e.preventDefault();
       toggleDynamoPower();
+    } else if (e.key === '1') {
+      setActiveSlot(1);
+      showToast('Selected CD Slot 1');
+    } else if (e.key === '2') {
+      setActiveSlot(2);
+      showToast('Selected CD Slot 2');
+    } else if (e.key === 's' || e.key === 'S') {
+      swapColors();
+    } else if (e.key === 'r' || e.key === 'R') {
+      randomizeColorPair();
+    } else if (e.key === 'Escape') {
+      if (elements.infoModal && elements.infoModal.classList.contains('open')) {
+        elements.infoModal.classList.remove('open');
+      }
     }
   });
 }

@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dynamo Color Mixer - Optical & Pigment Disc</title>
+  <title>Dynamo Color Mixer - Optical Persistence & Pigment Fusion</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="app-container">
-    <!-- Header / Brand -->
+    <!-- Header / Brand & Control Bar -->
     <header class="app-header">
       <div class="brand">
         <div class="brand-icon">
@@ -24,223 +24,368 @@
         </div>
       </div>
 
-      <!-- Quick stats / status pill -->
-      <div class="system-status">
-        <span class="status-indicator" id="statusIndicator"></span>
-        <span class="status-text" id="statusText">DYNAMO IDLE</span>
-        <span class="status-rpm" id="rpmDisplay">0 RPM</span>
+      <!-- Header Tools & Quick Actions -->
+      <div class="header-actions">
+        <button type="button" class="action-btn" id="randomBtn" title="Pick an exciting random color pair (Hotkey: R)">
+          <span class="btn-icon">🎲</span>
+          <span class="btn-label">Surprise Pair</span>
+        </button>
+
+        <button type="button" class="action-btn" id="infoBtn" title="Learn how optical spinning disc mixing works">
+          <span class="btn-icon">💡</span>
+          <span class="btn-label">Color Theory</span>
+        </button>
+
+        <!-- System Status Gauge -->
+        <div class="system-status">
+          <span class="status-indicator" id="statusIndicator"></span>
+          <span class="status-text" id="statusText">DYNAMO STANDBY</span>
+          <span class="status-rpm" id="rpmDisplay">0 RPM</span>
+        </div>
       </div>
     </header>
 
-    <!-- Top-Right: Color Palette Rectangle Holder -->
-    <aside class="palette-rectangle-holder" id="paletteHolder" aria-label="Color Palette Choices">
-      <div class="palette-header">
-        <div class="palette-title-group">
-          <span class="palette-icon">🎨</span>
-          <h2>Color Options</h2>
+    <!-- Main Workspace Dashboard Layout -->
+    <div class="workspace-layout">
+      <!-- Left Column: Harmony Presets & Theory Guide Drawer -->
+      <aside class="left-presets-sidebar" aria-label="Curated Color Harmonies">
+        <div class="sidebar-card">
+          <div class="sidebar-header">
+            <span class="sidebar-icon">✨</span>
+            <h3>Color Harmonies</h3>
+          </div>
+          <p class="sidebar-desc">One-click classic palettes to load onto the CD:</p>
+
+          <div class="harmony-presets-grid" id="harmonyPresetsGrid">
+            <!-- Dynamically populated or curated pairs -->
+            <button type="button" class="harmony-pill" data-c1="#FF3B30" data-c2="#FFCC00" title="Crimson + Sunshine Yellow">
+              <span class="harmony-swatches"><i style="background:#FF3B30"></i><i style="background:#FFCC00"></i></span>
+              <span class="harmony-name">Sunset Glow</span>
+            </button>
+            <button type="button" class="harmony-pill" data-c1="#007AFF" data-c2="#FFCC00" title="Electric Blue + Sunshine Yellow (Maxwell Grey)">
+              <span class="harmony-swatches"><i style="background:#007AFF"></i><i style="background:#FFCC00"></i></span>
+              <span class="harmony-name">Maxwell Grey</span>
+            </button>
+            <button type="button" class="harmony-pill" data-c1="#00F2FE" data-c2="#FF007F" title="Neon Aqua + Fuchsia Shock">
+              <span class="harmony-swatches"><i style="background:#00F2FE"></i><i style="background:#FF007F"></i></span>
+              <span class="harmony-name">Cyber Synth</span>
+            </button>
+            <button type="button" class="harmony-pill" data-c1="#FF3B30" data-c2="#007AFF" title="Crimson + Electric Blue">
+              <span class="harmony-swatches"><i style="background:#FF3B30"></i><i style="background:#007AFF"></i></span>
+              <span class="harmony-name">Royal Violet</span>
+            </button>
+            <button type="button" class="harmony-pill" data-c1="#34C759" data-c2="#FF9500" title="Emerald Green + Tangerine Orange">
+              <span class="harmony-swatches"><i style="background:#34C759"></i><i style="background:#FF9500"></i></span>
+              <span class="harmony-name">Citrus Forest</span>
+            </button>
+            <button type="button" class="harmony-pill" data-c1="#1B1464" data-c2="#A5F3FC" title="Deep Ultramarine + Glacier Blue">
+              <span class="harmony-swatches"><i style="background:#1B1464"></i><i style="background:#A5F3FC"></i></span>
+              <span class="harmony-name">Arctic Abyss</span>
+            </button>
+          </div>
+
+          <!-- Quick Tip Box -->
+          <div class="sidebar-tip-box">
+            <span class="tip-badge">LAB NOTE</span>
+            <p>At high RPM, your eye cannot separate the rotating colors in time, perceiving a unified mixed hue via <strong>persistence of vision</strong>.</p>
+          </div>
         </div>
-        <span class="palette-badge" id="paletteBadge">44 Colors</span>
-      </div>
+      </aside>
 
-      <!-- Target Slot Selection Tabs & Quick Swap -->
-      <div class="slot-target-row">
-        <div class="slot-target-selector">
-          <button type="button" class="slot-tab active" id="tabSlot1" data-target-slot="1">
-            <span class="slot-dot" id="dotSlot1"></span>
-            <span>CD Slot 1</span>
-          </button>
-          <button type="button" class="slot-tab" id="tabSlot2" data-target-slot="2">
-            <span class="slot-dot" id="dotSlot2"></span>
-            <span>CD Slot 2</span>
-          </button>
+      <!-- Center Stage: The Dynamo Machine & CD Disc -->
+      <main class="dynamo-stage">
+        <!-- Live Color Equation Ribbon -->
+        <div class="color-equation-ribbon" aria-label="Current Color Mix Formulation">
+          <div class="eq-item eq-slot1">
+            <span class="eq-swatch" id="eqSlot1Dot"></span>
+            <span class="eq-label" id="eqSlot1Name">Crimson Red</span>
+          </div>
+          <span class="eq-operator">+</span>
+          <div class="eq-item eq-slot2">
+            <span class="eq-swatch" id="eqSlot2Dot"></span>
+            <span class="eq-label" id="eqSlot2Name">Electric Blue</span>
+          </div>
+          <span class="eq-operator">➜</span>
+          <div class="eq-item eq-result">
+            <span class="eq-swatch" id="eqResultDot"></span>
+            <span class="eq-label" id="eqResultName">Amethyst Violet</span>
+          </div>
         </div>
-        <button type="button" class="swap-slots-btn" id="swapSlotsBtn" title="Swap Slot 1 and Slot 2 Colors">
-          ⇄
-        </button>
-      </div>
 
-      <p class="palette-hint">Select a CD Slot above, then click any color circle to assign.</p>
+        <div class="stage-scaffold">
+          <!-- Dynamo Motor Assembly -->
+          <div class="dynamo-assembly" id="dynamoAssembly">
+            <!-- Spindle & Rotating Disc Shaft Area -->
+            <div class="spindle-hub-mount">
+              <!-- Tachometer Arc / Energy Ring -->
+              <div class="tachometer-outer-ring" id="tachometerRing"></div>
 
-      <!-- Circle Color Options Grid -->
-      <div class="color-circles-grid" id="colorCirclesGrid">
-        <!-- Injected via JavaScript with rich colors and data attributes -->
-      </div>
-
-      <!-- Custom Color Picker Circle Option -->
-      <div class="custom-color-row">
-        <div class="custom-color-circle-wrapper" id="customColorWrapper" title="Pick any custom color">
-          <input type="color" id="customColorInput" value="#FF007F" />
-          <span class="custom-color-ring" id="customColorRing"></span>
-          <span class="custom-color-label">Custom Hex</span>
-        </div>
-        <div class="custom-color-info">
-          <span id="customColorHex">#FF007F</span>
-          <button type="button" id="applyCustomBtn" class="mini-btn">Apply</button>
-        </div>
-      </div>
-    </aside>
-
-    <!-- Center Stage: The Dynamo Machine & CD Disc -->
-    <main class="dynamo-stage">
-      <div class="stage-scaffold">
-        <!-- Dynamo Motor Assembly -->
-        <div class="dynamo-assembly" id="dynamoAssembly">
-          <!-- Spindle & Rotating Disc Shaft Area -->
-          <div class="spindle-hub-mount">
-            <!-- The Central CD / Disc -->
-            <div class="cd-turntable-container" id="cdTurntableContainer">
-              <div class="cd-disc" id="cdDisc" role="region" aria-label="Interactive color mixing CD">
-                <!-- Color Sector 1 (Half A: 0deg to 180deg) -->
-                <div class="cd-sector cd-sector-left" id="cdSector1" data-slot="1" title="CD Slot 1 - Click to Select">
-                  <div class="sector-fill" id="sectorFill1"></div>
-                  <div class="sector-drop-overlay">
-                    <span class="slot-tag">Color 1</span>
-                    <span class="sector-hex" id="sectorHex1">#FF3B30</span>
+              <!-- The Central CD / Disc -->
+              <div class="cd-turntable-container" id="cdTurntableContainer">
+                <div class="cd-disc" id="cdDisc" role="region" aria-label="Interactive color mixing CD">
+                  <!-- Color Sector 1 (Half A: 0deg to 180deg) -->
+                  <div class="cd-sector cd-sector-left slot-active-target" id="cdSector1" data-slot="1" title="CD Slot 1 - Click to Select">
+                    <div class="sector-fill" id="sectorFill1"></div>
+                    <div class="sector-drop-overlay">
+                      <span class="slot-tag">Slot 1</span>
+                      <span class="sector-hex" id="sectorHex1">#FF3B30</span>
+                    </div>
                   </div>
-                </div>
 
-                <!-- Color Sector 2 (Half B: 180deg to 360deg) -->
-                <div class="cd-sector cd-sector-right" id="cdSector2" data-slot="2" title="CD Slot 2 - Click to Select">
-                  <div class="sector-fill" id="sectorFill2"></div>
-                  <div class="sector-drop-overlay">
-                    <span class="slot-tag">Color 2</span>
-                    <span class="sector-hex" id="sectorHex2">#007AFF</span>
+                  <!-- Color Sector 2 (Half B: 180deg to 360deg) -->
+                  <div class="cd-sector cd-sector-right" id="cdSector2" data-slot="2" title="CD Slot 2 - Click to Select">
+                    <div class="sector-fill" id="sectorFill2"></div>
+                    <div class="sector-drop-overlay">
+                      <span class="slot-tag">Slot 2</span>
+                      <span class="sector-hex" id="sectorHex2">#007AFF</span>
+                    </div>
                   </div>
-                </div>
 
-                <!-- Optical Blend Overlay Layer (Revealed progressively during high RPM rotation) -->
-                <div class="cd-optical-blend" id="cdOpticalBlend"></div>
+                  <!-- Optical Blend Overlay Layer (Revealed progressively during high RPM rotation) -->
+                  <div class="cd-optical-blend" id="cdOpticalBlend"></div>
 
-                <!-- CD Realistic Grooves & Holographic Sheen Layer -->
-                <div class="cd-sheen-layer"></div>
-                <div class="cd-tracks-layer"></div>
+                  <!-- CD Realistic Grooves & Holographic Sheen Layer -->
+                  <div class="cd-sheen-layer"></div>
+                  <div class="cd-tracks-layer"></div>
 
-                <!-- Center Spindle Clamp & Clear Acrylic Hub -->
-                <div class="cd-center-clamp">
-                  <div class="cd-clear-hub">
-                    <div class="cd-hole">
-                      <div class="dynamo-shaft-tip"></div>
+                  <!-- Center Spindle Clamp & Clear Acrylic Hub -->
+                  <div class="cd-center-clamp">
+                    <div class="cd-clear-hub">
+                      <div class="cd-hole">
+                        <div class="dynamo-shaft-tip"></div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Motion Blur & Dynamo Energy Ring (active when rotating) -->
-              <div class="dynamo-glow-aura" id="dynamoGlowAura"></div>
+                <!-- Motion Blur & Dynamo Energy Ring (active when rotating) -->
+                <div class="dynamo-glow-aura" id="dynamoGlowAura"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Master Dynamo Controller Desk -->
+          <div class="dynamo-control-desk">
+            <!-- Heavy Duty ON / OFF Switch -->
+            <div class="control-unit on-off-unit">
+              <span class="control-label">DYNAMO POWER</span>
+              <button type="button" class="dynamo-power-btn" id="powerBtn" aria-pressed="false" title="Toggle Dynamo Power (Hotkey: Spacebar)">
+                <span class="power-glow"></span>
+                <span class="switch-bezel">
+                  <span class="switch-toggle">
+                    <span class="toggle-icon">⚡</span>
+                    <span class="toggle-text" id="powerBtnText">TURN ON</span>
+                  </span>
+                </span>
+              </button>
+              <span class="power-subtext" id="powerStateSubtext">Press to engage dynamo</span>
+            </div>
+
+            <!-- Speed / RPM Dial Control with Quick Presets -->
+            <div class="control-unit rpm-slider-unit">
+              <div class="unit-header">
+                <span class="control-label">SPIN VELOCITY</span>
+                <span class="rpm-value-badge" id="speedBadge">Fast (1800 RPM)</span>
+              </div>
+              <input type="range" id="speedSlider" min="600" max="3600" step="200" value="1800" aria-label="Dynamo rotation speed">
+              
+              <!-- Quick RPM Preset Pills -->
+              <div class="speed-presets-row">
+                <button type="button" class="speed-preset-btn" data-preset-rpm="600">600 Slow</button>
+                <button type="button" class="speed-preset-btn active" data-preset-rpm="1800">1800 Fast</button>
+                <button type="button" class="speed-preset-btn" data-preset-rpm="3600">3600 Turbo</button>
+              </div>
+            </div>
+
+            <!-- Mixing Mode Toggle: Optical Physics vs Pigment Art -->
+            <div class="control-unit mix-mode-unit">
+              <span class="control-label">MIXING ALGORITHM</span>
+              <div class="mode-toggle-group">
+                <button type="button" class="mode-btn active" id="modeOptical" data-mode="optical" title="Maxwell's optical disc persistence of vision (additive light summation)">
+                  👁️ Optical Disc
+                </button>
+                <button type="button" class="mode-btn" id="modePigment" data-mode="pigment" title="Subtractive pigment blend (paint / dye mixing)">
+                  🎨 Pigment Dye
+                </button>
+              </div>
+              <span class="mode-note" id="modeNote">Light summation model</span>
             </div>
           </div>
         </div>
 
-        <!-- Master Dynamo Controller Desk -->
-        <div class="dynamo-control-desk">
-          <!-- Heavy Duty ON / OFF Switch -->
-          <div class="control-unit on-off-unit">
-            <span class="control-label">DYNAMO POWER</span>
-            <button type="button" class="dynamo-power-btn" id="powerBtn" aria-pressed="false">
-              <span class="power-glow"></span>
-              <span class="switch-bezel">
-                <span class="switch-toggle">
-                  <span class="toggle-icon">⚡</span>
-                  <span class="toggle-text" id="powerBtnText">TURN ON</span>
-                </span>
-              </span>
+        <!-- Resulting Mixed Color Display Output Station -->
+        <section class="mixed-output-station" id="outputStation" aria-live="polite">
+          <div class="output-card">
+            <div class="output-card-header">
+              <div class="station-badge">
+                <span class="pulse-dot"></span>
+                <span>MIXED COLOR OUTPUT CHAMBER</span>
+              </div>
+              <span class="output-ratio-badge">50% Slot 1 + 50% Slot 2</span>
+            </div>
+
+            <div class="output-content-grid">
+              <!-- Large Color Output Preview Chamber -->
+              <div class="output-swatch-chamber">
+                <div class="output-swatch-preview" id="outputColorPreview">
+                  <div class="swatch-highlight"></div>
+                  <div class="swatch-energy-pulse"></div>
+                </div>
+                <div class="output-tags">
+                  <span class="color-name" id="outputColorName">Awaiting Spin...</span>
+                  <span class="blend-model-badge" id="blendModelBadge">Maxwell Optical Model</span>
+                </div>
+              </div>
+
+              <!-- Detailed Color Values & Copy Controls -->
+              <div class="output-data-panel">
+                <div class="data-row">
+                  <div class="data-item">
+                    <span class="data-key">HEX</span>
+                    <span class="data-val" id="hexVal">#------</span>
+                  </div>
+                  <button type="button" class="copy-pill-btn" data-copy-target="hexVal" title="Copy HEX value">Copy</button>
+                </div>
+
+                <div class="data-row">
+                  <div class="data-item">
+                    <span class="data-key">RGB</span>
+                    <span class="data-val" id="rgbVal">rgb(--, --, --)</span>
+                  </div>
+                  <button type="button" class="copy-pill-btn" data-copy-target="rgbVal" title="Copy RGB value">Copy</button>
+                </div>
+
+                <div class="data-row">
+                  <div class="data-item">
+                    <span class="data-key">HSL</span>
+                    <span class="data-val" id="hslVal">hsl(--, --%, --%)</span>
+                  </div>
+                  <button type="button" class="copy-pill-btn" data-copy-target="hslVal" title="Copy HSL value">Copy</button>
+                </div>
+
+                <!-- WCAG Text Readability Preview Strip -->
+                <div class="wcag-contrast-row">
+                  <span class="wcag-label">Contrast Preview:</span>
+                  <div class="wcag-chips">
+                    <span class="wcag-chip chip-white" id="wcagWhite">White Text</span>
+                    <span class="wcag-chip chip-black" id="wcagBlack">Black Text</span>
+                  </div>
+                  <span class="wcag-recommendation" id="wcagRating">Optimal: White</span>
+                </div>
+
+                <!-- History / Recent Mixes Mini Strip -->
+                <div class="recent-mixes-wrap">
+                  <div class="recent-header">
+                    <span>Recent Mix History</span>
+                    <button type="button" id="clearHistoryBtn" class="text-link">Clear</button>
+                  </div>
+                  <div class="recent-chips" id="recentChips">
+                    <span class="empty-history-text">Spin the dynamo to save mixes</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Top-Right: Color Palette Rectangle Holder (Requirement: boxed under rectangle holder at upper right) -->
+      <aside class="palette-rectangle-holder" id="paletteHolder" aria-label="Color Palette Choices">
+        <div class="palette-header">
+          <div class="palette-title-group">
+            <span class="palette-icon">🎨</span>
+            <h2>Color Options</h2>
+          </div>
+          <span class="palette-badge" id="paletteBadge">45 Colors</span>
+        </div>
+
+        <!-- Target Slot Selection Tabs & Quick Swap -->
+        <div class="slot-target-row">
+          <div class="slot-target-selector">
+            <button type="button" class="slot-tab active" id="tabSlot1" data-target-slot="1" title="Select Slot 1 to change its color (Hotkey: 1)">
+              <span class="slot-dot" id="dotSlot1"></span>
+              <span>CD Slot 1</span>
             </button>
-            <span class="power-subtext" id="powerStateSubtext">Press to engage dynamo</span>
+            <button type="button" class="slot-tab" id="tabSlot2" data-target-slot="2" title="Select Slot 2 to change its color (Hotkey: 2)">
+              <span class="slot-dot" id="dotSlot2"></span>
+              <span>CD Slot 2</span>
+            </button>
           </div>
+          <button type="button" class="swap-slots-btn" id="swapSlotsBtn" title="Swap Slot 1 and Slot 2 Colors (Hotkey: S)">
+            ⇄
+          </button>
+        </div>
 
-          <!-- Speed / RPM Dial Control -->
-          <div class="control-unit rpm-slider-unit">
-            <div class="unit-header">
-              <span class="control-label">SPIN VELOCITY</span>
-              <span class="rpm-value-badge" id="speedBadge">Fast (1800 RPM)</span>
-            </div>
-            <input type="range" id="speedSlider" min="600" max="3600" step="200" value="1800" aria-label="Dynamo rotation speed">
-            <div class="slider-scale">
-              <span>600</span>
-              <span>1800</span>
-              <span>3600 RPM</span>
-            </div>
-          </div>
+        <!-- Category Filter Pills -->
+        <div class="palette-filter-row" aria-label="Filter Palette by Category">
+          <button type="button" class="filter-pill active" data-filter="all">All</button>
+          <button type="button" class="filter-pill" data-filter="warm">Warm</button>
+          <button type="button" class="filter-pill" data-filter="cool">Cool</button>
+          <button type="button" class="filter-pill" data-filter="vibrant">Vivid</button>
+          <button type="button" class="filter-pill" data-filter="earth">Earth</button>
+        </div>
 
-          <!-- Mixing Mode Toggle: Optical Physics vs Pigment Art -->
-          <div class="control-unit mix-mode-unit">
-            <span class="control-label">MIXING ALGORITHM</span>
-            <div class="mode-toggle-group">
-              <button type="button" class="mode-btn active" id="modeOptical" data-mode="optical" title="Maxwell's optical disc persistence of vision (additive wavelengths)">
-                👁️ Optical Disc
-              </button>
-              <button type="button" class="mode-btn" id="modePigment" data-mode="pigment" title="Subtractive pigment blend (paint / dye mixing)">
-                🎨 Pigment Dye
-              </button>
-            </div>
+        <p class="palette-hint">Click a slot above, then tap any circle to paint that half.</p>
+
+        <!-- Circle Color Options Grid -->
+        <div class="color-circles-grid" id="colorCirclesGrid">
+          <!-- Injected via JavaScript with rich colors and data attributes -->
+        </div>
+
+        <!-- Custom Color Picker Circle Option -->
+        <div class="custom-color-row">
+          <div class="custom-color-circle-wrapper" id="customColorWrapper" title="Pick any custom color">
+            <input type="color" id="customColorInput" value="#FF007F" />
+            <span class="custom-color-ring" id="customColorRing"></span>
+            <span class="custom-color-label">Custom Hex</span>
           </div>
+          <div class="custom-color-info">
+            <span id="customColorHex">#FF007F</span>
+            <button type="button" id="applyCustomBtn" class="mini-btn">Apply</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Keyboard Shortcuts Bottom Bar -->
+    <footer class="app-footer">
+      <div class="shortcut-pills">
+        <span class="shortcut-pill"><kbd>Space</kbd> Turn On/Off</span>
+        <span class="shortcut-pill"><kbd>1</kbd> / <kbd>2</kbd> Select Slot</span>
+        <span class="shortcut-pill"><kbd>S</kbd> Swap Colors</span>
+        <span class="shortcut-pill"><kbd>R</kbd> Random Pair</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Color Theory Information Modal -->
+  <div class="modal-backdrop" id="infoModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="modal-icon">🔬</span>
+          <h2 id="modalTitle">How Optical Spinning Discs Mix Color</h2>
+        </div>
+        <button type="button" class="modal-close-btn" id="closeModalBtn" aria-label="Close dialog">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <h4>👁️ Maxwell's Optical Disc (Additive Temporal Persistence)</h4>
+          <p>When the CD rotates above 600 RPM, retinal cells retain images for approximately 1/16th of a second (persistence of vision). Instead of seeing distinct sectors, the photoreceptors integrate incoming photons additively.</p>
+          <div class="modal-callout">
+            <strong>Key Phenomenon:</strong> On a rotating optical disc, <em>Electric Blue + Sunshine Yellow</em> blends into a neutral <strong>Silver Mist / Light Grey</strong>, because their complementary wavelengths sum together towards white!
+          </div>
+        </div>
+
+        <div class="modal-section">
+          <h4>🎨 Subtractive Pigment Dye Mixing</h4>
+          <p>In physical paints and dyes, each color absorbs (subtracts) specific light wavelengths. When you switch to <strong>Pigment Dye Mode</strong>, <em>Blue + Yellow</em> produces vibrant <strong>Green</strong>, replicating real artist paint fusion.</p>
         </div>
       </div>
-
-      <!-- Resulting Mixed Color Display Output Station -->
-      <section class="mixed-output-station" id="outputStation" aria-live="polite">
-        <div class="output-card">
-          <div class="output-card-header">
-            <div class="station-badge">
-              <span class="pulse-dot"></span>
-              <span>MIXED COLOR OUTPUT</span>
-            </div>
-          </div>
-
-          <div class="output-content-grid">
-            <!-- Large Color Output Preview Chamber -->
-            <div class="output-swatch-chamber">
-              <div class="output-swatch-preview" id="outputColorPreview">
-                <div class="swatch-highlight"></div>
-                <div class="swatch-energy-pulse"></div>
-              </div>
-              <div class="output-tags">
-                <span class="color-name" id="outputColorName">Awaiting Spin...</span>
-                <span class="blend-model-badge" id="blendModelBadge">Maxwell Optical Model</span>
-              </div>
-            </div>
-
-            <!-- Detailed Color Values & Copy Controls -->
-            <div class="output-data-panel">
-              <div class="data-row">
-                <div class="data-item">
-                  <span class="data-key">HEX</span>
-                  <span class="data-val" id="hexVal">#------</span>
-                </div>
-                <button type="button" class="copy-pill-btn" data-copy-target="hexVal" title="Copy HEX">Copy</button>
-              </div>
-
-              <div class="data-row">
-                <div class="data-item">
-                  <span class="data-key">RGB</span>
-                  <span class="data-val" id="rgbVal">rgb(--, --, --)</span>
-                </div>
-                <button type="button" class="copy-pill-btn" data-copy-target="rgbVal" title="Copy RGB">Copy</button>
-              </div>
-
-              <div class="data-row">
-                <div class="data-item">
-                  <span class="data-key">HSL</span>
-                  <span class="data-val" id="hslVal">hsl(--, --%, --%)</span>
-                </div>
-                <button type="button" class="copy-pill-btn" data-copy-target="hslVal" title="Copy HSL">Copy</button>
-              </div>
-
-              <!-- History / Recent Mixes Mini Strip -->
-              <div class="recent-mixes-wrap">
-                <div class="recent-header">
-                  <span>Recent Mix History</span>
-                  <button type="button" id="clearHistoryBtn" class="text-link">Clear</button>
-                </div>
-                <div class="recent-chips" id="recentChips">
-                  <span class="empty-history-text">Spin the dynamo to save mixes</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
+      <div class="modal-footer">
+        <button type="button" class="primary-btn" id="modalUnderstoodBtn">Got It, Let's Mix!</button>
+      </div>
+    </div>
   </div>
 
   <!-- Notification Toast Container -->

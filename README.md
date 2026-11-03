@@ -2,41 +2,60 @@
 
 An interactive single-page web application featuring an industrial motor apparatus that spins a dual-color CD to blend colors via optical persistence of vision and pigment fusion.
 
-![Dynamo Color Mixer Preview](index.html)
-
 ---
 
-## 🎨 Features
+## 🎨 Features & Architecture
 
 ### 1. 📐 Top-Right Rectangular Color Palette Holder
-- **Rectangular Container**: Prominently boxed in the upper-right corner.
-- **45 Circular Color Choices**: An expanded, rich collection of 45 curated colors spanning vibrant reds, warm oranges, brilliant yellows, fresh greens, radiant cyans, rich blues, vivid purples, and balanced neutrals.
+- **Rectangular Container**: Cleanly boxed in the upper-right corner per design specifications.
+- **45 Curated Circular Swatches**: Rich, expanded palette across 5 categories: Warm, Cool, Vivid, and Earth/Nature hues.
+- **Category Filter Pills**: Quickly filter colors between `All (45)`, `Warm (14)`, `Cool (12)`, `Vivid (10)`, and `Earth (9)`.
 - **Instant Click-to-Assign**: Select **CD Slot 1** or **CD Slot 2**, then click any circular swatch to instantly assign that color.
-- **Dual Slot Control**: Switch between **CD Slot 1** and **CD Slot 2** with active indicator dots, plus a one-click **Swap Colors (⇄)** button.
-- **Custom Color Picker**: A circular color ring connected to a native color picker to mix and apply any custom HEX color.
+- **Dual Slot Control**: Active indicator dots showing which sector will receive the color, plus a one-click **Swap Colors (⇄)** button.
+- **Custom Color Picker**: A native color picker with real-time HEX feedback to mix and apply any custom color.
 
-### 2. ⚙️ Central Dynamo & Dual-Sector CD
-- **Centered Turntable Assembly**: Smooth central rotor spindle with dynamic electromagnetic glow aura and compact disc hub.
+### 2. ⚙️ Centered Dynamo Disc & Turntable Assembly
+- **Clean Disc Presentation**: Streamlined turntable spindle with tachometer speed ring, holographic sheen, and dynamic electromagnetic aura (uncluttered by external stator housing or base footing).
 - **Two-Color CD Disc**:
-  - **Sector 1 (Left 0°–180°)**: Holds Color 1 (click to select as target).
-  - **Sector 2 (Right 180°–360°)**: Holds Color 2 (click to select as target).
-  - **Holographic Sheen & Grooves**: Realistic iridescent radial reflection that turns with the disc.
-  - **Center Hub & Spindle**: Chrome dynamo shaft tip and acrylic clamp.
+  - **Sector 1 (Left 0°–180°)**: Holds Color 1 (clickable to select as target).
+  - **Sector 2 (Right 180°–360°)**: Holds Color 2 (clickable to select as target).
+  - **Holographic Grooves & Radial Reflection**: Realistic iridescent CD sheen that rotates smoothly with the disc.
+  - **Center Hub & Spindle**: Chrome dynamo shaft tip and clear acrylic clamp.
+- **Live Color Equation Ribbon**: Real-time equation bar above the disc displaying `[Color 1] + [Color 2] ➜ [Mixed Result]`.
 
 ### 3. 🔘 Tactical "ON" Power Switch & Rotation Physics
 - **Heavy-Duty ON/OFF Switch**: Industrial toggle with green glow, voltage pulses, and status readouts.
-- **Rotational Physics**: Smooth acceleration from 0 up to 3600 RPM using `requestAnimationFrame`.
-- **Optical Persistence of Vision**: As the dynamo accelerates past ~600 RPM, the two distinct sectors blend smoothly into the perceived composite color.
-- **Shortcut**: Press <kbd>Spacebar</kbd> anytime to toggle the dynamo ON/OFF.
+- **Silent Rotation Physics**: Completely audio-free rotational physics using `requestAnimationFrame` with smooth acceleration from 0 up to 3600 RPM.
+- **Optical Persistence of Vision**: As the dynamo accelerates past ~600 RPM, retinal persistence of vision causes the two distinct sectors to blend smoothly into the perceived composite color.
+- **Speed Dial & Presets**: Slider control with 3 instant preset buttons: **600 Slow**, **1800 Fast**, and **3600 Turbo**.
 
 ### 4. 🧪 Output & Color Analysis Station
-- **Glowing Swatch Preview**: Dynamic preview with subtle energy ripples.
-- **Human-Friendly Color Naming**: Nearest color matching algorithm identifies names like *Amethyst Violet*, *Sunset Orange*, *Kelly Green*, and *Royal Indigo*.
+- **Chamber Preview**: Dynamic preview with subtle energy ripples and animated gradient borders.
+- **Nearest-Color Naming Algorithm**: Intelligently identifies color names like *Amethyst Violet*, *Sunset Orange*, *Kelly Green*, and *Royal Indigo*.
 - **Color Values**: Real-time HEX, RGB, and HSL readouts with 1-click **Copy** buttons.
+- **WCAG Text Contrast Preview**: Live accessibility calculation showing white vs black text contrast ratios and recommendations.
 - **Mixing Modes**:
-  - **👁️ Optical Disc**: Maxwell's disc additive temporal photon summation.
-  - **🎨 Pigment Dye**: Subtractive CMY paint/dye mixing.
+  - **👁️ Optical Disc**: Maxwell's disc additive temporal photon summation (e.g. Electric Blue + Sunshine Yellow blends to neutral Silver Mist/Gray).
+  - **🎨 Pigment Dye**: Subtractive CMY paint/dye mixing (e.g. Blue + Yellow blends to Green).
 - **Recent Mixes Strip**: Saves recent combinations for one-click restoration.
+
+### 5. ✨ Left Harmony Presets Sidebar & Educational Modal
+- **One-Click Harmonies**: Load classic pairs such as Sunset Glow, Maxwell Grey, Cyber Synth, Royal Violet, Citrus Forest, and Arctic Abyss.
+- **Surprise Pair Generator**: Randomizes vibrant, aesthetically balanced color pairs with one click or hotkey.
+- **Color Theory Guide**: Interactive modal explaining the physics of Maxwell's optical discs versus subtractive pigments.
+
+---
+
+## ⌨️ Keyboard Shortcuts
+
+| Key | Action |
+|---|---|
+| <kbd>Space</kbd> | Toggle Dynamo Motor ON / OFF |
+| <kbd>1</kbd> | Select CD Slot 1 as active target |
+| <kbd>2</kbd> | Select CD Slot 2 as active target |
+| <kbd>S</kbd> | Swap Slot 1 and Slot 2 colors |
+| <kbd>R</kbd> | Pick a random surprise color pair |
+| <kbd>Esc</kbd> | Close Color Theory dialog |
 
 ---
 
@@ -61,9 +80,8 @@ npx serve .
 
 ```
 Color-mixer/
-├── index.html       # HTML5 Semantic layout & accessibility
-├── style.css        # Futuristic industrial styling & animations
-├── script.js        # Motor simulation, color math & interactivity
-└── README.md        # Documentation
+├── index.html       # Semantic HTML5 3-panel command dashboard
+├── style.css        # Futuristic glassmorphism, responsive grid & CD animations
+├── script.js        # Rotational physics, color theory algorithms & interaction
+└── README.md        # Comprehensive documentation
 ```
-
