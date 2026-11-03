@@ -1,6 +1,6 @@
 # ⚡ Dynamo Color Mixer
 
-An interactive single-page web application featuring an industrial motor apparatus that spins a dual-color CD to blend colors via optical persistence of vision and pigment fusion.
+An interactive single-page web application featuring an industrial motor apparatus that spins a dual-color CD to blend colors via dynamic pigment fusion.
 
 ---
 
@@ -26,16 +26,14 @@ An interactive single-page web application featuring an industrial motor apparat
 ### 3. 🔘 Tactical "ON" Power Switch & Rotation Physics
 - **Heavy-Duty ON/OFF Switch**: Industrial toggle with green glow, voltage pulses, and status readouts.
 - **Silent Rotation Physics**: Completely audio-free rotational physics using `requestAnimationFrame` with smooth acceleration from 0 up to 3600 RPM.
-- **Optical Persistence of Vision**: As the dynamo accelerates past ~600 RPM, retinal persistence of vision causes the two distinct sectors to blend smoothly into the perceived composite color.
+- **Smooth Color Fusion**: As the dynamo accelerates past ~600 RPM, the sectors fuse smoothly into the perceived composite color.
 - **Speed Dial & Presets**: Slider control with 3 instant preset buttons: **600 Slow**, **1800 Fast**, and **3600 Turbo**.
 
 ### 4. 🧪 Output & Color Analysis Station
 - **Chamber Preview**: Dynamic preview with subtle energy ripples and animated gradient borders.
 - **Nearest-Color Naming Algorithm**: Intelligently identifies color names like *Amethyst Violet*, *Sunset Orange*, *Kelly Green*, and *Royal Indigo*.
 - **Color Values**: Real-time HEX, RGB, and HSL readouts with 1-click **Copy** buttons.
-- **Mixing Modes**:
-  - **👁️ Optical Disc**: Maxwell's disc additive temporal photon summation (e.g. Electric Blue + Sunshine Yellow blends to neutral Silver Mist/Gray).
-  - **🎨 Pigment Dye**: Subtractive CMY paint/dye mixing (e.g. Blue + Yellow blends to Green).
+- **Physical Pigment Mixing Engine**: Real-world subtractive CMY light absorption blending (e.g. Electric Blue + Sunshine Yellow blends to Green, Red + Blue blends to Purple).
 - **Recent Mixes Strip**: Saves recent combinations for one-click restoration.
 
 ### 5. ☀️ Light & Dark Mode Theming
@@ -45,7 +43,7 @@ An interactive single-page web application featuring an industrial motor apparat
 
 ### 6. 🔬 Color Theory Guide & Randomizer
 - **Surprise Pair Generator**: Randomizes vibrant, aesthetically balanced color pairs with one click or hotkey (<kbd>R</kbd>).
-- **Color Theory Guide**: Interactive modal explaining the physics of Maxwell's optical discs versus subtractive pigments.
+- **Color Theory Guide**: Interactive modal explaining physical pigment color fusion.
 
 ---
 

@@ -1,6 +1,6 @@
 /**
  * DYNAMO COLOR MIXER
- * Optical Persistence & Pigment Mixing Laboratory
+ * Dynamic Dual-Color Blending Laboratory
  */
 
 // Preset Color Choices for the Rectangle Palette Holder (45 Diverse Categorized Colors)
@@ -110,7 +110,6 @@ const state = {
   targetRpm: 1800,
   currentRpm: 0,
   angle: 0,
-  mixMode: 'optical', // 'optical' or 'pigment'
   recentMixes: []
 };
 
@@ -159,7 +158,7 @@ const elements = {
   sectorFill2: document.getElementById('sectorFill2'),
   sectorHex1: document.getElementById('sectorHex1'),
   sectorHex2: document.getElementById('sectorHex2'),
-  cdOpticalBlend: document.getElementById('cdOpticalBlend'),
+  cdBlendOverlay: document.getElementById('cdBlendOverlay'),
 
   // Controls
   powerBtn: document.getElementById('powerBtn'),
@@ -167,14 +166,10 @@ const elements = {
   powerStateSubtext: document.getElementById('powerStateSubtext'),
   speedSlider: document.getElementById('speedSlider'),
   speedBadge: document.getElementById('speedBadge'),
-  modeOptical: document.getElementById('modeOptical'),
-  modePigment: document.getElementById('modePigment'),
-  modeNote: document.getElementById('modeNote'),
 
   // Output Station
   outputColorPreview: document.getElementById('outputColorPreview'),
   outputColorName: document.getElementById('outputColorName'),
-  blendModelBadge: document.getElementById('blendModelBadge'),
   hexVal: document.getElementById('hexVal'),
   rgbVal: document.getElementById('rgbVal'),
   hslVal: document.getElementById('hslVal'),
@@ -249,39 +244,18 @@ function rgbToHsl(r, g, b) {
 }
 
 /**
- * Optical Persistence Mixing (Maxwell's Spinning Disc)
- * Additive light temporal summation with gamma correction
+ * Color Mixing Engine (Subtractive Pigment Fusion)
+ * Uses physical CMY subtractive blending so primary colors blend intuitively (e.g. Blue + Yellow = Green)
  */
-function mixColorsOptical(hex1, hex2) {
-  const c1 = hexToRgb(hex1);
-  const c2 = hexToRgb(hex2);
-
-  // Gamma-corrected perceptual integration
-  const gamma = 2.2;
-  const rLin = (Math.pow(c1.r / 255, gamma) + Math.pow(c2.r / 255, gamma)) / 2;
-  const gLin = (Math.pow(c1.g / 255, gamma) + Math.pow(c2.g / 255, gamma)) / 2;
-  const bLin = (Math.pow(c1.b / 255, gamma) + Math.pow(c2.b / 255, gamma)) / 2;
-
-  const r = Math.pow(rLin, 1 / gamma) * 255;
-  const g = Math.pow(gLin, 1 / gamma) * 255;
-  const b = Math.pow(bLin, 1 / gamma) * 255;
-
-  return rgbToHex(r, g, b);
-}
-
-/**
- * Pigment / Subtractive Mixing (Paint / Dye Fusion)
- * Uses CMY subtractive light filtering
- */
-function mixColorsPigment(hex1, hex2) {
-  const c1 = hexToRgb(hex1);
-  const c2 = hexToRgb(hex2);
+function calculateCurrentMix() {
+  const c1 = hexToRgb(state.slot1Color);
+  const c2 = hexToRgb(state.slot2Color);
 
   // Convert RGB to CMY
   const cmy1 = { c: 1 - c1.r / 255, m: 1 - c1.g / 255, y: 1 - c1.b / 255 };
   const cmy2 = { c: 1 - c2.r / 255, m: 1 - c2.g / 255, y: 1 - c2.b / 255 };
 
-  // Subtractive blend
+  // Subtractive pigment blend
   const c = Math.min(1, (cmy1.c + cmy2.c) * 0.85);
   const m = Math.min(1, (cmy1.m + cmy2.m) * 0.85);
   const y = Math.min(1, (cmy1.y + cmy2.y) * 0.85);
@@ -291,14 +265,6 @@ function mixColorsPigment(hex1, hex2) {
   const b = (1 - y) * 255;
 
   return rgbToHex(r, g, b);
-}
-
-function calculateCurrentMix() {
-  if (state.mixMode === 'optical') {
-    return mixColorsOptical(state.slot1Color, state.slot2Color);
-  } else {
-    return mixColorsPigment(state.slot1Color, state.slot2Color);
-  }
 }
 
 /**
@@ -451,11 +417,10 @@ function updateOutputDisplay() {
   elements.rgbVal.textContent = `rgb(${mixedRgb.r}, ${mixedRgb.g}, ${mixedRgb.b})`;
   elements.hslVal.textContent = `hsl(${mixedHsl.h}, ${mixedHsl.s}%, ${mixedHsl.l}%)`;
 
-  elements.blendModelBadge.textContent = 
-    state.mixMode === 'optical' ? "Maxwell's Optical Disc" : 'Subtractive Pigment Model';
-
-  // Update optical blend overlay background on CD
-  elements.cdOpticalBlend.style.backgroundColor = mixedHex;
+  // Update blend overlay background on CD
+  if (elements.cdBlendOverlay) {
+    elements.cdBlendOverlay.style.backgroundColor = mixedHex;
+  }
 
   // Update Equation Ribbon
   const s1Name = getNearestColorName(state.slot1Color);
@@ -596,8 +561,7 @@ function animationLoop(timestamp) {
     elements.cdDisc.style.transform = `rotate(${state.angle.toFixed(2)}deg)`;
   }
 
-  // Optical persistence blend curve
-  // Human retina integrates temporal wavelengths above ~500-1400 RPM
+  // Color fusion blend curve as rotational speed increases
   const blendThreshold = 500;
   const fullBlendRpm = 1500;
   let blendOpacity = 0;
@@ -606,7 +570,9 @@ function animationLoop(timestamp) {
     blendOpacity = Math.min(1, (state.currentRpm - blendThreshold) / (fullBlendRpm - blendThreshold));
   }
 
-  elements.cdOpticalBlend.style.opacity = blendOpacity.toFixed(3);
+  if (elements.cdBlendOverlay) {
+    elements.cdBlendOverlay.style.opacity = blendOpacity.toFixed(3);
+  }
 
   requestAnimationFrame(animationLoop);
 }
@@ -830,24 +796,6 @@ function setupEventListeners() {
     });
   });
 
-  // Mixing Algorithm Mode Toggle
-  elements.modeOptical.addEventListener('click', () => {
-    state.mixMode = 'optical';
-    elements.modeOptical.classList.add('active');
-    elements.modePigment.classList.remove('active');
-    elements.modeNote.textContent = 'Light summation model (Persistence of vision)';
-    updateOutputDisplay();
-    showToast("Switched to Maxwell's Optical Disc mixing");
-  });
-
-  elements.modePigment.addEventListener('click', () => {
-    state.mixMode = 'pigment';
-    elements.modePigment.classList.add('active');
-    elements.modeOptical.classList.remove('active');
-    elements.modeNote.textContent = 'Subtractive pigment model (Paint & dye fusion)';
-    updateOutputDisplay();
-    showToast("Switched to Pigment Subtractive mixing");
-  });
 
   // Clear History
   elements.clearHistoryBtn.addEventListener('click', () => {

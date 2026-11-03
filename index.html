@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dynamo Color Mixer - Optical Persistence & Pigment Fusion</title>
+  <title>Dynamo Color Mixer - Dual Color CD Fusion</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +20,7 @@
         </div>
         <div>
           <h1>DYNAMO COLOR MIXER</h1>
-          <p class="subtitle">Optical Persistence & Pigment Fusion Laboratory</p>
+          <p class="subtitle">Dynamic Color Mixing Laboratory</p>
         </div>
       </div>
 
@@ -36,7 +36,7 @@
           <span class="btn-label">Surprise Pair</span>
         </button>
 
-        <button type="button" class="action-btn" id="infoBtn" title="Learn how optical spinning disc mixing works">
+        <button type="button" class="action-btn" id="infoBtn" title="Learn how color mixing works">
           <span class="btn-icon">💡</span>
           <span class="btn-label">Color Theory</span>
         </button>
@@ -101,8 +101,8 @@
                     </div>
                   </div>
 
-                  <!-- Optical Blend Overlay Layer (Revealed progressively during high RPM rotation) -->
-                  <div class="cd-optical-blend" id="cdOpticalBlend"></div>
+                  <!-- Blended Fusion Overlay Layer (Revealed progressively during high RPM rotation) -->
+                  <div class="cd-blend-overlay" id="cdBlendOverlay"></div>
 
                   <!-- CD Realistic Grooves & Holographic Sheen Layer -->
                   <div class="cd-sheen-layer"></div>
@@ -156,20 +156,6 @@
                 <button type="button" class="speed-preset-btn" data-preset-rpm="3600">3600 Turbo</button>
               </div>
             </div>
-
-            <!-- Mixing Mode Toggle: Optical Physics vs Pigment Art -->
-            <div class="control-unit mix-mode-unit">
-              <span class="control-label">MIXING ALGORITHM</span>
-              <div class="mode-toggle-group">
-                <button type="button" class="mode-btn active" id="modeOptical" data-mode="optical" title="Maxwell's optical disc persistence of vision (additive light summation)">
-                  👁️ Optical Disc
-                </button>
-                <button type="button" class="mode-btn" id="modePigment" data-mode="pigment" title="Subtractive pigment blend (paint / dye mixing)">
-                  🎨 Pigment Dye
-                </button>
-              </div>
-              <span class="mode-note" id="modeNote">Light summation model</span>
-            </div>
           </div>
         </div>
 
@@ -193,7 +179,6 @@
                 </div>
                 <div class="output-tags">
                   <span class="color-name" id="outputColorName">Awaiting Spin...</span>
-                  <span class="blend-model-badge" id="blendModelBadge">Maxwell Optical Model</span>
                 </div>
               </div>
 
@@ -315,23 +300,18 @@
     <div class="modal-card" role="dialog" aria-labelledby="modalTitle">
       <div class="modal-header">
         <div class="modal-title-wrap">
-          <span class="modal-icon">🔬</span>
-          <h2 id="modalTitle">How Optical Spinning Discs Mix Color</h2>
+          <span class="modal-icon">🎨</span>
+          <h2 id="modalTitle">How Color Mixing Works</h2>
         </div>
         <button type="button" class="modal-close-btn" id="closeModalBtn" aria-label="Close dialog">×</button>
       </div>
       <div class="modal-body">
         <div class="modal-section">
-          <h4>👁️ Maxwell's Optical Disc (Additive Temporal Persistence)</h4>
-          <p>When the CD rotates above 600 RPM, retinal cells retain images for approximately 1/16th of a second (persistence of vision). Instead of seeing distinct sectors, the photoreceptors integrate incoming photons additively.</p>
+          <h4>🎨 Subtractive Pigment Color Fusion</h4>
+          <p>The dynamo color mixer blends the two loaded sector colors using subtractive CMY light absorption, exactly like physical paint, ink, and dye mixing.</p>
           <div class="modal-callout">
-            <strong>Key Phenomenon:</strong> On a rotating optical disc, <em>Electric Blue + Sunshine Yellow</em> blends into a neutral <strong>Silver Mist / Light Grey</strong>, because their complementary wavelengths sum together towards white!
+            <strong>Key Formula:</strong> Combining primary pigment colors yields intuitive physical results: <em>Electric Blue + Sunshine Yellow</em> blends into vibrant <strong>Green</strong>, <em>Crimson Red + Sunshine Yellow</em> creates <strong>Orange</strong>, and <em>Red + Blue</em> yields <strong>Purple</strong>!
           </div>
-        </div>
-
-        <div class="modal-section">
-          <h4>🎨 Subtractive Pigment Dye Mixing</h4>
-          <p>In physical paints and dyes, each color absorbs (subtracts) specific light wavelengths. When you switch to <strong>Pigment Dye Mode</strong>, <em>Blue + Yellow</em> produces vibrant <strong>Green</strong>, replicating real artist paint fusion.</p>
         </div>
       </div>
       <div class="modal-footer">

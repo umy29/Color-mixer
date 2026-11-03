@@ -494,14 +494,14 @@ html, body {
   font-weight: 600;
 }
 
-/* Hide sector text overlays while spinning for realistic optical disc appearance */
+/* Hide sector text overlays while spinning for clean spinning disc appearance */
 .dynamo-active .sector-drop-overlay {
   opacity: 0;
   pointer-events: none;
 }
 
-/* Optical Blended Layer: Fades in during rapid spinning */
-.cd-optical-blend {
+/* Color Blend Overlay Layer: Fades in during rapid spinning */
+.cd-blend-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -800,50 +800,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border-color: rgba(0, 242, 254, 0.4);
 }
 
-/* Mixing Mode Unit */
-.mix-mode-unit {
-  min-width: 180px;
-}
-
-.mode-toggle-group {
-  display: flex;
-  gap: 4px;
-  background: rgba(10, 15, 26, 0.85);
-  padding: 4px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.mode-btn {
-  flex: 1;
-  padding: 7px 10px;
-  border: none;
-  border-radius: 8px;
-  background: transparent;
-  color: var(--text-secondary);
-  font-family: var(--font-body);
-  font-size: 0.74rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.mode-btn:hover {
-  color: #fff;
-}
-
-.mode-btn.active {
-  background: rgba(0, 242, 254, 0.18);
-  color: var(--accent-cyan);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-.mode-note {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-}
 
 /* --------------------------------------------------------------------------
    MIXED COLOR OUTPUT STATION
@@ -972,11 +928,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   color: #fff;
 }
 
-.blend-model-badge {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  font-family: var(--font-mono);
-}
 
 /* Data Panel */
 .output-data-panel {
@@ -1878,24 +1829,6 @@ kbd {
   border-color: rgba(2, 132, 199, 0.45);
 }
 
-[data-theme="light"] .mode-toggle-group {
-  background: rgba(241, 245, 249, 0.95);
-  border-color: rgba(148, 163, 184, 0.32);
-}
-
-[data-theme="light"] .mode-btn {
-  color: #64748b;
-}
-
-[data-theme="light"] .mode-btn:hover {
-  color: #0f172a;
-}
-
-[data-theme="light"] .mode-btn.active {
-  background: #ffffff;
-  color: var(--accent-cyan);
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.1);
-}
 
 [data-theme="light"] .station-badge {
   color: #0f172a;
