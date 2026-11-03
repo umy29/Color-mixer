@@ -218,131 +218,30 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   WORKSPACE LAYOUT (3-Panel Laboratory Command Deck)
+   WORKSPACE LAYOUT
+   Centered Dynamo Stage with Upper-Right Rectangular Palette Holder
    -------------------------------------------------------------------------- */
 .workspace-layout {
   display: grid;
-  grid-template-columns: 240px 1fr 340px;
-  gap: 28px;
+  grid-template-columns: 1fr 340px;
+  gap: 32px;
   align-items: start;
   flex: 1;
-}
-
-/* --------------------------------------------------------------------------
-   LEFT SIDEBAR: CURATED HARMONIES & TIPS
-   -------------------------------------------------------------------------- */
-.left-presets-sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.sidebar-card {
-  background: var(--bg-card);
-  backdrop-filter: blur(14px);
-  border: 1px solid var(--bg-card-border);
-  border-radius: var(--radius-md);
-  padding: 18px;
-  box-shadow: var(--shadow-elevation);
-}
-
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.sidebar-icon {
-  font-size: 1.15rem;
-}
-
-.sidebar-header h3 {
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #fff;
-  letter-spacing: 0.8px;
-}
-
-.sidebar-desc {
-  font-size: 0.74rem;
-  color: var(--text-muted);
-  margin-bottom: 14px;
-}
-
-.harmony-presets-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.harmony-pill {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  background: rgba(10, 15, 26, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  cursor: pointer;
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  text-align: left;
   width: 100%;
 }
 
-.harmony-pill:hover {
-  background: rgba(0, 242, 254, 0.12);
-  border-color: rgba(0, 242, 254, 0.4);
-  transform: translateX(3px);
-}
+@media (min-width: 1360px) {
+  .workspace-layout {
+    grid-template-columns: 340px minmax(0, 1fr) 340px;
+  }
 
-.harmony-swatches {
-  display: flex;
-  gap: 2px;
-}
+  .dynamo-stage {
+    grid-column: 2;
+  }
 
-.harmony-swatches i {
-  width: 14px;
-  height: 14px;
-  border-radius: 50%;
-  display: inline-block;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.harmony-name {
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.sidebar-tip-box {
-  margin-top: 16px;
-  padding: 12px;
-  background: rgba(0, 242, 254, 0.05);
-  border: 1px dashed rgba(0, 242, 254, 0.25);
-  border-radius: var(--radius-sm);
-  font-size: 0.73rem;
-  color: var(--text-secondary);
-  line-height: 1.45;
-}
-
-.tip-badge {
-  display: inline-block;
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  color: var(--accent-cyan);
-  background: rgba(0, 242, 254, 0.15);
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-bottom: 6px;
-  letter-spacing: 0.8px;
+  .palette-rectangle-holder {
+    grid-column: 3;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -1779,25 +1678,6 @@ kbd {
 /* --------------------------------------------------------------------------
    RESPONSIVE DESIGN BREAKPOINTS
    -------------------------------------------------------------------------- */
-@media (max-width: 1200px) {
-  .workspace-layout {
-    grid-template-columns: 1fr 340px;
-  }
-
-  .left-presets-sidebar {
-    grid-column: 1 / -1;
-    order: 3;
-    max-width: 660px;
-    margin: 0 auto;
-    width: 100%;
-  }
-
-  .harmony-presets-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 @media (max-width: 960px) {
   .workspace-layout {
     grid-template-columns: 1fr;
@@ -1806,10 +1686,7 @@ kbd {
 
   .palette-rectangle-holder {
     max-width: 660px;
-  }
-
-  .harmony-presets-grid {
-    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
   }
 
   .app-header {
@@ -1835,10 +1712,6 @@ kbd {
 
   .on-off-unit {
     align-items: center;
-  }
-
-  .harmony-presets-grid {
-    grid-template-columns: 1fr;
   }
 
   .color-circles-grid {
@@ -1924,26 +1797,6 @@ kbd {
   color: var(--accent-cyan);
 }
 
-[data-theme="light"] .sidebar-header h3 {
-  color: #0f172a;
-}
-
-[data-theme="light"] .harmony-pill {
-  background: rgba(255, 255, 255, 0.88);
-  border-color: rgba(148, 163, 184, 0.28);
-  color: #1e293b;
-}
-
-[data-theme="light"] .harmony-pill:hover {
-  background: rgba(2, 132, 199, 0.08);
-  border-color: rgba(2, 132, 199, 0.45);
-}
-
-[data-theme="light"] .sidebar-tip-box {
-  background: rgba(2, 132, 199, 0.06);
-  border-color: rgba(2, 132, 199, 0.3);
-  color: #334155;
-}
 
 [data-theme="light"] .color-equation-ribbon {
   background: rgba(255, 255, 255, 0.92);

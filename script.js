@@ -682,19 +682,6 @@ function setupSectorClickHandlers() {
     });
   }
 
-  // Harmony preset pills in left sidebar
-  document.querySelectorAll('.harmony-pill').forEach((pill) => {
-    pill.addEventListener('click', () => {
-      const c1 = pill.getAttribute('data-c1');
-      const c2 = pill.getAttribute('data-c2');
-      assignColorToSlot(1, c1);
-      assignColorToSlot(2, c2);
-      triggerDiscRipple();
-      const name = pill.querySelector('.harmony-name').textContent;
-      showToast(`Loaded "${name}" (${c1} + ${c2})`);
-    });
-  });
-
   // Filter pills in palette holder
   document.querySelectorAll('.filter-pill').forEach((pill) => {
     pill.addEventListener('click', () => {

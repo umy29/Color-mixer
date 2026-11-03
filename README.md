@@ -43,9 +43,8 @@ An interactive single-page web application featuring an industrial motor apparat
 - **Persistent Preference**: Automatically saves your preferred theme in `localStorage` and adapts to system `prefers-color-scheme`.
 - **Contrast & Legibility**: Carefully calibrated slate backgrounds, crisp text hierarchy, subtle glassmorphic elevation, and vivid sector accents.
 
-### 6. ✨ Left Harmony Presets Sidebar & Educational Modal
-- **One-Click Harmonies**: Load classic pairs such as Sunset Glow, Maxwell Grey, Cyber Synth, Royal Violet, Citrus Forest, and Arctic Abyss.
-- **Surprise Pair Generator**: Randomizes vibrant, aesthetically balanced color pairs with one click or hotkey.
+### 6. 🔬 Color Theory Guide & Randomizer
+- **Surprise Pair Generator**: Randomizes vibrant, aesthetically balanced color pairs with one click or hotkey (<kbd>R</kbd>).
 - **Color Theory Guide**: Interactive modal explaining the physics of Maxwell's optical discs versus subtractive pigments.
 
 ---
