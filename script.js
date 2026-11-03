@@ -423,8 +423,8 @@ function updateOutputDisplay() {
       elements.eqResultItem.classList.add('unrevealed');
       elements.eqResultItem.setAttribute('title', 'Turn on the dynamo to mix and reveal color combo (or click here)');
       if (elements.eqResultDot) elements.eqResultDot.style.backgroundColor = 'transparent';
-      if (elements.eqResultName) elements.eqResultName.textContent = 'Spin to Reveal';
-      if (elements.eqResultHex) elements.eqResultHex.textContent = '???';
+      if (elements.eqResultName) elements.eqResultName.textContent = '';
+      if (elements.eqResultHex) elements.eqResultHex.textContent = '';
     }
   }
 }

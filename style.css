@@ -430,40 +430,28 @@ kbd,
   user-select: none;
 }
 
-/* Unrevealed state (before Turn On is pressed) */
+/* Unrevealed state (Blank placeholder before Turn On is clicked) */
 .eq-result.unrevealed {
+  min-width: 120px;
+  height: 32px;
   background: rgba(255, 255, 255, 0.03);
-  border-color: rgba(255, 255, 255, 0.08);
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
-.eq-result.unrevealed .eq-swatch {
-  background-color: transparent !important;
-  border: 2px dashed rgba(255, 255, 255, 0.35);
-  box-shadow: none;
-  animation: pulse-swatch 2.2s infinite ease-in-out;
-}
-
-.eq-result.unrevealed .eq-label {
-  color: var(--text-muted);
-  font-style: italic;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-}
-
+.eq-result.unrevealed .eq-swatch,
+.eq-result.unrevealed .eq-label,
 .eq-result.unrevealed .eq-hex-badge {
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--text-muted);
-  border-color: rgba(255, 255, 255, 0.1);
-  letter-spacing: 1px;
+  display: none !important;
 }
 
 .eq-result.unrevealed:hover {
-  background: rgba(0, 242, 254, 0.08);
-  border-color: rgba(0, 242, 254, 0.3);
-}
-
-.eq-result.unrevealed:hover .eq-label {
-  color: var(--accent-cyan);
+  background: rgba(0, 242, 254, 0.06);
+  border-color: rgba(0, 242, 254, 0.35);
 }
 
 /* Revealed state (after Turn On is pressed / running) */
@@ -1821,30 +1809,12 @@ kbd {
 
 [data-theme="light"] .eq-result.unrevealed {
   background: rgba(15, 23, 42, 0.03);
-  border-color: rgba(148, 163, 184, 0.28);
-}
-
-[data-theme="light"] .eq-result.unrevealed .eq-swatch {
-  border-color: rgba(100, 116, 139, 0.5);
-}
-
-[data-theme="light"] .eq-result.unrevealed .eq-label {
-  color: #64748b;
-}
-
-[data-theme="light"] .eq-result.unrevealed .eq-hex-badge {
-  background: rgba(148, 163, 184, 0.12);
-  color: #64748b;
-  border-color: rgba(148, 163, 184, 0.25);
+  border: 1px dashed rgba(148, 163, 184, 0.4);
 }
 
 [data-theme="light"] .eq-result.unrevealed:hover {
-  background: rgba(2, 132, 199, 0.08);
-  border-color: rgba(2, 132, 199, 0.3);
-}
-
-[data-theme="light"] .eq-result.unrevealed:hover .eq-label {
-  color: #0284c7;
+  background: rgba(2, 132, 199, 0.06);
+  border-color: rgba(2, 132, 199, 0.45);
 }
 
 [data-theme="light"] .eq-result.revealed {
