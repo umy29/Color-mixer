@@ -38,7 +38,12 @@ An interactive single-page web application featuring an industrial motor apparat
   - **🎨 Pigment Dye**: Subtractive CMY paint/dye mixing (e.g. Blue + Yellow blends to Green).
 - **Recent Mixes Strip**: Saves recent combinations for one-click restoration.
 
-### 5. ✨ Left Harmony Presets Sidebar & Educational Modal
+### 5. ☀️ Light & Dark Mode Theming
+- **Instant Theme Toggle**: Switch effortlessly between a deep sci-fi dark laboratory and a clean, high-contrast light laboratory with one click or hotkey (<kbd>T</kbd>).
+- **Persistent Preference**: Automatically saves your preferred theme in `localStorage` and adapts to system `prefers-color-scheme`.
+- **Contrast & Legibility**: Carefully calibrated slate backgrounds, crisp text hierarchy, subtle glassmorphic elevation, and vivid sector accents.
+
+### 6. ✨ Left Harmony Presets Sidebar & Educational Modal
 - **One-Click Harmonies**: Load classic pairs such as Sunset Glow, Maxwell Grey, Cyber Synth, Royal Violet, Citrus Forest, and Arctic Abyss.
 - **Surprise Pair Generator**: Randomizes vibrant, aesthetically balanced color pairs with one click or hotkey.
 - **Color Theory Guide**: Interactive modal explaining the physics of Maxwell's optical discs versus subtractive pigments.
@@ -54,6 +59,7 @@ An interactive single-page web application featuring an industrial motor apparat
 | <kbd>2</kbd> | Select CD Slot 2 as active target |
 | <kbd>S</kbd> | Swap Slot 1 and Slot 2 colors |
 | <kbd>R</kbd> | Pick a random surprise color pair |
+| <kbd>T</kbd> | Toggle Light / Dark Mode theme |
 | <kbd>Esc</kbd> | Close Color Theory dialog |
 
 ---

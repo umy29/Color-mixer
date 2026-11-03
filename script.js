@@ -116,7 +116,10 @@ const state = {
 
 // DOM References
 const elements = {
-  // Status Header
+  // Theme & Status Header
+  themeToggleBtn: document.getElementById('themeToggleBtn'),
+  themeIcon: document.getElementById('themeIcon'),
+  themeLabel: document.getElementById('themeLabel'),
   statusIndicator: document.getElementById('statusIndicator'),
   statusText: document.getElementById('statusText'),
   rpmDisplay: document.getElementById('rpmDisplay'),
@@ -720,10 +723,55 @@ function setupSectorClickHandlers() {
 }
 
 // ============================================================================
+// THEME MANAGEMENT (LIGHT & DARK MODE)
+// ============================================================================
+
+function getInitialTheme() {
+  const saved = localStorage.getItem('color-mixer-theme');
+  if (saved === 'light' || saved === 'dark') return saved;
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+    return 'light';
+  }
+  return 'dark';
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('color-mixer-theme', theme);
+  if (elements.themeIcon && elements.themeLabel) {
+    if (theme === 'light') {
+      elements.themeIcon.textContent = '🌙';
+      elements.themeLabel.textContent = 'Dark Mode';
+      if (elements.themeToggleBtn) {
+        elements.themeToggleBtn.title = 'Switch to Dark Mode (Hotkey: T)';
+      }
+    } else {
+      elements.themeIcon.textContent = '☀️';
+      elements.themeLabel.textContent = 'Light Mode';
+      if (elements.themeToggleBtn) {
+        elements.themeToggleBtn.title = 'Switch to Light Mode (Hotkey: T)';
+      }
+    }
+  }
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+  const newTheme = current === 'light' ? 'dark' : 'light';
+  applyTheme(newTheme);
+  showToast(`Switched to ${newTheme === 'light' ? 'Light' : 'Dark'} Mode`);
+}
+
+// ============================================================================
 // EVENT LISTENERS INITIALIZATION
 // ============================================================================
 
 function setupEventListeners() {
+  // Theme Toggle Button
+  if (elements.themeToggleBtn) {
+    elements.themeToggleBtn.addEventListener('click', toggleTheme);
+  }
+
   // Slot Tabs & Swap in Palette Holder
   elements.tabSlot1.addEventListener('click', () => setActiveSlot(1));
   elements.tabSlot2.addEventListener('click', () => setActiveSlot(2));
@@ -838,6 +886,8 @@ function setupEventListeners() {
       swapColors();
     } else if (e.key === 'r' || e.key === 'R') {
       randomizeColorPair();
+    } else if (e.key === 't' || e.key === 'T') {
+      toggleTheme();
     } else if (e.key === 'Escape') {
       if (elements.infoModal && elements.infoModal.classList.contains('open')) {
         elements.infoModal.classList.remove('open');
@@ -851,6 +901,7 @@ function setupEventListeners() {
 // ============================================================================
 
 function init() {
+  applyTheme(getInitialTheme());
   renderPaletteSwatches();
   setActiveSlot(1);
   setupSectorClickHandlers();
