@@ -616,14 +616,23 @@ function updateOutputDisplay() {
     if (elements.eqSlot3Name) elements.eqSlot3Name.textContent = s3Name;
   }
 
-  // Instant product feedback: reveal the resulting color equation item
+  // Reveal Equation Result only when dynamo is turned on, keep concealed when idle
   if (elements.eqResultItem) {
-    elements.eqResultItem.classList.remove('unrevealed');
-    elements.eqResultItem.classList.add('revealed');
-    elements.eqResultItem.setAttribute('title', `Mixed Light: ${colorName} (${mixedHex}) - Click to copy HEX`);
-    if (elements.eqResultDot) elements.eqResultDot.style.backgroundColor = mixedHex;
-    if (elements.eqResultName) elements.eqResultName.textContent = colorName;
-    if (elements.eqResultHex) elements.eqResultHex.textContent = mixedHex;
+    if (state.isSpinning) {
+      elements.eqResultItem.classList.remove('unrevealed');
+      elements.eqResultItem.classList.add('revealed');
+      elements.eqResultItem.setAttribute('title', `Mixed Light: ${colorName} (${mixedHex}) - Click to copy HEX`);
+      if (elements.eqResultDot) elements.eqResultDot.style.backgroundColor = mixedHex;
+      if (elements.eqResultName) elements.eqResultName.textContent = colorName;
+      if (elements.eqResultHex) elements.eqResultHex.textContent = mixedHex;
+    } else {
+      elements.eqResultItem.classList.remove('revealed');
+      elements.eqResultItem.classList.add('unrevealed');
+      elements.eqResultItem.setAttribute('title', 'Turn on the dynamo to mix and reveal color (or click here)');
+      if (elements.eqResultDot) elements.eqResultDot.style.backgroundColor = 'transparent';
+      if (elements.eqResultName) elements.eqResultName.textContent = '';
+      if (elements.eqResultHex) elements.eqResultHex.textContent = '';
+    }
   }
 }
 
