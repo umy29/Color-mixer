@@ -701,29 +701,29 @@ kbd,
   clip-path: polygon(50% 50%, 50% 100%, 0% 100%, 0% 21.13%);
 }
 
-/* 3-Slot Badge Positioning */
+/* 3-Slot Badge Positioning - Equidistant and centered in each 120-degree wedge */
 .cd-disc.slots-3 #cdSector1 .sector-drop-overlay {
-  top: 24px;
+  top: 25%;
   left: 50%;
   right: auto;
   bottom: auto;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
 }
 
 .cd-disc.slots-3 #cdSector2 .sector-drop-overlay {
-  top: auto;
-  bottom: 34px;
-  right: 20px;
-  left: auto;
-  transform: none;
+  top: 63%;
+  left: 72%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
 }
 
 .cd-disc.slots-3 #cdSector3 .sector-drop-overlay {
-  top: auto;
-  bottom: 34px;
-  left: 20px;
+  top: 63%;
+  left: 28%;
   right: auto;
-  transform: none;
+  bottom: auto;
+  transform: translate(-50%, -50%);
 }
 
 /* SVG Seam Dividers */
