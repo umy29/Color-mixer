@@ -26,6 +26,7 @@
 
   --slot1-color: #ff3b30;
   --slot2-color: #007aff;
+  --slot3-color: #ffd60a;
   --mixed-color: #805ab5;
   --mixed-glow: rgba(128, 90, 181, 0.25);
 
@@ -425,6 +426,7 @@ kbd,
 
 #eqSlot1Dot { background-color: var(--slot1-color); }
 #eqSlot2Dot { background-color: var(--slot2-color); }
+#eqSlot3Dot { background-color: var(--slot3-color); }
 
 .eq-result {
   cursor: pointer;
@@ -661,6 +663,84 @@ kbd,
 #sectorFill2 {
   background-color: var(--slot2-color);
   border-radius: 0 500px 500px 0;
+}
+
+#sectorFill3 {
+  background-color: var(--slot3-color);
+}
+
+/* --------------------------------------------------------------------------
+   3-SLOT SPINNER GEOMETRY (120-DEGREE EQUAL WEDGES)
+   -------------------------------------------------------------------------- */
+.cd-disc.slots-3 .cd-sector {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  bottom: auto;
+  border-radius: 50%;
+  border: none;
+}
+
+.cd-disc.slots-3 .sector-fill {
+  border-radius: 50%;
+}
+
+/* Wedge 1: Top (300deg to 60deg) */
+.cd-disc.slots-3 #cdSector1 {
+  clip-path: polygon(50% 50%, 0% 21.13%, 0% 0%, 100% 0%, 100% 21.13%);
+}
+
+/* Wedge 2: Bottom-Right (60deg to 180deg) */
+.cd-disc.slots-3 #cdSector2 {
+  clip-path: polygon(50% 50%, 100% 21.13%, 100% 100%, 50% 100%);
+}
+
+/* Wedge 3: Bottom-Left (180deg to 300deg) */
+.cd-disc.slots-3 #cdSector3 {
+  clip-path: polygon(50% 50%, 50% 100%, 0% 100%, 0% 21.13%);
+}
+
+/* 3-Slot Badge Positioning */
+.cd-disc.slots-3 #cdSector1 .sector-drop-overlay {
+  top: 24px;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translateX(-50%);
+}
+
+.cd-disc.slots-3 #cdSector2 .sector-drop-overlay {
+  top: auto;
+  bottom: 34px;
+  right: 20px;
+  left: auto;
+  transform: none;
+}
+
+.cd-disc.slots-3 #cdSector3 .sector-drop-overlay {
+  top: auto;
+  bottom: 34px;
+  left: 20px;
+  right: auto;
+  transform: none;
+}
+
+/* SVG Seam Dividers */
+.cd-seams-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.seam-line {
+  stroke: rgba(0, 0, 0, 0.45);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
 }
 
 /* Active Highlight on currently targeted sector */
@@ -1100,6 +1180,42 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border-radius: 16px;
 }
 
+/* Slot Mode Segmented Control (2 Slots vs 3 Slots) */
+.slot-mode-segmented {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.slot-mode-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.slot-mode-btn:hover {
+  color: #fff;
+}
+
+.slot-mode-btn.active {
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+  color: #07090e;
+  box-shadow: 0 0 10px rgba(0, 242, 254, 0.4);
+}
+
 /* Slot Target Selector Row & Quick Swap */
 .slot-target-row {
   display: flex;
@@ -1117,6 +1233,10 @@ input[type="range"]::-webkit-slider-thumb:hover {
   padding: 3px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.slot-target-selector.slots-3 {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .swap-slots-btn {
@@ -1186,6 +1306,11 @@ input[type="range"]::-webkit-slider-thumb:hover {
 #dotSlot2 {
   background-color: var(--slot2-color);
   box-shadow: 0 0 6px var(--slot2-color);
+}
+
+#dotSlot3 {
+  background-color: var(--slot3-color);
+  box-shadow: 0 0 6px var(--slot3-color);
 }
 
 /* Category Filter Pills */
@@ -1290,7 +1415,9 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .color-circle-btn[data-selected-slot="1"]::after,
 .color-circle-btn[data-selected-slot="2"]::after,
-.color-circle-btn[data-selected-slot="both"]::after {
+.color-circle-btn[data-selected-slot="3"]::after,
+.color-circle-btn[data-selected-slot="both"]::after,
+.color-circle-btn[data-selected-slot="multi"]::after {
   content: '';
   position: absolute;
   top: -2px;
@@ -1307,8 +1434,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .color-circle-btn[data-selected-slot="2"]::after {
   background: var(--slot2-color);
 }
+.color-circle-btn[data-selected-slot="3"]::after {
+  background: var(--slot3-color);
+}
 .color-circle-btn[data-selected-slot="both"]::after {
   background: linear-gradient(135deg, var(--slot1-color), var(--slot2-color));
+}
+.color-circle-btn[data-selected-slot="multi"]::after {
+  background: linear-gradient(135deg, var(--slot1-color), var(--slot2-color), var(--slot3-color));
 }
 
 /* --------------------------------------------------------------------------
@@ -1886,6 +2019,21 @@ kbd {
 
 [data-theme="light"] .palette-title-group h2 {
   color: #0f172a;
+}
+
+[data-theme="light"] .slot-mode-segmented {
+  background: rgba(15, 23, 42, 0.05);
+  border-color: rgba(148, 163, 184, 0.3);
+}
+
+[data-theme="light"] .slot-mode-btn {
+  color: #64748b;
+}
+
+[data-theme="light"] .slot-mode-btn.active {
+  background: linear-gradient(135deg, #0284c7, #2563eb);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3);
 }
 
 [data-theme="light"] .slot-target-selector {
