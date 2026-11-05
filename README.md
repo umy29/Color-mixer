@@ -20,9 +20,9 @@ An interactive single-page web application featuring an industrial motor apparat
   - **3-Slot Mode (+ 3rd Slot)**: Three equal 120° wedges (Sector 1, Sector 2, and Sector 3) with full Additive RGB Light superposition for rich 3-color composites.
   - **Individual Sector Targets**: Click any wedge on the CD when idle to target that slot for painting.
   - **Live Sector Overlays**: Real-time slot tags and HEX code badges cleanly positioned inside each wedge.
-  - **Holographic Grooves & Radial Reflection**: Realistic iridescent CD sheen that rotates smoothly with the disc.
+  - **Smooth Slot Surface & Radial Gloss**: Clean, smooth CD slot surface with realistic optical reflection that rotates smoothly with the disc.
   - **Center Hub & Spindle**: Chrome dynamo shaft tip and clear acrylic clamp.
-- **Live Color Equation Ribbon**: Real-time equation bar above the disc displaying `[Slot 1] + [Slot 2] ➜ [Result]` with instant product feedback on any mix.
+- **Live Color Equation Ribbon**: Real-time equation bar displaying `[Slot 1] + [Slot 2] ➜ [Result]`, revealing the resulting mixed light upon engaging dynamo power.
 
 ### 3. 🔘 Tactical "ON" Power Switch & Rotation Physics
 - **Heavy-Duty ON/OFF Switch**: Industrial toggle with green glow, voltage pulses, and status readouts.
