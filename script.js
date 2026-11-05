@@ -819,6 +819,13 @@ function animationLoop(timestamp) {
 // ============================================================================
 
 function showToast(message) {
+  if (!elements.toastContainer) return;
+
+  // Keep max 2 simultaneous toasts for a clean, non-intrusive HUD
+  while (elements.toastContainer.children.length >= 2) {
+    elements.toastContainer.removeChild(elements.toastContainer.firstChild);
+  }
+
   const toast = document.createElement('div');
   toast.className = 'toast';
   toast.textContent = message;
@@ -826,10 +833,10 @@ function showToast(message) {
 
   setTimeout(() => {
     toast.style.opacity = '0';
-    toast.style.transform = 'translateY(10px)';
-    toast.style.transition = 'all 0.3s ease';
-    setTimeout(() => toast.remove(), 300);
-  }, 2200);
+    toast.style.transform = 'translateY(-12px) scale(0.96)';
+    toast.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+    setTimeout(() => toast.remove(), 250);
+  }, 2000);
 }
 
 function setupCopyButtons() {
