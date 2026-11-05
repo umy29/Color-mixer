@@ -17,12 +17,12 @@ An interactive single-page web application featuring an industrial motor apparat
 - **Clean Disc Presentation**: Streamlined turntable spindle with tachometer speed ring, holographic sheen, and dynamic electromagnetic aura.
 - **2-Slot & 3-Slot Spinner Modes**:
   - **2-Slot Mode (Default)**: Two 180° halves (Sector 1 and Sector 2) with crisp vinyl seams.
-  - **3-Slot Mode (+ 3rd Slot)**: Three equal 120° wedges (Sector 1, Sector 2, and Sector 3) with full RGB optical persistence blending for rich 3-color composites.
+  - **3-Slot Mode (+ 3rd Slot)**: Three equal 120° wedges (Sector 1, Sector 2, and Sector 3) with full Additive RGB Light superposition for rich 3-color composites.
   - **Individual Sector Targets**: Click any wedge on the CD when idle to target that slot for painting.
   - **Live Sector Overlays**: Real-time slot tags and HEX code badges cleanly positioned inside each wedge.
   - **Holographic Grooves & Radial Reflection**: Realistic iridescent CD sheen that rotates smoothly with the disc.
   - **Center Hub & Spindle**: Chrome dynamo shaft tip and clear acrylic clamp.
-- **Live Color Equation Ribbon**: Real-time equation bar above the disc displaying `[Slot 1] + [Slot 2] ➜ [Result]` in 2-slot mode, and `[Slot 1] + [Slot 2] + [Slot 3] ➜ [Result]` in 3-slot mode.
+- **Live Color Equation Ribbon**: Real-time equation bar above the disc displaying `[Slot 1] + [Slot 2] ➜ [Result]` with instant product feedback on any mix.
 
 ### 3. 🔘 Tactical "ON" Power Switch & Rotation Physics
 - **Heavy-Duty ON/OFF Switch**: Industrial toggle with green glow, voltage pulses, and status readouts.
@@ -34,7 +34,7 @@ An interactive single-page web application featuring an industrial motor apparat
 - **Chamber Preview**: Dynamic preview with subtle energy ripples and animated gradient borders.
 - **Nearest-Color Naming Algorithm**: Intelligently identifies clear, familiar color names like *Purple*, *Orange*, *Green*, *Cyan*, and *Navy Blue*.
 - **Color Values**: Real-time HEX, RGB, and HSL readouts with 1-click **Copy** buttons.
-- **RGB Optical Persistence Mixing Engine**: Optical temporal blending that averages Red, Green, and Blue channels across the spinning disc sectors.
+- **Additive RGB Light Mixing Engine**: Direct light superposition ($R = \min(255, R_1 + R_2)$) modeling colored light beams combining into brighter hues (Red + Green = Yellow, Green + Blue = Cyan, Red + Blue = Magenta, and Red + Green + Blue = White).
 - **Recent Mixes Strip**: Saves recent combinations for one-click restoration.
 
 ### 5. ☀️ Light & Dark Mode Theming
@@ -44,12 +44,12 @@ An interactive single-page web application featuring an industrial motor apparat
 
 ### 6. 🔬 Simple Color Theory Guide & Randomizer
 - **Surprise Pair Generator**: Randomizes vibrant, aesthetically balanced color pairs with one click or hotkey (<kbd>R</kbd>).
-- **The 3 Base Rules**:
-  - 🔴 **Red** + 🟡 **Yellow** = 🟠 **Orange**
-  - 🔵 **Blue** + 🟡 **Yellow** = 🟢 **Green**
-  - 🔴 **Red** + 🔵 **Blue** = 🟣 **Purple**
-- **Why Spinning Mixes Colors**: When the disc spins fast, your eyes see both colors at once and your brain merges them into one smooth color.
-- **RGB Light Blending**: Spinning disc sectors blend colors via persistence of vision, averaging the RGB light channels of each slot.
+- **The 3 Base Rules of RGB Light**:
+  - 🔴 **Red Light** + 🟢 **Green Light** = 🟡 **Yellow**
+  - 🟢 **Green Light** + 🔵 **Blue Light** = 🌐 **Cyan**
+  - 🔴 **Red Light** + 🔵 **Blue Light** = 🟣 **Magenta**
+  - 🔴 **Red** + 🟢 **Green** + 🔵 **Blue** = ⚪ **White Light**
+- **Light vs. Paint**: Additive light combines wavelengths into brighter hues reaching pure White, while physical paint absorbs wavelengths toward dark brown/black.
 
 ---
 
