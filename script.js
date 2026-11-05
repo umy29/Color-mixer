@@ -149,6 +149,8 @@ const elements = {
   customColorRing: document.getElementById('customColorRing'),
   customColorHex: document.getElementById('customColorHex'),
   applyCustomBtn: document.getElementById('applyCustomBtn'),
+  eyedropperBtn: document.getElementById('eyedropperBtn'),
+  applySlotPill: document.getElementById('applySlotPill'),
 
   // Dynamo & CD Disc
   dynamoAssembly: document.getElementById('dynamoAssembly') || document.querySelector('.dynamo-assembly'),
@@ -385,6 +387,13 @@ function setActiveSlot(slotNumber) {
     elements.tabSlot1.classList.remove('active');
     elements.cdSector2.classList.add('slot-active-target');
     elements.cdSector1.classList.remove('slot-active-target');
+  }
+  if (elements.applySlotPill) {
+    elements.applySlotPill.textContent = `S${slotNumber}`;
+    elements.applySlotPill.style.color = slotNumber === 1 ? 'var(--slot1-color)' : 'var(--slot2-color)';
+  }
+  if (elements.applyCustomBtn) {
+    elements.applyCustomBtn.title = `Apply custom color to Slot ${slotNumber}`;
   }
   updateAllPaletteIndicators();
 }
@@ -767,27 +776,107 @@ function setupEventListeners() {
     });
   }
 
-  // Custom Color Input & Ring Click
-  if (elements.customColorRing) {
-    elements.customColorRing.addEventListener('click', () => {
-      elements.customColorInput.click();
+  // Custom Color Picker & Direct Hex Input
+  const syncCustomColorDisplay = (hex) => {
+    const cleanHex = hex.replace('#', '').toUpperCase();
+    if (elements.customColorHex) {
+      if ('value' in elements.customColorHex) {
+        elements.customColorHex.value = cleanHex;
+      } else {
+        elements.customColorHex.textContent = `#${cleanHex}`;
+      }
+      elements.customColorHex.classList.remove('invalid');
+    }
+    if (elements.customColorRing) {
+      elements.customColorRing.style.background = `#${cleanHex}`;
+      elements.customColorRing.style.boxShadow = `0 0 12px #${cleanHex}`;
+    }
+  };
+
+  if (elements.customColorWrapper) {
+    elements.customColorWrapper.addEventListener('click', () => {
+      if (elements.customColorInput) elements.customColorInput.click();
     });
   }
 
-  elements.customColorInput.addEventListener('input', (e) => {
-    const hex = e.target.value.toUpperCase();
-    elements.customColorHex.textContent = hex;
-    if (elements.customColorRing) {
-      elements.customColorRing.style.background = hex;
-      elements.customColorRing.style.boxShadow = `0 0 12px ${hex}`;
-    }
-  });
+  if (elements.customColorInput) {
+    elements.customColorInput.addEventListener('input', (e) => {
+      syncCustomColorDisplay(e.target.value);
+    });
+    elements.customColorInput.addEventListener('change', (e) => {
+      syncCustomColorDisplay(e.target.value);
+    });
+  }
 
-  elements.applyCustomBtn.addEventListener('click', () => {
-    const hex = elements.customColorInput.value.toUpperCase();
-    assignColorToSlot(state.activeSlot, hex);
-    showToast(`Applied custom color ${hex} to Slot ${state.activeSlot}`);
-  });
+  if (elements.customColorHex && 'value' in elements.customColorHex) {
+    elements.customColorHex.addEventListener('input', (e) => {
+      let raw = e.target.value.replace(/[^0-9A-Fa-f]/g, '').toUpperCase().slice(0, 6);
+      e.target.value = raw;
+      if (raw.length === 6 || raw.length === 3) {
+        const fullHex = raw.length === 3 ? raw.split('').map(c => c + c).join('') : raw;
+        const color = `#${fullHex}`;
+        if (elements.customColorInput) elements.customColorInput.value = color;
+        if (elements.customColorRing) {
+          elements.customColorRing.style.background = color;
+          elements.customColorRing.style.boxShadow = `0 0 12px ${color}`;
+        }
+        elements.customColorHex.classList.remove('invalid');
+      } else if (raw.length > 0) {
+        elements.customColorHex.classList.add('invalid');
+      }
+    });
+
+    elements.customColorHex.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (elements.applyCustomBtn) elements.applyCustomBtn.click();
+      }
+    });
+
+    elements.customColorHex.addEventListener('blur', () => {
+      if (elements.customColorInput) {
+        syncCustomColorDisplay(elements.customColorInput.value);
+      }
+    });
+  }
+
+  // Eyedropper API (Sample color from screen)
+  if (elements.eyedropperBtn) {
+    if ('EyeDropper' in window) {
+      elements.eyedropperBtn.addEventListener('click', async () => {
+        try {
+          const eyeDropper = new window.EyeDropper();
+          const result = await eyeDropper.open();
+          if (result && result.sRGBHex) {
+            const hex = result.sRGBHex.toUpperCase();
+            if (elements.customColorInput) elements.customColorInput.value = hex;
+            syncCustomColorDisplay(hex);
+            assignColorToSlot(state.activeSlot, hex);
+            showToast(`Eyedropped ${hex} to Slot ${state.activeSlot}`);
+          }
+        } catch {
+          // User cancelled eyedropper
+        }
+      });
+    } else {
+      elements.eyedropperBtn.style.display = 'none';
+    }
+  }
+
+  if (elements.applyCustomBtn) {
+    elements.applyCustomBtn.addEventListener('click', () => {
+      let hex = elements.customColorInput ? elements.customColorInput.value.toUpperCase() : '#FF007F';
+      if (elements.customColorHex && 'value' in elements.customColorHex) {
+        const val = elements.customColorHex.value.trim();
+        if (val.length === 6 || val.length === 3) {
+          const full = val.length === 3 ? val.split('').map(c => c + c).join('') : val;
+          hex = `#${full}`.toUpperCase();
+        }
+      }
+      assignColorToSlot(state.activeSlot, hex);
+      showToast(`Applied custom color ${hex} to Slot ${state.activeSlot}`);
+    });
+  }
 
   // Power Button
   elements.powerBtn.addEventListener('click', toggleDynamoPower);
