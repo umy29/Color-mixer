@@ -816,6 +816,8 @@ function setupEventListeners() {
   let studioHue = 330;
   let studioSat = 1;
   let studioVal = 1;
+  let studioLivePreview = true;
+  let studioOriginalColor = null; // Slot color before opening, for cancel/revert
 
   function hsvToRgb(h, s, v) {
     const c = v * s;
@@ -941,6 +943,11 @@ function setupEventListeners() {
     // Sync with bottom bar
     syncCustomColorDisplay(hex);
 
+    // Live preview: apply to active slot in real-time
+    if (studioLivePreview && elements.customPickerPopover && !elements.customPickerPopover.hasAttribute('hidden')) {
+      assignColorToSlot(state.activeSlot, hex);
+    }
+
     renderQuickShades(studioHue);
   }
 
@@ -956,6 +963,8 @@ function setupEventListeners() {
 
   function openColorStudio() {
     if (!elements.customPickerPopover) return;
+    // Save original slot color so we can revert on cancel
+    studioOriginalColor = state.activeSlot === 1 ? state.slot1Color : state.slot2Color;
     const currentHex = state.customColor || '#FF007F';
     setColorStudioHex(currentHex);
     if (elements.popoverSlotTarget) {
@@ -1088,12 +1097,13 @@ function setupEventListeners() {
     if (input) input.addEventListener('input', handleRgbInputChange);
   });
 
-  // Apply button inside popover
+  // Apply button inside popover (confirms live preview)
   if (elements.popoverApplyBtn) {
     elements.popoverApplyBtn.addEventListener('click', () => {
       const rgb = hsvToRgb(studioHue, studioSat, studioVal);
       const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
       assignColorToSlot(state.activeSlot, hex);
+      studioOriginalColor = null; // Mark as accepted
       showToast(`Applied custom color ${hex} to Slot ${state.activeSlot}`);
       closeColorStudio();
     });
