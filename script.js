@@ -261,8 +261,9 @@ function rgbToHsl(r, g, b) {
 }
 
 /**
- * Color Mixing Engine (RGB Optical Persistence Blending)
- * Uses RGB channel averaging to simulate optical persistence on a spinning disc.
+ * Color Mixing Engine (Additive RGB Light Superposition)
+ * Models additive light physics (beams of colored light combining).
+ * In additive light: Red + Green = Yellow, Green + Blue = Cyan, Red + Blue = Magenta, Red + Green + Blue = White.
  */
 function calculateCurrentMix() {
   const c1 = hexToRgb(state.slot1Color);
@@ -271,13 +272,13 @@ function calculateCurrentMix() {
   let r, g, b;
   if (state.slotCount === 3) {
     const c3 = hexToRgb(state.slot3Color);
-    r = Math.round((c1.r + c2.r + c3.r) / 3);
-    g = Math.round((c1.g + c2.g + c3.g) / 3);
-    b = Math.round((c1.b + c2.b + c3.b) / 3);
+    r = Math.min(255, c1.r + c2.r + c3.r);
+    g = Math.min(255, c1.g + c2.g + c3.g);
+    b = Math.min(255, c1.b + c2.b + c3.b);
   } else {
-    r = Math.round((c1.r + c2.r) / 2);
-    g = Math.round((c1.g + c2.g) / 2);
-    b = Math.round((c1.b + c2.b) / 2);
+    r = Math.min(255, c1.r + c2.r);
+    g = Math.min(255, c1.g + c2.g);
+    b = Math.min(255, c1.b + c2.b);
   }
 
   return rgbToHex(r, g, b);
@@ -412,10 +413,9 @@ function getNearestColorName(hex) {
 
   // Magenta & Pink (290° - 345°)
   if (h >= 290 && h < 345) {
+    if (s >= 50) return 'Magenta';
     if (l >= 75) return 'Pink';
-    if (l >= 58 && s > 70) return 'Hot Pink';
     if (l <= 30) return 'Dark Purple';
-    if (s > 60) return 'Magenta';
     return 'Purple';
   }
 
@@ -616,23 +616,14 @@ function updateOutputDisplay() {
     if (elements.eqSlot3Name) elements.eqSlot3Name.textContent = s3Name;
   }
 
-  // Reveal or Conceal Equation Result depending on whether dynamo is turned on
+  // Instant product feedback: reveal the resulting color equation item
   if (elements.eqResultItem) {
-    if (state.isSpinning) {
-      elements.eqResultItem.classList.remove('unrevealed');
-      elements.eqResultItem.classList.add('revealed');
-      elements.eqResultItem.setAttribute('title', `Mixed: ${colorName} (${mixedHex}) - Click to copy HEX`);
-      if (elements.eqResultDot) elements.eqResultDot.style.backgroundColor = mixedHex;
-      if (elements.eqResultName) elements.eqResultName.textContent = colorName;
-      if (elements.eqResultHex) elements.eqResultHex.textContent = mixedHex;
-    } else {
-      elements.eqResultItem.classList.remove('revealed');
-      elements.eqResultItem.classList.add('unrevealed');
-      elements.eqResultItem.setAttribute('title', 'Turn on the dynamo to mix and reveal color combo (or click here)');
-      if (elements.eqResultDot) elements.eqResultDot.style.backgroundColor = 'transparent';
-      if (elements.eqResultName) elements.eqResultName.textContent = '';
-      if (elements.eqResultHex) elements.eqResultHex.textContent = '';
-    }
+    elements.eqResultItem.classList.remove('unrevealed');
+    elements.eqResultItem.classList.add('revealed');
+    elements.eqResultItem.setAttribute('title', `Mixed Light: ${colorName} (${mixedHex}) - Click to copy HEX`);
+    if (elements.eqResultDot) elements.eqResultDot.style.backgroundColor = mixedHex;
+    if (elements.eqResultName) elements.eqResultName.textContent = colorName;
+    if (elements.eqResultHex) elements.eqResultHex.textContent = mixedHex;
   }
 }
 
