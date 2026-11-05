@@ -152,6 +152,23 @@ const elements = {
   eyedropperBtn: document.getElementById('eyedropperBtn'),
   applySlotPill: document.getElementById('applySlotPill'),
 
+  // In-App Color Studio Popover
+  customPickerPopover: document.getElementById('customPickerPopover'),
+  pickerCloseBtn: document.getElementById('pickerCloseBtn'),
+  pickerSvArea: document.getElementById('pickerSvArea'),
+  pickerSvCursor: document.getElementById('pickerSvCursor'),
+  pickerHueSlider: document.getElementById('pickerHueSlider'),
+  pickerShadesRow: document.getElementById('pickerShadesRow'),
+  popoverHexVal: document.getElementById('popoverHexVal'),
+  popoverRVal: document.getElementById('popoverRVal'),
+  popoverGVal: document.getElementById('popoverGVal'),
+  popoverBVal: document.getElementById('popoverBVal'),
+  popoverPreviewChip: document.getElementById('popoverPreviewChip'),
+  popoverTitleDot: document.getElementById('popoverTitleDot'),
+  popoverSlotTarget: document.getElementById('popoverSlotTarget'),
+  popoverApplyBtn: document.getElementById('popoverApplyBtn'),
+  pickerNativeBtn: document.getElementById('pickerNativeBtn'),
+
   // Dynamo & CD Disc
   dynamoAssembly: document.getElementById('dynamoAssembly') || document.querySelector('.dynamo-assembly'),
   tachometerRing: document.getElementById('tachometerRing'),
@@ -394,6 +411,9 @@ function setActiveSlot(slotNumber) {
   }
   if (elements.applyCustomBtn) {
     elements.applyCustomBtn.title = `Apply custom color to Slot ${slotNumber}`;
+  }
+  if (elements.popoverSlotTarget) {
+    elements.popoverSlotTarget.textContent = `Slot ${slotNumber}`;
   }
   updateAllPaletteIndicators();
 }
@@ -793,8 +813,298 @@ function setupEventListeners() {
     }
   };
 
+  // --- In-App Color Studio Controller ---
+  let studioHue = 330;
+  let studioSat = 1;
+  let studioVal = 1;
+
+  function hsvToRgb(h, s, v) {
+    const c = v * s;
+    const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+    const m = v - c;
+    let r = 0, g = 0, b = 0;
+    if (h >= 0 && h < 60) { r = c; g = x; b = 0; }
+    else if (h >= 60 && h < 120) { r = x; g = c; b = 0; }
+    else if (h >= 120 && h < 180) { r = 0; g = c; b = x; }
+    else if (h >= 180 && h < 240) { r = 0; g = x; b = c; }
+    else if (h >= 240 && h < 300) { r = x; g = 0; b = c; }
+    else { r = c; g = 0; b = x; }
+    return {
+      r: Math.round((r + m) * 255),
+      g: Math.round((g + m) * 255),
+      b: Math.round((b + m) * 255)
+    };
+  }
+
+  function rgbToHsv(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const d = max - min;
+    let h = 0;
+    const s = max === 0 ? 0 : d / max;
+    const v = max;
+    if (max !== min) {
+      switch (max) {
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        case b: h = (r - g) / d + 4; break;
+      }
+      h /= 6;
+    }
+    return { h: Math.round(h * 360) % 360, s, v };
+  }
+
+  function rgbToHex(r, g, b) {
+    const toHex = (n) => {
+      const h = Math.max(0, Math.min(255, Math.round(n))).toString(16);
+      return h.length === 1 ? '0' + h : h;
+    };
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
+  }
+
+  function hexToRgb(hex) {
+    let clean = hex.replace('#', '').trim();
+    if (clean.length === 3) {
+      clean = clean.split('').map(c => c + c).join('');
+    }
+    if (clean.length !== 6) return null;
+    const num = parseInt(clean, 16);
+    if (isNaN(num)) return null;
+    return {
+      r: (num >> 16) & 255,
+      g: (num >> 8) & 255,
+      b: num & 255
+    };
+  }
+
+  function renderQuickShades(hue) {
+    if (!elements.pickerShadesRow) return;
+    elements.pickerShadesRow.innerHTML = '';
+    const shades = [
+      hsvToRgb(hue, 0.22, 1),
+      hsvToRgb(hue, 0.52, 1),
+      hsvToRgb(hue, 1, 1),
+      hsvToRgb(hue, 1, 0.72),
+      hsvToRgb(hue, 1, 0.42),
+      { r: 255, g: 255, b: 255 },
+      { r: 15, g: 23, b: 42 }
+    ];
+
+    shades.forEach(c => {
+      const hx = rgbToHex(c.r, c.g, c.b);
+      const chip = document.createElement('button');
+      chip.type = 'button';
+      chip.className = 'shade-chip';
+      chip.style.backgroundColor = hx;
+      chip.title = `Select ${hx}`;
+      chip.setAttribute('aria-label', `Color shade ${hx}`);
+      chip.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setColorStudioHex(hx);
+      });
+      elements.pickerShadesRow.appendChild(chip);
+    });
+  }
+
+  function updateStudioUI(source) {
+    const rgb = hsvToRgb(studioHue, studioSat, studioVal);
+    const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+
+    if (elements.pickerSvArea) {
+      elements.pickerSvArea.style.setProperty('--picker-hue-color', `hsl(${studioHue}, 100%, 50%)`);
+    }
+    if (elements.pickerSvCursor) {
+      elements.pickerSvCursor.style.left = `${studioSat * 100}%`;
+      elements.pickerSvCursor.style.top = `${(1 - studioVal) * 100}%`;
+    }
+    if (elements.pickerHueSlider && source !== 'hue') {
+      elements.pickerHueSlider.value = studioHue;
+    }
+
+    if (elements.popoverPreviewChip) {
+      elements.popoverPreviewChip.style.backgroundColor = hex;
+    }
+    if (elements.popoverTitleDot) {
+      elements.popoverTitleDot.style.backgroundColor = hex;
+      elements.popoverTitleDot.style.boxShadow = `0 0 6px ${hex}`;
+    }
+
+    if (elements.popoverHexVal && source !== 'hex') {
+      elements.popoverHexVal.value = hex;
+    }
+    if (source !== 'rgb') {
+      if (elements.popoverRVal) elements.popoverRVal.value = rgb.r;
+      if (elements.popoverGVal) elements.popoverGVal.value = rgb.g;
+      if (elements.popoverBVal) elements.popoverBVal.value = rgb.b;
+    }
+
+    // Sync with bottom bar
+    syncCustomColorDisplay(hex);
+    if (elements.customColorInput) elements.customColorInput.value = hex;
+
+    renderQuickShades(studioHue);
+  }
+
+  function setColorStudioHex(hex) {
+    const rgb = hexToRgb(hex);
+    if (!rgb) return;
+    const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
+    studioHue = hsv.h;
+    studioSat = hsv.s;
+    studioVal = hsv.v;
+    updateStudioUI();
+  }
+
+  function openColorStudio() {
+    if (!elements.customPickerPopover) return;
+    const currentHex = elements.customColorInput ? elements.customColorInput.value : '#FF007F';
+    setColorStudioHex(currentHex);
+    if (elements.popoverSlotTarget) {
+      elements.popoverSlotTarget.textContent = `Slot ${state.activeSlot}`;
+    }
+    elements.customPickerPopover.removeAttribute('hidden');
+    elements.customPickerPopover.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeColorStudio() {
+    if (!elements.customPickerPopover) return;
+    elements.customPickerPopover.setAttribute('hidden', '');
+    elements.customPickerPopover.setAttribute('aria-hidden', 'true');
+  }
+
+  function toggleColorStudio() {
+    if (!elements.customPickerPopover) return;
+    if (elements.customPickerPopover.hasAttribute('hidden')) {
+      openColorStudio();
+    } else {
+      closeColorStudio();
+    }
+  }
+
   if (elements.customColorWrapper) {
-    elements.customColorWrapper.addEventListener('click', () => {
+    elements.customColorWrapper.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleColorStudio();
+    });
+  }
+
+  if (elements.pickerCloseBtn) {
+    elements.pickerCloseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeColorStudio();
+    });
+  }
+
+  // Click outside to close popover
+  document.addEventListener('click', (e) => {
+    if (elements.customPickerPopover && !elements.customPickerPopover.hasAttribute('hidden')) {
+      const isInsidePopover = elements.customPickerPopover.contains(e.target);
+      const isInsideWrapper = elements.customColorWrapper && elements.customColorWrapper.contains(e.target);
+      if (!isInsidePopover && !isInsideWrapper) {
+        closeColorStudio();
+      }
+    }
+  });
+
+  // Escape key closes popover
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && elements.customPickerPopover && !elements.customPickerPopover.hasAttribute('hidden')) {
+      closeColorStudio();
+    }
+  });
+
+  // 2D Saturation / Value Area Dragging
+  if (elements.pickerSvArea) {
+    const handleSvMove = (e) => {
+      const rect = elements.pickerSvArea.getBoundingClientRect();
+      const clientX = e.clientX ?? (e.touches ? e.touches[0].clientX : 0);
+      const clientY = e.clientY ?? (e.touches ? e.touches[0].clientY : 0);
+      const x = Math.max(0, Math.min(rect.width, clientX - rect.left));
+      const y = Math.max(0, Math.min(rect.height, clientY - rect.top));
+      studioSat = rect.width ? x / rect.width : 0;
+      studioVal = rect.height ? 1 - (y / rect.height) : 0;
+      updateStudioUI('sv');
+    };
+
+    elements.pickerSvArea.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      elements.pickerSvArea.setPointerCapture(e.pointerId);
+      handleSvMove(e);
+      const onPointerMove = (ev) => handleSvMove(ev);
+      const onPointerUp = (ev) => {
+        elements.pickerSvArea.removeEventListener('pointermove', onPointerMove);
+        elements.pickerSvArea.removeEventListener('pointerup', onPointerUp);
+        elements.pickerSvArea.removeEventListener('pointercancel', onPointerUp);
+      };
+      elements.pickerSvArea.addEventListener('pointermove', onPointerMove);
+      elements.pickerSvArea.addEventListener('pointerup', onPointerUp);
+      elements.pickerSvArea.addEventListener('pointercancel', onPointerUp);
+    });
+  }
+
+  // Hue Slider in popover
+  if (elements.pickerHueSlider) {
+    elements.pickerHueSlider.addEventListener('input', (e) => {
+      studioHue = parseInt(e.target.value, 10) || 0;
+      updateStudioUI('hue');
+    });
+  }
+
+  // Hex input in popover
+  if (elements.popoverHexVal) {
+    elements.popoverHexVal.addEventListener('input', (e) => {
+      let val = e.target.value.trim().toUpperCase();
+      if (!val.startsWith('#')) val = '#' + val;
+      const rgb = hexToRgb(val);
+      if (rgb) {
+        const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
+        studioHue = hsv.h;
+        studioSat = hsv.s;
+        studioVal = hsv.v;
+        updateStudioUI('hex');
+      }
+    });
+
+    elements.popoverHexVal.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        if (elements.popoverApplyBtn) elements.popoverApplyBtn.click();
+      }
+    });
+  }
+
+  // RGB numerical inputs in popover
+  const handleRgbInputChange = () => {
+    const r = Math.max(0, Math.min(255, parseInt(elements.popoverRVal.value, 10) || 0));
+    const g = Math.max(0, Math.min(255, parseInt(elements.popoverGVal.value, 10) || 0));
+    const b = Math.max(0, Math.min(255, parseInt(elements.popoverBVal.value, 10) || 0));
+    const hsv = rgbToHsv(r, g, b);
+    studioHue = hsv.h;
+    studioSat = hsv.s;
+    studioVal = hsv.v;
+    updateStudioUI('rgb');
+  };
+
+  [elements.popoverRVal, elements.popoverGVal, elements.popoverBVal].forEach(input => {
+    if (input) input.addEventListener('input', handleRgbInputChange);
+  });
+
+  // Apply button inside popover
+  if (elements.popoverApplyBtn) {
+    elements.popoverApplyBtn.addEventListener('click', () => {
+      const rgb = hsvToRgb(studioHue, studioSat, studioVal);
+      const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+      assignColorToSlot(state.activeSlot, hex);
+      showToast(`Applied custom color ${hex} to Slot ${state.activeSlot}`);
+      closeColorStudio();
+    });
+  }
+
+  // OS Native Picker button inside popover
+  if (elements.pickerNativeBtn) {
+    elements.pickerNativeBtn.addEventListener('click', () => {
+      closeColorStudio();
       if (elements.customColorInput) elements.customColorInput.click();
     });
   }
