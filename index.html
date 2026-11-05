@@ -98,10 +98,10 @@
             <span class="eq-label" id="eqSlot3Name">Yellow</span>
           </div>
           <span class="eq-operator">➜</span>
-          <div class="eq-item eq-result unrevealed" id="eqResultItem" title="Turn on the dynamo to mix and reveal color (or click here)">
-            <span class="eq-swatch" id="eqResultDot"></span>
-            <span class="eq-label" id="eqResultName"></span>
-            <span class="eq-hex-badge" id="eqResultHex"></span>
+          <div class="eq-item eq-result revealed" id="eqResultItem" title="Mixed Light: Magenta (#FFB5FF) - Click to copy HEX">
+            <span class="eq-swatch" id="eqResultDot" style="background-color: #FFB5FF;"></span>
+            <span class="eq-label" id="eqResultName">Magenta</span>
+            <span class="eq-hex-badge" id="eqResultHex">#FFB5FF</span>
           </div>
         </div>
 
@@ -289,30 +289,30 @@
       </div>
       <div class="modal-body">
         <div class="modal-section">
-          <h4>🎨 The 3 Base Rules</h4>
-          <p>Red, Yellow, and Blue make all colors. Mix two to make a new one:</p>
+          <h4>💡 The 3 Base Rules of RGB Light</h4>
+          <p>Red, Green, and Blue are the 3 primary colors of light. Adding colored light beams creates brighter secondary colors:</p>
           
           <div class="color-rules-grid">
             <div class="rule-card">
               <div class="rule-swatches">
                 <span class="mini-swatch" style="background:#FF3B30;"></span>
                 <span class="rule-plus">+</span>
-                <span class="mini-swatch" style="background:#FFD60A;"></span>
+                <span class="mini-swatch" style="background:#00E676;"></span>
                 <span class="rule-arrow">➜</span>
-                <span class="mini-swatch" style="background:#FF9500;"></span>
+                <span class="mini-swatch" style="background:#FFFF00;"></span>
               </div>
-              <div class="rule-text"><strong>Red + Yellow</strong> = <span class="rule-result">Orange</span></div>
+              <div class="rule-text"><strong>Red + Green</strong> = <span class="rule-result">Yellow</span></div>
             </div>
 
             <div class="rule-card">
               <div class="rule-swatches">
-                <span class="mini-swatch" style="background:#007AFF;"></span>
+                <span class="mini-swatch" style="background:#00E676;"></span>
                 <span class="rule-plus">+</span>
-                <span class="mini-swatch" style="background:#FFD60A;"></span>
+                <span class="mini-swatch" style="background:#007AFF;"></span>
                 <span class="rule-arrow">➜</span>
-                <span class="mini-swatch" style="background:#34C759;"></span>
+                <span class="mini-swatch" style="background:#00FFFF;"></span>
               </div>
-              <div class="rule-text"><strong>Blue + Yellow</strong> = <span class="rule-result">Green</span></div>
+              <div class="rule-text"><strong>Green + Blue</strong> = <span class="rule-result">Cyan</span></div>
             </div>
 
             <div class="rule-card">
@@ -321,28 +321,28 @@
                 <span class="rule-plus">+</span>
                 <span class="mini-swatch" style="background:#007AFF;"></span>
                 <span class="rule-arrow">➜</span>
-                <span class="mini-swatch" style="background:#AF52DE;"></span>
+                <span class="mini-swatch" style="background:#FF00FF;"></span>
               </div>
-              <div class="rule-text"><strong>Red + Blue</strong> = <span class="rule-result">Purple</span></div>
+              <div class="rule-text"><strong>Red + Blue</strong> = <span class="rule-result">Magenta</span></div>
             </div>
           </div>
         </div>
 
         <div class="modal-section">
-          <h4>⚡ Why Spinning Blends Colors</h4>
-          <p>When the disc spins fast, your eyes see both colors at once. Your brain merges them into one smooth color!</p>
+          <h4>⚡ How Additive Light Works</h4>
+          <p>Unlike paint which absorbs light to create darker shades, colored light beams combine additively. All three light colors (Red + Green + Blue) add up to pure White light!</p>
         </div>
 
         <div class="modal-section">
-          <h4>💡 RGB Optical Blending</h4>
+          <h4>🔬 Light vs. Paint</h4>
           <div class="modal-compare-grid">
             <div class="compare-card">
-              <div class="compare-title">🔴🟢🔵 RGB Channels</div>
-              <p>Colors are made of Red, Green, and Blue light channels (from 0 to 255).</p>
+              <div class="compare-title">💡 RGB Light (Additive)</div>
+              <p>Screens and stage lights add wavelengths together. More light makes brighter colors, reaching pure White.</p>
             </div>
             <div class="compare-card">
-              <div class="compare-title">🌀 Spinning Disc</div>
-              <p>Rapid spinning blends light over time, averaging the RGB channels into a single color.</p>
+              <div class="compare-title">🎨 Real Paint (Subtractive)</div>
+              <p>Pigments absorb light wavelengths. Mixing paints subtracts light, resulting in darker brown or black.</p>
             </div>
           </div>
         </div>
