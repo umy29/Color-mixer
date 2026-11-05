@@ -231,17 +231,26 @@
           <!-- Injected via JavaScript with rich colors and data attributes -->
         </div>
 
-        <!-- Custom Color Picker Circle Option -->
-        <div class="custom-color-row">
-          <div class="custom-color-circle-wrapper" id="customColorWrapper" title="Pick any custom color">
-            <input type="color" id="customColorInput" value="#FF007F" />
+        <!-- Custom Color Picker Row -->
+        <div class="custom-color-row" id="customColorRow">
+          <div class="custom-color-circle-wrapper" id="customColorWrapper" title="Click to open color palette">
+            <input type="color" id="customColorInput" value="#FF007F" tabindex="-1" />
             <span class="custom-color-ring" id="customColorRing"></span>
-            <span class="custom-color-label">Custom Hex</span>
+            <span class="custom-color-badge-icon" aria-hidden="true">🎨</span>
           </div>
-          <div class="custom-color-info">
-            <span id="customColorHex">#FF007F</span>
-            <button type="button" id="applyCustomBtn" class="mini-btn">Apply</button>
+          <div class="custom-hex-field-wrap">
+            <span class="hex-hash-prefix">#</span>
+            <input type="text" id="customColorHex" class="custom-hex-input" value="FF007F" maxlength="6" placeholder="HEX" spellcheck="false" autocomplete="off" aria-label="Hex color value" />
           </div>
+          <button type="button" id="eyedropperBtn" class="eyedropper-btn" title="Pick color from screen (Eyedropper)" aria-label="Eyedropper tool">
+            <svg class="eyedropper-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 4l6 6-4 4-2-2-4 4H6v-4l4-4-2-2 4-4 2 2z"/>
+            </svg>
+          </button>
+          <button type="button" id="applyCustomBtn" class="mini-btn apply-custom-btn" title="Apply custom color to selected slot">
+            <span>Apply</span>
+            <span class="apply-slot-pill" id="applySlotPill">S1</span>
+          </button>
         </div>
       </aside>
     </div>
