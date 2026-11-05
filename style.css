@@ -542,15 +542,15 @@ kbd,
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 0;
+  padding: 4px 0;
   z-index: 5;
 }
 
 /* Outer Tachometer Gauge Ring */
 .tachometer-outer-ring {
   position: absolute;
-  width: 260px;
-  height: 260px;
+  width: 290px;
+  height: 290px;
   border-radius: 50%;
   border: 2px dashed rgba(0, 242, 254, 0.15);
   pointer-events: none;
@@ -567,8 +567,8 @@ kbd,
 /* CD Turntable Container */
 .cd-turntable-container {
   position: relative;
-  width: 234px;
-  height: 234px;
+  width: 262px;
+  height: 262px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -577,8 +577,8 @@ kbd,
 /* Dynamo Electromagnetic Glow Aura */
 .dynamo-glow-aura {
   position: absolute;
-  width: 268px;
-  height: 268px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   background: radial-gradient(circle, var(--dynamo-glow) 0%, transparent 70%);
   opacity: 0;
@@ -597,8 +597,8 @@ kbd,
    -------------------------------------------------------------------------- */
 .cd-disc {
   position: relative;
-  width: 224px;
-  height: 224px;
+  width: 252px;
+  height: 252px;
   border-radius: 50%;
   background: #090b10;
   box-shadow: 
@@ -689,11 +689,11 @@ kbd,
 }
 
 .cd-sector-left .sector-drop-overlay {
-  left: 14px;
+  left: 18px;
 }
 
 .cd-sector-right .sector-drop-overlay {
-  right: 14px;
+  right: 18px;
 }
 
 .slot-tag {
@@ -786,8 +786,8 @@ kbd,
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 68px;
-  height: 68px;
+  width: 74px;
+  height: 74px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(20, 30, 48, 0.95) 75%);
   border: 2px solid rgba(255, 255, 255, 0.4);
@@ -802,8 +802,8 @@ kbd,
 }
 
 .cd-clear-hub {
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.06);
   border: 1px dashed rgba(255, 255, 255, 0.35);
