@@ -735,10 +735,8 @@ function randomizeColorPair() {
     const p3 = COLOR_PRESETS[idx3];
     assignColorToSlot(3, p3.hex);
     triggerDiscRipple();
-    showToast(`🎲 Surprise Trio: ${p1.name} + ${p2.name} + ${p3.name}!`);
   } else {
     triggerDiscRipple();
-    showToast(`🎲 Surprise Pair: ${p1.name} + ${p2.name}!`);
   }
 }
 
