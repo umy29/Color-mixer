@@ -102,9 +102,11 @@ const COLOR_NAMES_DICT = [
 
 // Application State
 const state = {
+  slotCount: 2, // 2 or 3 slots
   slot1Color: '#FF3B30',
   slot2Color: '#007AFF',
-  activeSlot: 1, // 1 or 2
+  slot3Color: '#FFD60A',
+  activeSlot: 1, // 1, 2, or 3
   activeFilter: 'all',
   isSpinning: false,
   targetRpm: 1800,
@@ -130,6 +132,10 @@ const elements = {
   eqSlot1Name: document.getElementById('eqSlot1Name'),
   eqSlot2Dot: document.getElementById('eqSlot2Dot'),
   eqSlot2Name: document.getElementById('eqSlot2Name'),
+  eqPlusSlot3: document.getElementById('eqPlusSlot3'),
+  eqSlot3Item: document.getElementById('eqSlot3Item'),
+  eqSlot3Dot: document.getElementById('eqSlot3Dot'),
+  eqSlot3Name: document.getElementById('eqSlot3Name'),
   eqResultDot: document.getElementById('eqResultDot'),
   eqResultName: document.getElementById('eqResultName'),
   eqResultItem: document.getElementById('eqResultItem'),
@@ -137,12 +143,17 @@ const elements = {
 
   // Palette Holder
   paletteHolder: document.getElementById('paletteHolder'),
-  paletteBadge: document.getElementById('paletteBadge'),
+  mode2SlotsBtn: document.getElementById('mode2SlotsBtn'),
+  mode3SlotsBtn: document.getElementById('mode3SlotsBtn'),
+  slotTargetSelector: document.getElementById('slotTargetSelector'),
   tabSlot1: document.getElementById('tabSlot1'),
   tabSlot2: document.getElementById('tabSlot2'),
+  tabSlot3: document.getElementById('tabSlot3'),
   swapSlotsBtn: document.getElementById('swapSlotsBtn'),
   dotSlot1: document.getElementById('dotSlot1'),
   dotSlot2: document.getElementById('dotSlot2'),
+  dotSlot3: document.getElementById('dotSlot3'),
+  paletteHint: document.getElementById('paletteHint'),
   colorCirclesGrid: document.getElementById('colorCirclesGrid'),
 
   // Dynamo & CD Disc
@@ -151,11 +162,17 @@ const elements = {
   cdDisc: document.getElementById('cdDisc'),
   cdSector1: document.getElementById('cdSector1'),
   cdSector2: document.getElementById('cdSector2'),
+  cdSector3: document.getElementById('cdSector3'),
   sectorFill1: document.getElementById('sectorFill1'),
   sectorFill2: document.getElementById('sectorFill2'),
+  sectorFill3: document.getElementById('sectorFill3'),
   sectorHex1: document.getElementById('sectorHex1'),
   sectorHex2: document.getElementById('sectorHex2'),
+  sectorHex3: document.getElementById('sectorHex3'),
+  seam2SlotLine: document.getElementById('seam2SlotLine'),
+  seams3SlotGroup: document.getElementById('seams3SlotGroup'),
   cdBlendOverlay: document.getElementById('cdBlendOverlay'),
+  shortcutSlot3Hint: document.getElementById('shortcutSlot3Hint'),
 
   // Controls
   powerBtn: document.getElementById('powerBtn'),
@@ -243,10 +260,20 @@ function calculateCurrentMix() {
   const cmy1 = { c: 1 - c1.r / 255, m: 1 - c1.g / 255, y: 1 - c1.b / 255 };
   const cmy2 = { c: 1 - c2.r / 255, m: 1 - c2.g / 255, y: 1 - c2.b / 255 };
 
-  // Subtractive pigment blend
-  const c = Math.min(1, (cmy1.c + cmy2.c) * 0.85);
-  const m = Math.min(1, (cmy1.m + cmy2.m) * 0.85);
-  const y = Math.min(1, (cmy1.y + cmy2.y) * 0.85);
+  let c, m, y;
+  if (state.slotCount === 3) {
+    const c3 = hexToRgb(state.slot3Color);
+    const cmy3 = { c: 1 - c3.r / 255, m: 1 - c3.g / 255, y: 1 - c3.b / 255 };
+    const factor = 1.7 / 3;
+    c = Math.min(1, (cmy1.c + cmy2.c + cmy3.c) * factor);
+    m = Math.min(1, (cmy1.m + cmy2.m + cmy3.m) * factor);
+    y = Math.min(1, (cmy1.y + cmy2.y + cmy3.y) * factor);
+  } else {
+    // 2-Slot Subtractive pigment blend
+    c = Math.min(1, (cmy1.c + cmy2.c) * 0.85);
+    m = Math.min(1, (cmy1.m + cmy2.m) * 0.85);
+    y = Math.min(1, (cmy1.y + cmy2.y) * 0.85);
+  }
 
   const r = (1 - c) * 255;
   const g = (1 - m) * 255;
@@ -320,15 +347,21 @@ function renderPaletteSwatches() {
 }
 
 function updateButtonSlotIndicator(btn, hex) {
-  const isSlot1 = state.slot1Color.toUpperCase() === hex.toUpperCase();
-  const isSlot2 = state.slot2Color.toUpperCase() === hex.toUpperCase();
+  const normHex = hex.toUpperCase();
+  const is1 = state.slot1Color.toUpperCase() === normHex;
+  const is2 = state.slot2Color.toUpperCase() === normHex;
+  const is3 = state.slotCount === 3 && state.slot3Color.toUpperCase() === normHex;
 
-  if (isSlot1 && isSlot2) {
-    btn.setAttribute('data-selected-slot', 'both');
-  } else if (isSlot1) {
+  const matchCount = (is1 ? 1 : 0) + (is2 ? 1 : 0) + (is3 ? 1 : 0);
+
+  if (matchCount > 1) {
+    btn.setAttribute('data-selected-slot', matchCount === 3 ? 'multi' : (is1 && is2 ? 'both' : 'multi'));
+  } else if (is1) {
     btn.setAttribute('data-selected-slot', '1');
-  } else if (isSlot2) {
+  } else if (is2) {
     btn.setAttribute('data-selected-slot', '2');
+  } else if (is3) {
+    btn.setAttribute('data-selected-slot', '3');
   } else {
     btn.removeAttribute('data-selected-slot');
   }
@@ -345,19 +378,20 @@ function updateAllPaletteIndicators() {
 function assignColorToSlot(slotNumber, hex) {
   if (slotNumber === 1) {
     state.slot1Color = hex;
-  } else {
+    if (elements.sectorHex1) elements.sectorHex1.textContent = hex;
+    if (elements.dotSlot1) elements.dotSlot1.style.backgroundColor = hex;
+  } else if (slotNumber === 2) {
     state.slot2Color = hex;
+    if (elements.sectorHex2) elements.sectorHex2.textContent = hex;
+    if (elements.dotSlot2) elements.dotSlot2.style.backgroundColor = hex;
+  } else if (slotNumber === 3) {
+    state.slot3Color = hex;
+    if (elements.sectorHex3) elements.sectorHex3.textContent = hex;
+    if (elements.dotSlot3) elements.dotSlot3.style.backgroundColor = hex;
   }
 
   // Update root CSS variables and disc sectors
   document.documentElement.style.setProperty(`--slot${slotNumber}-color`, hex);
-  if (slotNumber === 1) {
-    elements.sectorHex1.textContent = hex;
-    elements.dotSlot1.style.backgroundColor = hex;
-  } else {
-    elements.sectorHex2.textContent = hex;
-    elements.dotSlot2.style.backgroundColor = hex;
-  }
 
   updateAllPaletteIndicators();
   updateOutputDisplay();
@@ -370,19 +404,74 @@ function assignColorToSlot(slotNumber, hex) {
 
 function setActiveSlot(slotNumber) {
   state.activeSlot = slotNumber;
-  if (slotNumber === 1) {
-    elements.tabSlot1.classList.add('active');
-    elements.tabSlot2.classList.remove('active');
-    elements.cdSector1.classList.add('slot-active-target');
-    elements.cdSector2.classList.remove('slot-active-target');
+  [1, 2, 3].forEach((num) => {
+    const tab = elements[`tabSlot${num}`];
+    const sector = elements[`cdSector${num}`];
+    if (tab) tab.classList.toggle('active', num === slotNumber);
+    if (sector) sector.classList.toggle('slot-active-target', num === slotNumber);
+  });
+
+  updateAllPaletteIndicators();
+}
+
+function setSlotCount(count) {
+  state.slotCount = count;
+  const is3 = count === 3;
+
+  if (elements.mode2SlotsBtn) elements.mode2SlotsBtn.classList.toggle('active', !is3);
+  if (elements.mode3SlotsBtn) elements.mode3SlotsBtn.classList.toggle('active', is3);
+
+  if (elements.cdDisc) {
+    elements.cdDisc.classList.toggle('slots-3', is3);
+    elements.cdDisc.classList.toggle('slots-2', !is3);
+  }
+
+  if (elements.cdSector3) {
+    elements.cdSector3.style.display = is3 ? 'block' : 'none';
+  }
+
+  if (elements.seams3SlotGroup) {
+    elements.seams3SlotGroup.style.display = is3 ? 'inline' : 'none';
+  }
+  if (elements.seam2SlotLine) {
+    elements.seam2SlotLine.style.display = is3 ? 'none' : 'inline';
+  }
+
+  if (elements.slotTargetSelector) {
+    elements.slotTargetSelector.classList.toggle('slots-3', is3);
+  }
+
+  if (elements.tabSlot3) {
+    elements.tabSlot3.style.display = is3 ? 'flex' : 'none';
+  }
+
+  if (elements.eqPlusSlot3) {
+    elements.eqPlusSlot3.style.display = is3 ? 'inline' : 'none';
+  }
+  if (elements.eqSlot3Item) {
+    elements.eqSlot3Item.style.display = is3 ? 'inline-flex' : 'none';
+  }
+
+  if (elements.shortcutSlot3Hint) {
+    elements.shortcutSlot3Hint.style.display = is3 ? 'inline' : 'none';
+  }
+
+  if (elements.paletteHint) {
+    elements.paletteHint.textContent = is3
+      ? 'Pick a slot above, then tap a color to paint that third.'
+      : 'Pick a slot above, then tap a color to paint that half.';
+  }
+
+  if (!is3 && state.activeSlot === 3) {
+    setActiveSlot(1);
   } else {
-    elements.tabSlot2.classList.add('active');
-    elements.tabSlot1.classList.remove('active');
-    elements.cdSector2.classList.add('slot-active-target');
-    elements.cdSector1.classList.remove('slot-active-target');
+    setActiveSlot(state.activeSlot);
   }
 
   updateAllPaletteIndicators();
+  updateOutputDisplay();
+
+  showToast(is3 ? 'Activated 3-Color Spinner Mode (120° Sectors)' : 'Switched to 2-Color Spinner Mode (180° Halves)');
 }
 
 function updateOutputDisplay() {
@@ -397,13 +486,19 @@ function updateOutputDisplay() {
     elements.cdBlendOverlay.style.backgroundColor = mixedHex;
   }
 
-  // Update Equation Ribbon inputs (Slot 1 and Slot 2)
+  // Update Equation Ribbon inputs (Slot 1, Slot 2, Slot 3)
   const s1Name = getNearestColorName(state.slot1Color);
   const s2Name = getNearestColorName(state.slot2Color);
   if (elements.eqSlot1Dot) elements.eqSlot1Dot.style.backgroundColor = state.slot1Color;
   if (elements.eqSlot1Name) elements.eqSlot1Name.textContent = s1Name;
   if (elements.eqSlot2Dot) elements.eqSlot2Dot.style.backgroundColor = state.slot2Color;
   if (elements.eqSlot2Name) elements.eqSlot2Name.textContent = s2Name;
+
+  if (state.slotCount === 3) {
+    const s3Name = getNearestColorName(state.slot3Color);
+    if (elements.eqSlot3Dot) elements.eqSlot3Dot.style.backgroundColor = state.slot3Color;
+    if (elements.eqSlot3Name) elements.eqSlot3Name.textContent = s3Name;
+  }
 
   // Reveal or Conceal Equation Result depending on whether dynamo is turned on
   if (elements.eqResultItem) {
@@ -426,10 +521,20 @@ function updateOutputDisplay() {
 }
 
 function swapColors() {
-  const temp = state.slot1Color;
-  assignColorToSlot(1, state.slot2Color);
-  assignColorToSlot(2, temp);
-  showToast('Swapped Slot 1 and Slot 2 colors');
+  if (state.slotCount === 3) {
+    const c1 = state.slot1Color;
+    const c2 = state.slot2Color;
+    const c3 = state.slot3Color;
+    assignColorToSlot(1, c3);
+    assignColorToSlot(2, c1);
+    assignColorToSlot(3, c2);
+    showToast('Cycled colors: Slot 1 ➜ Slot 2 ➜ Slot 3 ➜ Slot 1');
+  } else {
+    const temp = state.slot1Color;
+    assignColorToSlot(1, state.slot2Color);
+    assignColorToSlot(2, temp);
+    showToast('Swapped Slot 1 and Slot 2 colors');
+  }
 }
 
 function triggerDiscRipple() {
@@ -449,7 +554,9 @@ function addRecentMixToHistory(hex, name) {
     hex,
     name,
     slot1: state.slot1Color,
-    slot2: state.slot2Color
+    slot2: state.slot2Color,
+    slot3: state.slot3Color,
+    slotCount: state.slotCount
   });
 
   if (state.recentMixes.length > 10) {
@@ -471,12 +578,21 @@ function renderRecentMixes() {
     const chip = document.createElement('div');
     chip.className = 'recent-chip';
     chip.style.backgroundColor = item.hex;
-    chip.setAttribute('title', `${item.name} (${item.hex}) - Click to restore pair`);
+    chip.setAttribute('title', `${item.name} (${item.hex}) - Click to restore`);
 
     chip.addEventListener('click', () => {
-      assignColorToSlot(1, item.slot1);
-      assignColorToSlot(2, item.slot2);
-      showToast(`Restored pair: ${item.name} (${item.slot1} + ${item.slot2})`);
+      if (item.slotCount === 3) {
+        setSlotCount(3);
+        assignColorToSlot(1, item.slot1);
+        assignColorToSlot(2, item.slot2);
+        assignColorToSlot(3, item.slot3);
+        showToast(`Restored trio: ${item.name}`);
+      } else {
+        setSlotCount(2);
+        assignColorToSlot(1, item.slot1);
+        assignColorToSlot(2, item.slot2);
+        showToast(`Restored pair: ${item.name}`);
+      }
     });
 
     elements.recentChips.appendChild(chip);
@@ -494,8 +610,20 @@ function randomizeColorPair() {
   const p2 = COLOR_PRESETS[idx2];
   assignColorToSlot(1, p1.hex);
   assignColorToSlot(2, p2.hex);
-  triggerDiscRipple();
-  showToast(`🎲 Surprise Pair: ${p1.name} + ${p2.name}!`);
+
+  if (state.slotCount === 3) {
+    let idx3 = Math.floor(Math.random() * COLOR_PRESETS.length);
+    while (idx3 === idx1 || idx3 === idx2) {
+      idx3 = Math.floor(Math.random() * COLOR_PRESETS.length);
+    }
+    const p3 = COLOR_PRESETS[idx3];
+    assignColorToSlot(3, p3.hex);
+    triggerDiscRipple();
+    showToast(`🎲 Surprise Trio: ${p1.name} + ${p2.name} + ${p3.name}!`);
+  } else {
+    triggerDiscRipple();
+    showToast(`🎲 Surprise Pair: ${p1.name} + ${p2.name}!`);
+  }
 }
 
 // ============================================================================
@@ -632,11 +760,25 @@ function setupSectorClickHandlers() {
     });
   }
 
+  // Clicking Sector 3 selects Slot 3 as active target
+  if (elements.cdSector3) {
+    elements.cdSector3.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setActiveSlot(3);
+      showToast('Selected CD Slot 3 - Pick a color');
+    });
+  }
+
   // Clicking anywhere on the CD when idle toggles the active slot
   if (elements.cdDisc) {
     elements.cdDisc.addEventListener('click', () => {
       if (!state.isSpinning) {
-        const next = state.activeSlot === 1 ? 2 : 1;
+        let next;
+        if (state.slotCount === 3) {
+          next = state.activeSlot === 3 ? 1 : state.activeSlot + 1;
+        } else {
+          next = state.activeSlot === 1 ? 2 : 1;
+        }
         setActiveSlot(next);
         showToast(`Switched to CD Slot ${next}`);
       }
@@ -733,9 +875,20 @@ function setupEventListeners() {
     elements.themeToggleBtn.addEventListener('click', toggleTheme);
   }
 
+  // 2-Slot vs 3-Slot Mode Toggles
+  if (elements.mode2SlotsBtn) {
+    elements.mode2SlotsBtn.addEventListener('click', () => setSlotCount(2));
+  }
+  if (elements.mode3SlotsBtn) {
+    elements.mode3SlotsBtn.addEventListener('click', () => setSlotCount(3));
+  }
+
   // Slot Tabs & Swap in Palette Holder
   elements.tabSlot1.addEventListener('click', () => setActiveSlot(1));
   elements.tabSlot2.addEventListener('click', () => setActiveSlot(2));
+  if (elements.tabSlot3) {
+    elements.tabSlot3.addEventListener('click', () => setActiveSlot(3));
+  }
   elements.swapSlotsBtn.addEventListener('click', swapColors);
 
   // Randomize Pair Button
@@ -826,6 +979,14 @@ function setupEventListeners() {
     } else if (e.key === '2') {
       setActiveSlot(2);
       showToast('Selected CD Slot 2');
+    } else if (e.key === '3') {
+      if (state.slotCount === 2) {
+        setSlotCount(3);
+        setActiveSlot(3);
+      } else {
+        setActiveSlot(3);
+        showToast('Selected CD Slot 3');
+      }
     } else if (e.key === 's' || e.key === 'S') {
       swapColors();
     } else if (e.key === 'r' || e.key === 'R') {
@@ -847,6 +1008,7 @@ function setupEventListeners() {
 function init() {
   applyTheme(getInitialTheme());
   renderPaletteSwatches();
+  setSlotCount(2);
   setActiveSlot(1);
   setupSectorClickHandlers();
   setupCopyButtons();
