@@ -365,6 +365,49 @@ function updateAllPaletteIndicators() {
   });
 }
 
+// --- In-App Color Studio State & Functions ---
+let studioHue = 356;
+let studioSat = 0.81;
+let studioVal = 1;
+let studioLivePreview = true;
+
+function hsvToRgb(h, s, v) {
+  const c = v * s;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = v - c;
+  let r = 0, g = 0, b = 0;
+  if (h >= 0 && h < 60) { r = c; g = x; b = 0; }
+  else if (h >= 60 && h < 120) { r = x; g = c; b = 0; }
+  else if (h >= 120 && h < 180) { r = 0; g = c; b = x; }
+  else if (h >= 180 && h < 240) { r = 0; g = x; b = c; }
+  else if (h >= 240 && h < 300) { r = x; g = 0; b = c; }
+  else { r = c; g = 0; b = x; }
+  return {
+    r: Math.round((r + m) * 255),
+    g: Math.round((g + m) * 255),
+    b: Math.round((b + m) * 255)
+  };
+}
+
+function rgbToHsv(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const d = max - min;
+  let h = 0;
+  const s = max === 0 ? 0 : d / max;
+  const v = max;
+  if (max !== min) {
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+    h /= 6;
+  }
+  return { h: Math.round(h * 360) % 360, s, v };
+}
+
 function syncCustomColorDisplay(hex) {
   const cleanHex = hex.replace('#', '').toUpperCase();
   state.customColor = `#${cleanHex}`;
@@ -399,9 +442,12 @@ function assignColorToSlot(slotNumber, hex) {
     elements.dotSlot2.style.backgroundColor = hex;
   }
 
-  // Keep custom color display in sync if modifying the active slot
+  // Keep custom color studio in sync if modifying the active slot
   if (slotNumber === state.activeSlot) {
     syncCustomColorDisplay(hex);
+    if (typeof setColorStudioHex === 'function') {
+      setColorStudioHex(hex, false);
+    }
   }
 
   updateAllPaletteIndicators();
@@ -431,15 +477,18 @@ function setActiveSlot(slotNumber) {
     elements.applySlotPill.style.color = slotNumber === 1 ? 'var(--slot1-color)' : 'var(--slot2-color)';
   }
   if (elements.applyCustomBtn) {
-    elements.applyCustomBtn.title = `Open Color Studio for Slot ${slotNumber}`;
+    elements.applyCustomBtn.title = `Slot ${slotNumber}`;
   }
   if (elements.popoverSlotTarget) {
-    elements.popoverSlotTarget.textContent = `Slot ${slotNumber}`;
+    elements.popoverSlotTarget.textContent = `Slot ${slotNumber} Live`;
   }
 
-  // Always synchronize the custom display to show the active slot's actual color
+  // Always synchronize the custom studio to show the active slot's actual color
   const activeColor = slotNumber === 1 ? state.slot1Color : state.slot2Color;
   syncCustomColorDisplay(activeColor);
+  if (typeof setColorStudioHex === 'function') {
+    setColorStudioHex(activeColor, false);
+  }
 
   updateAllPaletteIndicators();
 }
@@ -823,72 +872,6 @@ function setupEventListeners() {
   }
 
   // --- In-App Color Studio Controller ---
-  let studioHue = 330;
-  let studioSat = 1;
-  let studioVal = 1;
-  let studioLivePreview = true;
-  let studioOriginalColor = null; // Slot color before opening, for cancel/revert
-
-  function hsvToRgb(h, s, v) {
-    const c = v * s;
-    const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
-    const m = v - c;
-    let r = 0, g = 0, b = 0;
-    if (h >= 0 && h < 60) { r = c; g = x; b = 0; }
-    else if (h >= 60 && h < 120) { r = x; g = c; b = 0; }
-    else if (h >= 120 && h < 180) { r = 0; g = c; b = x; }
-    else if (h >= 180 && h < 240) { r = 0; g = x; b = c; }
-    else if (h >= 240 && h < 300) { r = x; g = 0; b = c; }
-    else { r = c; g = 0; b = x; }
-    return {
-      r: Math.round((r + m) * 255),
-      g: Math.round((g + m) * 255),
-      b: Math.round((b + m) * 255)
-    };
-  }
-
-  function rgbToHsv(r, g, b) {
-    r /= 255; g /= 255; b /= 255;
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    const d = max - min;
-    let h = 0;
-    const s = max === 0 ? 0 : d / max;
-    const v = max;
-    if (max !== min) {
-      switch (max) {
-        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-        case g: h = (b - r) / d + 2; break;
-        case b: h = (r - g) / d + 4; break;
-      }
-      h /= 6;
-    }
-    return { h: Math.round(h * 360) % 360, s, v };
-  }
-
-  function rgbToHex(r, g, b) {
-    const toHex = (n) => {
-      const h = Math.max(0, Math.min(255, Math.round(n))).toString(16);
-      return h.length === 1 ? '0' + h : h;
-    };
-    return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
-  }
-
-  function hexToRgb(hex) {
-    let clean = hex.replace('#', '').trim();
-    if (clean.length === 3) {
-      clean = clean.split('').map(c => c + c).join('');
-    }
-    if (clean.length !== 6) return null;
-    const num = parseInt(clean, 16);
-    if (isNaN(num)) return null;
-    return {
-      r: (num >> 16) & 255,
-      g: (num >> 8) & 255,
-      b: num & 255
-    };
-  }
-
   function renderQuickShades(hue) {
     if (!elements.pickerShadesRow) return;
     elements.pickerShadesRow.innerHTML = '';
@@ -912,13 +895,13 @@ function setupEventListeners() {
       chip.setAttribute('aria-label', `Color shade ${hx}`);
       chip.addEventListener('click', (e) => {
         e.stopPropagation();
-        setColorStudioHex(hx);
+        setColorStudioHex(hx, true);
       });
       elements.pickerShadesRow.appendChild(chip);
     });
   }
 
-  function updateStudioUI(source) {
+  function updateStudioUI(source, applyToSlot = true) {
     const rgb = hsvToRgb(studioHue, studioSat, studioVal);
     const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
 
@@ -953,86 +936,29 @@ function setupEventListeners() {
       if (elements.popoverBVal) elements.popoverBVal.value = rgb.b;
     }
 
-    // Sync with bottom bar
-    syncCustomColorDisplay(hex);
+    // Sync state
+    state.customColor = hex;
+    if (elements.customColorHex) {
+      elements.customColorHex.value = hex.replace('#', '');
+    }
 
     // Live preview: apply to active slot in real-time
-    if (studioLivePreview && elements.customPickerPopover && !elements.customPickerPopover.hasAttribute('hidden')) {
+    if (applyToSlot && studioLivePreview) {
       assignColorToSlot(state.activeSlot, hex);
     }
 
     renderQuickShades(studioHue);
   }
 
-  function setColorStudioHex(hex) {
+  function setColorStudioHex(hex, applyToSlot = false) {
     const rgb = hexToRgb(hex);
     if (!rgb) return;
     const hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
     studioHue = hsv.h;
     studioSat = hsv.s;
     studioVal = hsv.v;
-    updateStudioUI();
+    updateStudioUI(null, applyToSlot);
   }
-
-  function openColorStudio() {
-    if (!elements.customPickerPopover) return;
-    // Save original slot color so we can revert on cancel
-    studioOriginalColor = state.activeSlot === 1 ? state.slot1Color : state.slot2Color;
-    const currentHex = studioOriginalColor;
-    setColorStudioHex(currentHex);
-    if (elements.popoverSlotTarget) {
-      elements.popoverSlotTarget.textContent = `Slot ${state.activeSlot}`;
-    }
-    elements.customPickerPopover.removeAttribute('hidden');
-    elements.customPickerPopover.setAttribute('aria-hidden', 'false');
-  }
-
-  function closeColorStudio() {
-    if (!elements.customPickerPopover) return;
-    elements.customPickerPopover.setAttribute('hidden', '');
-    elements.customPickerPopover.setAttribute('aria-hidden', 'true');
-  }
-
-  function toggleColorStudio() {
-    if (!elements.customPickerPopover) return;
-    if (elements.customPickerPopover.hasAttribute('hidden')) {
-      openColorStudio();
-    } else {
-      closeColorStudio();
-    }
-  }
-
-  if (elements.customColorWrapper) {
-    elements.customColorWrapper.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleColorStudio();
-    });
-  }
-
-  if (elements.pickerCloseBtn) {
-    elements.pickerCloseBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      closeColorStudio();
-    });
-  }
-
-  // Click outside to close popover
-  document.addEventListener('click', (e) => {
-    if (elements.customPickerPopover && !elements.customPickerPopover.hasAttribute('hidden')) {
-      const isInsidePopover = elements.customPickerPopover.contains(e.target);
-      const isInsideWrapper = elements.customColorWrapper && elements.customColorWrapper.contains(e.target);
-      if (!isInsidePopover && !isInsideWrapper) {
-        closeColorStudio();
-      }
-    }
-  });
-
-  // Escape key closes popover
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && elements.customPickerPopover && !elements.customPickerPopover.hasAttribute('hidden')) {
-      closeColorStudio();
-    }
-  });
 
   // 2D Saturation / Value Area Dragging
   if (elements.pickerSvArea) {
@@ -1110,15 +1036,13 @@ function setupEventListeners() {
     if (input) input.addEventListener('input', handleRgbInputChange);
   });
 
-  // Apply button inside popover (confirms live preview)
+  // Apply button inside Custom Color Studio
   if (elements.popoverApplyBtn) {
     elements.popoverApplyBtn.addEventListener('click', () => {
       const rgb = hsvToRgb(studioHue, studioSat, studioVal);
       const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
       assignColorToSlot(state.activeSlot, hex);
-      studioOriginalColor = null; // Mark as accepted
-      showToast(`Applied custom color ${hex} to Slot ${state.activeSlot}`);
-      closeColorStudio();
+      showToast(`Applied ${hex} to Slot ${state.activeSlot}`);
     });
   }
 
@@ -1256,6 +1180,7 @@ function init() {
   setupCopyButtons();
   setupEventListeners();
   syncCustomColorDisplay(state.slot1Color);
+  setColorStudioHex(state.slot1Color, false);
   updateOutputDisplay();
 
   // Start Animation Loop
