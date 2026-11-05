@@ -12,7 +12,6 @@ An interactive single-page web application featuring an industrial motor apparat
 - **Category Filter Pills**: Quickly filter colors between `All (45)`, `Warm (14)`, `Cool (12)`, `Vivid (10)`, and `Earth (9)`.
 - **Instant Click-to-Assign**: Select **CD Slot 1** or **CD Slot 2**, then click any circular swatch to instantly assign that color.
 - **Dual Slot Control**: Active indicator dots showing which sector will receive the color, plus a one-click **Swap Colors (⇄)** button.
-- **Custom Color Picker**: A native color picker with real-time HEX feedback to mix and apply any custom color.
 
 ### 2. ⚙️ Centered Dynamo Disc & Turntable Assembly
 - **Clean Disc Presentation**: Streamlined turntable spindle with tachometer speed ring, holographic sheen, and dynamic electromagnetic aura (uncluttered by external stator housing or base footing).
@@ -41,9 +40,17 @@ An interactive single-page web application featuring an industrial motor apparat
 - **Persistent Preference**: Automatically saves your preferred theme in `localStorage` and adapts to system `prefers-color-scheme`.
 - **Contrast & Legibility**: Carefully calibrated slate backgrounds, crisp text hierarchy, subtle glassmorphic elevation, and vivid sector accents.
 
-### 6. 🔬 Color Theory Guide & Randomizer
+### 6. 🔬 Simple Color Theory Guide & Randomizer
 - **Surprise Pair Generator**: Randomizes vibrant, aesthetically balanced color pairs with one click or hotkey (<kbd>R</kbd>).
-- **Color Theory Guide**: Interactive modal explaining physical pigment color fusion.
+- **The 3 Base Rules**:
+  - 🔴 **Red** + 🟡 **Yellow** = 🟠 **Orange**
+  - 🔵 **Blue** + 🟡 **Yellow** = 🟢 **Green**
+  - 🔴 **Red** + 🔵 **Blue** = 🟣 **Purple**
+- **Why Spinning Mixes Colors**: When the disc spins rapidly, your eyes cannot separate the two rotating colors, so your brain fuses them into a single unified color.
+- **Paint vs. Light**: Real paint absorbs light to create rich deeper mixtures (subtractive), while screens emit light where all colors combine into white (additive).
+- **Easy Combos to Try**:
+  - *Opposites (High Contrast)*: Blue + Orange or Red + Green for bold dynamics.
+  - *Neighbors (Smooth Harmony)*: Blue + Cyan or Red + Orange for smooth transitions.
 
 ---
 
