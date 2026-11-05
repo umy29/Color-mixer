@@ -49,7 +49,6 @@ An interactive single-page web application featuring an industrial motor apparat
   - 🟢 **Green Light** + 🔵 **Blue Light** = 🌐 **Cyan**
   - 🔴 **Red Light** + 🔵 **Blue Light** = 🟣 **Magenta**
   - 🔴 **Red** + 🟢 **Green** + 🔵 **Blue** = ⚪ **White Light**
-- **Light vs. Paint**: Additive light combines wavelengths into brighter hues reaching pure White, while physical paint absorbs wavelengths toward dark brown/black.
 
 ---
 
