@@ -166,6 +166,7 @@ const elements = {
   popoverTitleDot: document.getElementById('popoverTitleDot'),
   popoverSlotTarget: document.getElementById('popoverSlotTarget'),
   popoverApplyBtn: document.getElementById('popoverApplyBtn'),
+  popoverColorName: document.getElementById('popoverColorName'),
 
   // Dynamo & CD Disc
   dynamoAssembly: document.getElementById('dynamoAssembly') || document.querySelector('.dynamo-assembly'),
@@ -925,6 +926,9 @@ function setupEventListeners() {
 
     if (elements.popoverPreviewChip) {
       elements.popoverPreviewChip.style.backgroundColor = hex;
+    }
+    if (elements.popoverColorName) {
+      elements.popoverColorName.textContent = getNearestColorName(hex);
     }
     if (elements.popoverTitleDot) {
       elements.popoverTitleDot.style.backgroundColor = hex;

@@ -1730,6 +1730,7 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .picker-preview-chip-wrap {
   display: flex;
   align-items: center;
+  gap: 6px;
 }
 
 .picker-preview-chip {
@@ -1740,6 +1741,18 @@ input[type="range"]::-webkit-slider-thumb:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   display: inline-block;
   background-color: #ff007f;
+  flex-shrink: 0;
+}
+
+.picker-color-name {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
 }
 
 .picker-footer-actions {
@@ -2468,6 +2481,10 @@ kbd {
   background: #ffffff;
   border-color: rgba(148, 163, 184, 0.4);
   color: #0f172a;
+}
+
+[data-theme="light"] .picker-color-name {
+  color: #334155;
 }
 
 [data-theme="light"] .app-footer {
