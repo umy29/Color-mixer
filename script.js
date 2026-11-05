@@ -110,7 +110,7 @@ const state = {
   targetRpm: 1800,
   currentRpm: 0,
   angle: 0,
-  customColor: '#FF007F',
+  customColor: '#FF3B30',
   recentMixes: []
 };
 
@@ -365,6 +365,23 @@ function updateAllPaletteIndicators() {
   });
 }
 
+function syncCustomColorDisplay(hex) {
+  const cleanHex = hex.replace('#', '').toUpperCase();
+  state.customColor = `#${cleanHex}`;
+  if (elements.customColorHex) {
+    if ('value' in elements.customColorHex) {
+      elements.customColorHex.value = cleanHex;
+    } else {
+      elements.customColorHex.textContent = `#${cleanHex}`;
+    }
+    elements.customColorHex.classList.remove('invalid');
+  }
+  if (elements.customColorRing) {
+    elements.customColorRing.style.background = `#${cleanHex}`;
+    elements.customColorRing.style.boxShadow = `0 0 12px #${cleanHex}`;
+  }
+}
+
 function assignColorToSlot(slotNumber, hex) {
   if (slotNumber === 1) {
     state.slot1Color = hex;
@@ -380,6 +397,11 @@ function assignColorToSlot(slotNumber, hex) {
   } else {
     elements.sectorHex2.textContent = hex;
     elements.dotSlot2.style.backgroundColor = hex;
+  }
+
+  // Keep custom color display in sync if modifying the active slot
+  if (slotNumber === state.activeSlot) {
+    syncCustomColorDisplay(hex);
   }
 
   updateAllPaletteIndicators();
@@ -409,11 +431,16 @@ function setActiveSlot(slotNumber) {
     elements.applySlotPill.style.color = slotNumber === 1 ? 'var(--slot1-color)' : 'var(--slot2-color)';
   }
   if (elements.applyCustomBtn) {
-    elements.applyCustomBtn.title = `Apply custom color to Slot ${slotNumber}`;
+    elements.applyCustomBtn.title = `Open Color Studio for Slot ${slotNumber}`;
   }
   if (elements.popoverSlotTarget) {
     elements.popoverSlotTarget.textContent = `Slot ${slotNumber}`;
   }
+
+  // Always synchronize the custom display to show the active slot's actual color
+  const activeColor = slotNumber === 1 ? state.slot1Color : state.slot2Color;
+  syncCustomColorDisplay(activeColor);
+
   updateAllPaletteIndicators();
 }
 
@@ -795,24 +822,6 @@ function setupEventListeners() {
     });
   }
 
-  // Custom Color Picker & Direct Hex Input
-  const syncCustomColorDisplay = (hex) => {
-    const cleanHex = hex.replace('#', '').toUpperCase();
-    state.customColor = `#${cleanHex}`;
-    if (elements.customColorHex) {
-      if ('value' in elements.customColorHex) {
-        elements.customColorHex.value = cleanHex;
-      } else {
-        elements.customColorHex.textContent = `#${cleanHex}`;
-      }
-      elements.customColorHex.classList.remove('invalid');
-    }
-    if (elements.customColorRing) {
-      elements.customColorRing.style.background = `#${cleanHex}`;
-      elements.customColorRing.style.boxShadow = `0 0 12px #${cleanHex}`;
-    }
-  };
-
   // --- In-App Color Studio Controller ---
   let studioHue = 330;
   let studioSat = 1;
@@ -969,7 +978,7 @@ function setupEventListeners() {
     if (!elements.customPickerPopover) return;
     // Save original slot color so we can revert on cancel
     studioOriginalColor = state.activeSlot === 1 ? state.slot1Color : state.slot2Color;
-    const currentHex = state.customColor || '#FF007F';
+    const currentHex = studioOriginalColor;
     setColorStudioHex(currentHex);
     if (elements.popoverSlotTarget) {
       elements.popoverSlotTarget.textContent = `Slot ${state.activeSlot}`;
@@ -1117,15 +1126,16 @@ function setupEventListeners() {
     elements.customColorHex.addEventListener('input', (e) => {
       let raw = e.target.value.replace(/[^0-9A-Fa-f]/g, '').toUpperCase().slice(0, 6);
       e.target.value = raw;
-      if (raw.length === 6 || raw.length === 3) {
-        const fullHex = raw.length === 3 ? raw.split('').map(c => c + c).join('') : raw;
-        const color = `#${fullHex}`;
+      if (raw.length === 6) {
+        const color = `#${raw}`;
         state.customColor = color;
         if (elements.customColorRing) {
           elements.customColorRing.style.background = color;
           elements.customColorRing.style.boxShadow = `0 0 12px ${color}`;
         }
         elements.customColorHex.classList.remove('invalid');
+        // Live apply valid 6-character hex to active slot
+        assignColorToSlot(state.activeSlot, color);
       } else if (raw.length > 0) {
         elements.customColorHex.classList.add('invalid');
       }
@@ -1134,27 +1144,26 @@ function setupEventListeners() {
     elements.customColorHex.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
-        if (elements.applyCustomBtn) elements.applyCustomBtn.click();
+        const val = elements.customColorHex.value.trim();
+        if (val.length === 6 || val.length === 3) {
+          const full = val.length === 3 ? val.split('').map(c => c + c).join('') : val;
+          const hex = `#${full}`.toUpperCase();
+          assignColorToSlot(state.activeSlot, hex);
+          showToast(`Applied ${hex} to Slot ${state.activeSlot}`);
+          elements.customColorHex.blur();
+        }
       }
     });
 
     elements.customColorHex.addEventListener('blur', () => {
-      syncCustomColorDisplay(state.customColor || '#FF007F');
+      const activeColor = state.activeSlot === 1 ? state.slot1Color : state.slot2Color;
+      syncCustomColorDisplay(activeColor);
     });
   }
 
   if (elements.applyCustomBtn) {
     elements.applyCustomBtn.addEventListener('click', () => {
-      let hex = state.customColor || '#FF007F';
-      if (elements.customColorHex && 'value' in elements.customColorHex) {
-        const val = elements.customColorHex.value.trim();
-        if (val.length === 6 || val.length === 3) {
-          const full = val.length === 3 ? val.split('').map(c => c + c).join('') : val;
-          hex = `#${full}`.toUpperCase();
-        }
-      }
-      assignColorToSlot(state.activeSlot, hex);
-      showToast(`Applied custom color ${hex} to Slot ${state.activeSlot}`);
+      toggleColorStudio();
     });
   }
 
@@ -1246,6 +1255,7 @@ function init() {
   setupSectorClickHandlers();
   setupCopyButtons();
   setupEventListeners();
+  syncCustomColorDisplay(state.slot1Color);
   updateOutputDisplay();
 
   // Start Animation Loop
