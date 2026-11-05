@@ -110,6 +110,7 @@ const state = {
   targetRpm: 1800,
   currentRpm: 0,
   angle: 0,
+  customColor: '#FF007F',
   recentMixes: []
 };
 
@@ -145,11 +146,9 @@ const elements = {
   dotSlot2: document.getElementById('dotSlot2'),
   colorCirclesGrid: document.getElementById('colorCirclesGrid'),
   customColorWrapper: document.getElementById('customColorWrapper'),
-  customColorInput: document.getElementById('customColorInput'),
   customColorRing: document.getElementById('customColorRing'),
   customColorHex: document.getElementById('customColorHex'),
   applyCustomBtn: document.getElementById('applyCustomBtn'),
-  eyedropperBtn: document.getElementById('eyedropperBtn'),
   applySlotPill: document.getElementById('applySlotPill'),
 
   // In-App Color Studio Popover
@@ -167,7 +166,6 @@ const elements = {
   popoverTitleDot: document.getElementById('popoverTitleDot'),
   popoverSlotTarget: document.getElementById('popoverSlotTarget'),
   popoverApplyBtn: document.getElementById('popoverApplyBtn'),
-  pickerNativeBtn: document.getElementById('pickerNativeBtn'),
 
   // Dynamo & CD Disc
   dynamoAssembly: document.getElementById('dynamoAssembly') || document.querySelector('.dynamo-assembly'),
@@ -799,6 +797,7 @@ function setupEventListeners() {
   // Custom Color Picker & Direct Hex Input
   const syncCustomColorDisplay = (hex) => {
     const cleanHex = hex.replace('#', '').toUpperCase();
+    state.customColor = `#${cleanHex}`;
     if (elements.customColorHex) {
       if ('value' in elements.customColorHex) {
         elements.customColorHex.value = cleanHex;
@@ -941,7 +940,6 @@ function setupEventListeners() {
 
     // Sync with bottom bar
     syncCustomColorDisplay(hex);
-    if (elements.customColorInput) elements.customColorInput.value = hex;
 
     renderQuickShades(studioHue);
   }
@@ -958,7 +956,7 @@ function setupEventListeners() {
 
   function openColorStudio() {
     if (!elements.customPickerPopover) return;
-    const currentHex = elements.customColorInput ? elements.customColorInput.value : '#FF007F';
+    const currentHex = state.customColor || '#FF007F';
     setColorStudioHex(currentHex);
     if (elements.popoverSlotTarget) {
       elements.popoverSlotTarget.textContent = `Slot ${state.activeSlot}`;
@@ -1101,23 +1099,6 @@ function setupEventListeners() {
     });
   }
 
-  // OS Native Picker button inside popover
-  if (elements.pickerNativeBtn) {
-    elements.pickerNativeBtn.addEventListener('click', () => {
-      closeColorStudio();
-      if (elements.customColorInput) elements.customColorInput.click();
-    });
-  }
-
-  if (elements.customColorInput) {
-    elements.customColorInput.addEventListener('input', (e) => {
-      syncCustomColorDisplay(e.target.value);
-    });
-    elements.customColorInput.addEventListener('change', (e) => {
-      syncCustomColorDisplay(e.target.value);
-    });
-  }
-
   if (elements.customColorHex && 'value' in elements.customColorHex) {
     elements.customColorHex.addEventListener('input', (e) => {
       let raw = e.target.value.replace(/[^0-9A-Fa-f]/g, '').toUpperCase().slice(0, 6);
@@ -1125,7 +1106,7 @@ function setupEventListeners() {
       if (raw.length === 6 || raw.length === 3) {
         const fullHex = raw.length === 3 ? raw.split('').map(c => c + c).join('') : raw;
         const color = `#${fullHex}`;
-        if (elements.customColorInput) elements.customColorInput.value = color;
+        state.customColor = color;
         if (elements.customColorRing) {
           elements.customColorRing.style.background = color;
           elements.customColorRing.style.boxShadow = `0 0 12px ${color}`;
@@ -1144,38 +1125,13 @@ function setupEventListeners() {
     });
 
     elements.customColorHex.addEventListener('blur', () => {
-      if (elements.customColorInput) {
-        syncCustomColorDisplay(elements.customColorInput.value);
-      }
+      syncCustomColorDisplay(state.customColor || '#FF007F');
     });
-  }
-
-  // Eyedropper API (Sample color from screen)
-  if (elements.eyedropperBtn) {
-    if ('EyeDropper' in window) {
-      elements.eyedropperBtn.addEventListener('click', async () => {
-        try {
-          const eyeDropper = new window.EyeDropper();
-          const result = await eyeDropper.open();
-          if (result && result.sRGBHex) {
-            const hex = result.sRGBHex.toUpperCase();
-            if (elements.customColorInput) elements.customColorInput.value = hex;
-            syncCustomColorDisplay(hex);
-            assignColorToSlot(state.activeSlot, hex);
-            showToast(`Eyedropped ${hex} to Slot ${state.activeSlot}`);
-          }
-        } catch {
-          // User cancelled eyedropper
-        }
-      });
-    } else {
-      elements.eyedropperBtn.style.display = 'none';
-    }
   }
 
   if (elements.applyCustomBtn) {
     elements.applyCustomBtn.addEventListener('click', () => {
-      let hex = elements.customColorInput ? elements.customColorInput.value.toUpperCase() : '#FF007F';
+      let hex = state.customColor || '#FF007F';
       if (elements.customColorHex && 'value' in elements.customColorHex) {
         const val = elements.customColorHex.value.trim();
         if (val.length === 6 || val.length === 3) {
