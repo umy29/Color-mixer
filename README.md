@@ -14,13 +14,15 @@ An interactive single-page web application featuring an industrial motor apparat
 - **Dual Slot Control**: Active indicator dots showing which sector will receive the color, plus a one-click **Swap Colors (⇄)** button.
 
 ### 2. ⚙️ Centered Dynamo Disc & Turntable Assembly
-- **Clean Disc Presentation**: Streamlined turntable spindle with tachometer speed ring, holographic sheen, and dynamic electromagnetic aura (uncluttered by external stator housing or base footing).
-- **Two-Color CD Disc**:
-  - **Sector 1 (Left 0°–180°)**: Holds Color 1 (clickable to select as target).
-  - **Sector 2 (Right 180°–360°)**: Holds Color 2 (clickable to select as target).
+- **Clean Disc Presentation**: Streamlined turntable spindle with tachometer speed ring, holographic sheen, and dynamic electromagnetic aura.
+- **2-Slot & 3-Slot Spinner Modes**:
+  - **2-Slot Mode (Default)**: Two 180° halves (Sector 1 and Sector 2) with crisp vinyl seams.
+  - **3-Slot Mode (+ 3rd Slot)**: Three equal 120° wedges (Sector 1, Sector 2, and Sector 3) with full physical subtractive pigment blending for rich 3-color composites.
+  - **Individual Sector Targets**: Click any wedge on the CD when idle to target that slot for painting.
+  - **Live Sector Overlays**: Real-time slot tags and HEX code badges cleanly positioned inside each wedge.
   - **Holographic Grooves & Radial Reflection**: Realistic iridescent CD sheen that rotates smoothly with the disc.
   - **Center Hub & Spindle**: Chrome dynamo shaft tip and clear acrylic clamp.
-- **Live Color Equation Ribbon**: Real-time equation bar above the disc displaying `[Color 1] + [Color 2] ➜ [Mixed Result]`.
+- **Live Color Equation Ribbon**: Real-time equation bar above the disc displaying `[Slot 1] + [Slot 2] ➜ [Result]` in 2-slot mode, and `[Slot 1] + [Slot 2] + [Slot 3] ➜ [Result]` in 3-slot mode.
 
 ### 3. 🔘 Tactical "ON" Power Switch & Rotation Physics
 - **Heavy-Duty ON/OFF Switch**: Industrial toggle with green glow, voltage pulses, and status readouts.
@@ -61,8 +63,9 @@ An interactive single-page web application featuring an industrial motor apparat
 | <kbd>Space</kbd> | Toggle Dynamo Motor ON / OFF |
 | <kbd>1</kbd> | Select CD Slot 1 as active target |
 | <kbd>2</kbd> | Select CD Slot 2 as active target |
-| <kbd>S</kbd> | Swap Slot 1 and Slot 2 colors |
-| <kbd>R</kbd> | Pick a random surprise color pair |
+| <kbd>3</kbd> | Select CD Slot 3 / Enable 3rd Slot mode |
+| <kbd>S</kbd> | Cycle / Swap slot colors |
+| <kbd>R</kbd> | Pick a random surprise combo (Pair or Trio) |
 | <kbd>T</kbd> | Toggle Light / Dark Mode theme |
 | <kbd>Esc</kbd> | Close Color Theory dialog |
 
