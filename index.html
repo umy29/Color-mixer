@@ -92,6 +92,11 @@
             <span class="eq-swatch" id="eqSlot2Dot"></span>
             <span class="eq-label" id="eqSlot2Name">Electric Blue</span>
           </div>
+          <span class="eq-operator eq-op-slot3" id="eqPlusSlot3" style="display: none;">+</span>
+          <div class="eq-item eq-slot3" id="eqSlot3Item" style="display: none;">
+            <span class="eq-swatch" id="eqSlot3Dot"></span>
+            <span class="eq-label" id="eqSlot3Name">Sunshine Yellow</span>
+          </div>
           <span class="eq-operator">➜</span>
           <div class="eq-item eq-result unrevealed" id="eqResultItem" title="Turn on the dynamo to mix and reveal color (or click here)">
             <span class="eq-swatch" id="eqResultDot"></span>
@@ -110,8 +115,8 @@
 
               <!-- The Central CD / Disc -->
               <div class="cd-turntable-container" id="cdTurntableContainer">
-                <div class="cd-disc" id="cdDisc" role="region" aria-label="Interactive color mixing CD">
-                  <!-- Color Sector 1 (Half A: 0deg to 180deg) -->
+                <div class="cd-disc slots-2" id="cdDisc" role="region" aria-label="Interactive color mixing CD">
+                  <!-- Color Sector 1 (Half A in 2-slot mode, Top 120deg wedge in 3-slot mode) -->
                   <div class="cd-sector cd-sector-left slot-active-target" id="cdSector1" data-slot="1" title="CD Slot 1 - Click to Select">
                     <div class="sector-fill" id="sectorFill1"></div>
                     <div class="sector-drop-overlay">
@@ -120,7 +125,7 @@
                     </div>
                   </div>
 
-                  <!-- Color Sector 2 (Half B: 180deg to 360deg) -->
+                  <!-- Color Sector 2 (Half B in 2-slot mode, Bottom-Right 120deg wedge in 3-slot mode) -->
                   <div class="cd-sector cd-sector-right" id="cdSector2" data-slot="2" title="CD Slot 2 - Click to Select">
                     <div class="sector-fill" id="sectorFill2"></div>
                     <div class="sector-drop-overlay">
@@ -128,6 +133,25 @@
                       <span class="sector-hex" id="sectorHex2">#007AFF</span>
                     </div>
                   </div>
+
+                  <!-- Color Sector 3 (Bottom-Left 120deg wedge in 3-slot mode) -->
+                  <div class="cd-sector cd-sector-3" id="cdSector3" data-slot="3" title="CD Slot 3 - Click to Select" style="display: none;">
+                    <div class="sector-fill" id="sectorFill3"></div>
+                    <div class="sector-drop-overlay">
+                      <span class="slot-tag">Slot 3</span>
+                      <span class="sector-hex" id="sectorHex3">#FFD60A</span>
+                    </div>
+                  </div>
+
+                  <!-- Physical Grooves & Sector Dividers Overlay -->
+                  <svg class="cd-seams-svg" id="cdSeamsSvg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                    <line class="seam-line seam-line-2slot" id="seam2SlotLine" x1="50" y1="0" x2="50" y2="100" />
+                    <g class="seams-3slot-group" id="seams3SlotGroup" style="display: none;">
+                      <line class="seam-line" x1="50" y1="50" x2="100" y2="21.13" />
+                      <line class="seam-line" x1="50" y1="50" x2="50" y2="100" />
+                      <line class="seam-line" x1="50" y1="50" x2="0" y2="21.13" />
+                    </g>
+                  </svg>
 
                   <!-- Blended Fusion Overlay Layer -->
                   <div class="cd-blend-overlay" id="cdBlendOverlay"></div>
@@ -195,12 +219,15 @@
             <span class="palette-icon">🎨</span>
             <h2>Color Options</h2>
           </div>
-          <span class="palette-badge" id="paletteBadge">45 Colors</span>
+          <div class="slot-mode-segmented" role="group" aria-label="Spinner Slot Count">
+            <button type="button" class="slot-mode-btn active" id="mode2SlotsBtn" data-slots="2" title="2-Color Spinner Mode (180° halves)">2 Slots</button>
+            <button type="button" class="slot-mode-btn" id="mode3SlotsBtn" data-slots="3" title="Add 3rd Slot to Spinner (120° thirds)">+ 3rd Slot</button>
+          </div>
         </div>
 
         <!-- Target Slot Selection Tabs & Quick Swap -->
         <div class="slot-target-row">
-          <div class="slot-target-selector">
+          <div class="slot-target-selector" id="slotTargetSelector">
             <button type="button" class="slot-tab active" id="tabSlot1" data-target-slot="1" title="Select Slot 1 to change its color (Hotkey: 1)">
               <span class="slot-dot" id="dotSlot1"></span>
               <span>CD Slot 1</span>
@@ -209,8 +236,12 @@
               <span class="slot-dot" id="dotSlot2"></span>
               <span>CD Slot 2</span>
             </button>
+            <button type="button" class="slot-tab" id="tabSlot3" data-target-slot="3" title="Select Slot 3 to change its color (Hotkey: 3)" style="display: none;">
+              <span class="slot-dot" id="dotSlot3"></span>
+              <span>CD Slot 3</span>
+            </button>
           </div>
-          <button type="button" class="swap-slots-btn" id="swapSlotsBtn" title="Swap Slot 1 and Slot 2 Colors (Hotkey: S)">
+          <button type="button" class="swap-slots-btn" id="swapSlotsBtn" title="Swap / Cycle Slot Colors (Hotkey: S)">
             ⇄
           </button>
         </div>
@@ -224,7 +255,7 @@
           <button type="button" class="filter-pill" data-filter="earth">Earth</button>
         </div>
 
-        <p class="palette-hint">Pick a slot above, then tap a color to paint that half.</p>
+        <p class="palette-hint" id="paletteHint">Pick a slot above, then tap a color to paint that half.</p>
 
         <!-- Circle Color Options Grid -->
         <div class="color-circles-grid" id="colorCirclesGrid">
@@ -237,9 +268,10 @@
     <footer class="app-footer">
       <div class="shortcut-pills">
         <span class="shortcut-pill"><kbd>Space</kbd> Turn On/Off</span>
-        <span class="shortcut-pill"><kbd>1</kbd> / <kbd>2</kbd> Select Slot</span>
-        <span class="shortcut-pill"><kbd>S</kbd> Swap Colors</span>
-        <span class="shortcut-pill"><kbd>R</kbd> Random Pair</span>
+        <span class="shortcut-pill"><kbd>1</kbd> / <kbd>2</kbd><span id="shortcutSlot3Hint" style="display: none;"> / <kbd>3</kbd></span> Slot</span>
+        <span class="shortcut-pill"><kbd>3</kbd> Toggle 3rd Slot</span>
+        <span class="shortcut-pill"><kbd>S</kbd> Cycle Colors</span>
+        <span class="shortcut-pill"><kbd>R</kbd> Surprise Combo</span>
         <span class="shortcut-pill"><kbd>T</kbd> Toggle Theme</span>
       </div>
     </footer>
