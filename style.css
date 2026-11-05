@@ -814,7 +814,7 @@ kbd,
   z-index: 4;
 }
 
-/* Realistic Holographic Sheen & CD Grooves */
+/* Smooth Silky Sheen on CD Slots */
 .cd-sheen-layer {
   position: absolute;
   top: 0;
@@ -822,43 +822,18 @@ kbd,
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: conic-gradient(
-    from 45deg,
-    transparent 0deg,
-    rgba(255, 255, 255, 0.32) 30deg,
-    transparent 60deg,
-    rgba(0, 242, 254, 0.28) 90deg,
-    transparent 120deg,
-    rgba(255, 0, 127, 0.22) 150deg,
-    transparent 180deg,
-    rgba(255, 255, 255, 0.32) 210deg,
-    transparent 240deg,
-    rgba(0, 242, 254, 0.28) 270deg,
-    transparent 300deg,
-    rgba(255, 215, 0, 0.22) 330deg,
-    transparent 360deg
+  background: radial-gradient(
+    circle at 35% 30%,
+    rgba(255, 255, 255, 0.18) 0%,
+    transparent 65%
   );
-  mix-blend-mode: overlay;
   pointer-events: none;
   z-index: 5;
 }
 
+/* Grooved texture removed for clean, smooth slot surfaces */
 .cd-tracks-layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: repeating-radial-gradient(
-    circle at center,
-    transparent 0px,
-    transparent 2px,
-    rgba(0, 0, 0, 0.09) 3px,
-    rgba(255, 255, 255, 0.05) 4px
-  );
-  pointer-events: none;
-  z-index: 6;
+  display: none;
 }
 
 /* CD Center Clear Hub & Spindle Clamp */
