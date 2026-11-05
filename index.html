@@ -234,7 +234,6 @@
         <!-- Custom Color Picker Row -->
         <div class="custom-color-row" id="customColorRow">
           <div class="custom-color-circle-wrapper" id="customColorWrapper" title="Click to open Color Studio">
-            <input type="color" id="customColorInput" value="#FF007F" tabindex="-1" />
             <span class="custom-color-ring" id="customColorRing"></span>
             <span class="custom-color-badge-icon" aria-hidden="true">🎨</span>
           </div>
@@ -242,11 +241,6 @@
             <span class="hex-hash-prefix">#</span>
             <input type="text" id="customColorHex" class="custom-hex-input" value="FF007F" maxlength="6" placeholder="HEX" spellcheck="false" autocomplete="off" aria-label="Hex color value" />
           </div>
-          <button type="button" id="eyedropperBtn" class="eyedropper-btn" title="Pick color from screen (Eyedropper)" aria-label="Eyedropper tool">
-            <svg class="eyedropper-svg" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M14 4l6 6-4 4-2-2-4 4H6v-4l4-4-2-2 4-4 2 2z"/>
-            </svg>
-          </button>
           <button type="button" id="applyCustomBtn" class="mini-btn apply-custom-btn" title="Apply custom color to selected slot">
             <span>Apply</span>
             <span class="apply-slot-pill" id="applySlotPill">S1</span>
@@ -309,9 +303,6 @@
               <span class="picker-preview-chip" id="popoverPreviewChip"></span>
             </div>
             <div class="picker-footer-actions">
-              <button type="button" class="picker-native-btn" id="pickerNativeBtn" title="Open OS system color picker" aria-label="Open native color picker">
-                <span>OS</span>
-              </button>
               <button type="button" class="picker-confirm-btn" id="popoverApplyBtn">
                 <span>Apply to <span id="popoverSlotTarget">Slot 1</span></span>
               </button>
