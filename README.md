@@ -17,7 +17,7 @@ An interactive single-page web application featuring an industrial motor apparat
 - **Clean Disc Presentation**: Streamlined turntable spindle with tachometer speed ring, holographic sheen, and dynamic electromagnetic aura.
 - **2-Slot & 3-Slot Spinner Modes**:
   - **2-Slot Mode (Default)**: Two 180° halves (Sector 1 and Sector 2) with crisp vinyl seams.
-  - **3-Slot Mode (+ 3rd Slot)**: Three equal 120° wedges (Sector 1, Sector 2, and Sector 3) with full physical subtractive pigment blending for rich 3-color composites.
+  - **3-Slot Mode (+ 3rd Slot)**: Three equal 120° wedges (Sector 1, Sector 2, and Sector 3) with full RGB optical persistence blending for rich 3-color composites.
   - **Individual Sector Targets**: Click any wedge on the CD when idle to target that slot for painting.
   - **Live Sector Overlays**: Real-time slot tags and HEX code badges cleanly positioned inside each wedge.
   - **Holographic Grooves & Radial Reflection**: Realistic iridescent CD sheen that rotates smoothly with the disc.
@@ -34,7 +34,7 @@ An interactive single-page web application featuring an industrial motor apparat
 - **Chamber Preview**: Dynamic preview with subtle energy ripples and animated gradient borders.
 - **Nearest-Color Naming Algorithm**: Intelligently identifies clear, familiar color names like *Purple*, *Orange*, *Green*, *Cyan*, and *Navy Blue*.
 - **Color Values**: Real-time HEX, RGB, and HSL readouts with 1-click **Copy** buttons.
-- **Physical Pigment Mixing Engine**: Real-world subtractive CMY light absorption blending (e.g. Blue + Yellow blends to Green, Red + Blue blends to Purple).
+- **RGB Optical Persistence Mixing Engine**: Optical temporal blending that averages Red, Green, and Blue channels across the spinning disc sectors.
 - **Recent Mixes Strip**: Saves recent combinations for one-click restoration.
 
 ### 5. ☀️ Light & Dark Mode Theming
@@ -49,7 +49,7 @@ An interactive single-page web application featuring an industrial motor apparat
   - 🔵 **Blue** + 🟡 **Yellow** = 🟢 **Green**
   - 🔴 **Red** + 🔵 **Blue** = 🟣 **Purple**
 - **Why Spinning Mixes Colors**: When the disc spins fast, your eyes see both colors at once and your brain merges them into one smooth color.
-- **Paint vs. Light**: Real paint absorbs light to make deeper colors (subtractive), while screen light combines into bright white (additive).
+- **RGB Light Blending**: Spinning disc sectors blend colors via persistence of vision, averaging the RGB light channels of each slot.
 
 ---
 
