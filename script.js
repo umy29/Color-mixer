@@ -261,35 +261,24 @@ function rgbToHsl(r, g, b) {
 }
 
 /**
- * Color Mixing Engine (Subtractive Pigment Fusion)
- * Uses physical CMY subtractive blending so primary colors blend intuitively (e.g. Blue + Yellow = Green)
+ * Color Mixing Engine (RGB Optical Persistence Blending)
+ * Uses RGB channel averaging to simulate optical persistence on a spinning disc.
  */
 function calculateCurrentMix() {
   const c1 = hexToRgb(state.slot1Color);
   const c2 = hexToRgb(state.slot2Color);
 
-  // Convert RGB to CMY
-  const cmy1 = { c: 1 - c1.r / 255, m: 1 - c1.g / 255, y: 1 - c1.b / 255 };
-  const cmy2 = { c: 1 - c2.r / 255, m: 1 - c2.g / 255, y: 1 - c2.b / 255 };
-
-  let c, m, y;
+  let r, g, b;
   if (state.slotCount === 3) {
     const c3 = hexToRgb(state.slot3Color);
-    const cmy3 = { c: 1 - c3.r / 255, m: 1 - c3.g / 255, y: 1 - c3.b / 255 };
-    const factor = 1.7 / 3;
-    c = Math.min(1, (cmy1.c + cmy2.c + cmy3.c) * factor);
-    m = Math.min(1, (cmy1.m + cmy2.m + cmy3.m) * factor);
-    y = Math.min(1, (cmy1.y + cmy2.y + cmy3.y) * factor);
+    r = Math.round((c1.r + c2.r + c3.r) / 3);
+    g = Math.round((c1.g + c2.g + c3.g) / 3);
+    b = Math.round((c1.b + c2.b + c3.b) / 3);
   } else {
-    // 2-Slot Subtractive pigment blend
-    c = Math.min(1, (cmy1.c + cmy2.c) * 0.85);
-    m = Math.min(1, (cmy1.m + cmy2.m) * 0.85);
-    y = Math.min(1, (cmy1.y + cmy2.y) * 0.85);
+    r = Math.round((c1.r + c2.r) / 2);
+    g = Math.round((c1.g + c2.g) / 2);
+    b = Math.round((c1.b + c2.b) / 2);
   }
-
-  const r = (1 - c) * 255;
-  const g = (1 - m) * 255;
-  const b = (1 - y) * 255;
 
   return rgbToHex(r, g, b);
 }
