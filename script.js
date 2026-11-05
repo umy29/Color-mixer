@@ -3,101 +3,113 @@
  * Dynamic Dual-Color Blending Laboratory
  */
 
-// Preset Color Choices for the Rectangle Palette Holder (45 Diverse Categorized Colors)
+// Preset Color Choices for the Rectangle Palette Holder (45 Basic Categorized Colors)
 const COLOR_PRESETS = [
-  // Reds & Corals (Warm / Vibrant)
-  { name: 'Crimson Red', hex: '#FF3B30', cat: 'warm' },
-  { name: 'Scarlet Ruby', hex: '#E60026', cat: 'warm' },
-  { name: 'Cherry Red', hex: '#D90429', cat: 'warm' },
-  { name: 'Coral Flame', hex: '#FF4500', cat: 'warm' },
-  { name: 'Hot Coral Pink', hex: '#FF2D55', cat: 'vibrant' },
-  { name: 'Deep Burgundy', hex: '#8B0000', cat: 'warm' },
-  { name: 'Rose Petal', hex: '#FF6B8B', cat: 'vibrant' },
+  // Reds & Pinks (Warm: 5, Vivid: 2)
+  { name: 'Red', hex: '#FF3B30', cat: 'warm' },
+  { name: 'Dark Red', hex: '#B71C1C', cat: 'warm' },
+  { name: 'Light Red', hex: '#EF5350', cat: 'warm' },
+  { name: 'Crimson', hex: '#D32F2F', cat: 'warm' },
+  { name: 'Coral', hex: '#FF5722', cat: 'warm' },
+  { name: 'Hot Pink', hex: '#E91E63', cat: 'vibrant' },
+  { name: 'Pink', hex: '#F06292', cat: 'vibrant' },
 
-  // Oranges & Ambers (Warm)
-  { name: 'Tangerine Orange', hex: '#FF9500', cat: 'warm' },
-  { name: 'Amber Gold', hex: '#FF9F0A', cat: 'warm' },
-  { name: 'Sunset Copper', hex: '#FF7A00', cat: 'warm' },
-  { name: 'Warm Terracotta', hex: '#E06D53', cat: 'warm' },
-  { name: 'Burnt Sienna', hex: '#C85A17', cat: 'warm' },
-  { name: 'Apricot Peach', hex: '#FFA07A', cat: 'warm' },
+  // Oranges & Browns (Warm: 6)
+  { name: 'Orange', hex: '#FF9500', cat: 'warm' },
+  { name: 'Dark Orange', hex: '#F57C00', cat: 'warm' },
+  { name: 'Light Orange', hex: '#FFB74D', cat: 'warm' },
+  { name: 'Amber', hex: '#FFA000', cat: 'warm' },
+  { name: 'Peach', hex: '#FFCC80', cat: 'warm' },
+  { name: 'Rust Brown', hex: '#C85A17', cat: 'warm' },
 
-  // Yellows & Golds (Warm / Vibrant)
-  { name: 'Sunshine Yellow', hex: '#FFCC00', cat: 'warm' },
-  { name: 'Canary Lemon', hex: '#FFEE32', cat: 'warm' },
-  { name: 'Cyber Neon Yellow', hex: '#FAFF00', cat: 'vibrant' },
-  { name: 'Goldenrod', hex: '#DAA520', cat: 'warm' },
-  { name: 'Pale Vanilla', hex: '#FFF3B0', cat: 'neutral' },
+  // Yellows & Golds (Warm: 3, Vivid: 1, Neutral: 1)
+  { name: 'Yellow', hex: '#FFD60A', cat: 'warm' },
+  { name: 'Bright Yellow', hex: '#FFEE58', cat: 'vibrant' },
+  { name: 'Gold', hex: '#FFC107', cat: 'warm' },
+  { name: 'Lemon Yellow', hex: '#FFF176', cat: 'warm' },
+  { name: 'Cream', hex: '#FFF9C4', cat: 'neutral' },
 
-  // Greens & Limes (Nature / Vibrant)
-  { name: 'Electric Lime', hex: '#A4E739', cat: 'vibrant' },
-  { name: 'Chartreuse Volt', hex: '#76FF03', cat: 'vibrant' },
-  { name: 'Emerald Green', hex: '#34C759', cat: 'nature' },
-  { name: 'Spring Mint', hex: '#00E676', cat: 'nature' },
-  { name: 'Forest Evergreen', hex: '#0B6623', cat: 'nature' },
-  { name: 'Olive Sage', hex: '#556B2F', cat: 'nature' },
+  // Greens (Vivid: 2, Nature: 4)
+  { name: 'Lime Green', hex: '#7CB342', cat: 'vibrant' },
+  { name: 'Bright Green', hex: '#00E676', cat: 'vibrant' },
+  { name: 'Green', hex: '#4CAF50', cat: 'nature' },
+  { name: 'Dark Green', hex: '#2E7D32', cat: 'nature' },
+  { name: 'Forest Green', hex: '#1B5E20', cat: 'nature' },
+  { name: 'Olive Green', hex: '#558B2F', cat: 'nature' },
 
-  // Cyans & Aquas (Cool / Vibrant)
-  { name: 'Neon Aqua', hex: '#00F2FE', cat: 'vibrant' },
-  { name: 'Electric Cyan', hex: '#32ADE6', cat: 'cool' },
-  { name: 'Caribbean Teal', hex: '#00B4D8', cat: 'cool' },
-  { name: 'Mint Seafoam', hex: '#30B0C7', cat: 'cool' },
-  { name: 'Deep Turquoise', hex: '#007791', cat: 'cool' },
+  // Cyans & Teals (Vivid: 2, Cool: 3)
+  { name: 'Cyan', hex: '#00E5FF', cat: 'vibrant' },
+  { name: 'Aqua', hex: '#00BCD4', cat: 'vibrant' },
+  { name: 'Light Blue', hex: '#4DD0E1', cat: 'cool' },
+  { name: 'Teal', hex: '#009688', cat: 'cool' },
+  { name: 'Dark Teal', hex: '#00695C', cat: 'cool' },
 
-  // Blues & Indigos (Cool)
-  { name: 'Electric Blue', hex: '#007AFF', cat: 'cool' },
-  { name: 'Royal Cobalt', hex: '#1E40AF', cat: 'cool' },
-  { name: 'Sky Azure', hex: '#38BDF8', cat: 'cool' },
-  { name: 'Deep Ultramarine', hex: '#1B1464', cat: 'cool' },
-  { name: 'Midnight Navy', hex: '#0B192C', cat: 'cool' },
-  { name: 'Glacier Blue', hex: '#A5F3FC', cat: 'cool' },
+  // Blues (Cool: 6)
+  { name: 'Blue', hex: '#007AFF', cat: 'cool' },
+  { name: 'Dark Blue', hex: '#1565C0', cat: 'cool' },
+  { name: 'Navy Blue', hex: '#0D47A1', cat: 'cool' },
+  { name: 'Sky Blue', hex: '#64B5F6', cat: 'cool' },
+  { name: 'Royal Blue', hex: '#1E40AF', cat: 'cool' },
+  { name: 'Midnight Blue', hex: '#0B192C', cat: 'cool' },
 
-  // Purples & Magentas (Vibrant / Cool)
-  { name: 'Vivid Magenta', hex: '#AF52DE', cat: 'vibrant' },
-  { name: 'Fuchsia Shock', hex: '#FF007F', cat: 'vibrant' },
-  { name: 'Deep Violet', hex: '#5856D6', cat: 'cool' },
-  { name: 'Amethyst Purple', hex: '#8B5CF6', cat: 'vibrant' },
-  { name: 'Lavender Mist', hex: '#C4B5FD', cat: 'vibrant' },
-  { name: 'Royal Plum', hex: '#4A0E4E', cat: 'cool' },
+  // Purples & Violets (Vivid: 3, Cool: 3)
+  { name: 'Purple', hex: '#9C27B0', cat: 'vibrant' },
+  { name: 'Magenta', hex: '#AF52DE', cat: 'vibrant' },
+  { name: 'Lavender', hex: '#BA68C8', cat: 'vibrant' },
+  { name: 'Violet', hex: '#673AB7', cat: 'cool' },
+  { name: 'Dark Purple', hex: '#4A148C', cat: 'cool' },
+  { name: 'Indigo', hex: '#3F51B5', cat: 'cool' },
 
-  // Monochromes & Neutrals (Neutral)
-  { name: 'Pure White', hex: '#FFFFFF', cat: 'neutral' },
-  { name: 'Platinum Silver', hex: '#CBD5E1', cat: 'neutral' },
-  { name: 'Slate Gray', hex: '#64748B', cat: 'neutral' },
-  { name: 'Charcoal Noir', hex: '#1C1C1E', cat: 'neutral' }
+  // Neutrals & Monochromes (Neutral: 4)
+  { name: 'White', hex: '#FFFFFF', cat: 'neutral' },
+  { name: 'Light Gray', hex: '#E0E0E0', cat: 'neutral' },
+  { name: 'Gray', hex: '#9E9E9E', cat: 'neutral' },
+  { name: 'Black', hex: '#1C1C1E', cat: 'neutral' }
 ];
 
 // Curated Named Colors Dictionary for Nearest Color Name Matching
 const COLOR_NAMES_DICT = [
-  { name: 'Pure White', r: 255, g: 255, b: 255 },
-  { name: 'Silver Mist', r: 210, g: 215, b: 220 },
-  { name: 'Steel Gray', r: 140, g: 150, b: 160 },
-  { name: 'Obsidian Black', r: 28, g: 28, b: 30 },
-  { name: 'Vivid Crimson', r: 255, g: 59, b: 48 },
-  { name: 'Scarlet Ruby', r: 220, g: 20, b: 60 },
-  { name: 'Sunset Orange', r: 255, g: 149, b: 0 },
-  { name: 'Amber Gold', r: 255, g: 180, b: 0 },
-  { name: 'Solar Yellow', r: 255, g: 204, b: 0 },
-  { name: 'Lemon Chiffon', r: 255, g: 240, b: 140 },
-  { name: 'Lime Electric', r: 164, g: 231, b: 57 },
-  { name: 'Kelly Green', r: 52, g: 199, b: 89 },
-  { name: 'Forest Emerald', r: 16, g: 120, b: 50 },
-  { name: 'Cyan Aqua', r: 50, g: 173, b: 230 },
-  { name: 'Sky Turquoise', r: 48, g: 176, b: 199 },
-  { name: 'Electric Azure', r: 0, g: 122, b: 255 },
-  { name: 'Royal Indigo', r: 27, g: 20, b: 100 },
-  { name: 'Deep Cobalt', r: 30, g: 70, b: 160 },
-  { name: 'Amethyst Violet', r: 88, g: 86, b: 214 },
-  { name: 'Neon Orchid', r: 175, g: 82, b: 222 },
-  { name: 'Fuchsia Magenta', r: 255, g: 0, b: 128 },
-  { name: 'Rose Coral', r: 255, g: 45, b: 85 },
-  { name: 'Dusty Mauve', r: 180, g: 140, b: 170 },
-  { name: 'Lavender Mist', r: 200, g: 190, b: 235 },
-  { name: 'Sage Olive', r: 130, g: 155, b: 120 },
-  { name: 'Warm Khaki', r: 190, g: 170, b: 130 },
-  { name: 'Terracotta Rust', r: 224, g: 109, b: 83 },
-  { name: 'Chocolate Sienna', r: 110, g: 60, b: 35 },
-  { name: 'Neutral Ash Taupe', r: 155, g: 145, b: 140 }
+  { name: 'White', r: 255, g: 255, b: 255 },
+  { name: 'Light Gray', r: 224, g: 224, b: 224 },
+  { name: 'Gray', r: 158, g: 158, b: 158 },
+  { name: 'Dark Gray', r: 97, g: 97, b: 97 },
+  { name: 'Black', r: 28, g: 28, b: 30 },
+  { name: 'Red', r: 255, g: 59, b: 48 },
+  { name: 'Dark Red', r: 183, g: 28, b: 28 },
+  { name: 'Light Red', r: 239, g: 83, b: 80 },
+  { name: 'Crimson', r: 211, g: 47, b: 47 },
+  { name: 'Coral', r: 255, g: 87, b: 34 },
+  { name: 'Orange', r: 255, g: 149, b: 0 },
+  { name: 'Dark Orange', r: 245, g: 124, b: 0 },
+  { name: 'Amber', r: 255, g: 160, b: 0 },
+  { name: 'Yellow', r: 255, g: 214, b: 10 },
+  { name: 'Light Yellow', r: 255, g: 241, b: 118 },
+  { name: 'Gold', r: 255, g: 193, b: 7 },
+  { name: 'Lime Green', r: 124, g: 179, b: 66 },
+  { name: 'Bright Green', r: 0, g: 230, b: 118 },
+  { name: 'Green', r: 76, g: 175, b: 80 },
+  { name: 'Dark Green', r: 46, g: 125, b: 50 },
+  { name: 'Forest Green', r: 27, g: 94, b: 32 },
+  { name: 'Olive Green', r: 85, g: 139, b: 47 },
+  { name: 'Cyan', r: 0, g: 229, b: 255 },
+  { name: 'Aqua', r: 0, g: 188, b: 212 },
+  { name: 'Light Blue', r: 77, g: 208, b: 225 },
+  { name: 'Teal', r: 0, g: 150, b: 136 },
+  { name: 'Blue', r: 0, g: 122, b: 255 },
+  { name: 'Dark Blue', r: 21, g: 101, b: 192 },
+  { name: 'Navy Blue', r: 13, g: 71, b: 161 },
+  { name: 'Sky Blue', r: 100, g: 181, b: 246 },
+  { name: 'Royal Blue', r: 30, g: 64, b: 175 },
+  { name: 'Purple', r: 156, g: 39, b: 176 },
+  { name: 'Dark Purple', r: 74, g: 20, b: 140 },
+  { name: 'Violet', r: 103, g: 58, b: 183 },
+  { name: 'Magenta', r: 175, g: 82, b: 222 },
+  { name: 'Pink', r: 240, g: 98, b: 146 },
+  { name: 'Hot Pink', r: 233, g: 30, b: 99 },
+  { name: 'Lavender', r: 186, g: 104, b: 200 },
+  { name: 'Brown', r: 141, g: 110, b: 99 },
+  { name: 'Dark Brown', r: 93, g: 64, b: 55 },
+  { name: 'Tan', r: 215, g: 204, b: 200 }
 ];
 
 // Application State
