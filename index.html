@@ -198,15 +198,6 @@
           <span class="palette-badge" id="paletteBadge">45 Colors</span>
         </div>
 
-        <!-- Category Filter Pills -->
-        <div class="palette-filter-row" aria-label="Filter Palette by Category">
-          <button type="button" class="filter-pill active" data-filter="all">All</button>
-          <button type="button" class="filter-pill" data-filter="warm">Warm</button>
-          <button type="button" class="filter-pill" data-filter="cool">Cool</button>
-          <button type="button" class="filter-pill" data-filter="vibrant">Vivid</button>
-          <button type="button" class="filter-pill" data-filter="earth">Earth</button>
-        </div>
-
         <!-- Target Slot Selection Tabs & Quick Swap -->
         <div class="slot-target-row">
           <div class="slot-target-selector">
@@ -224,27 +215,34 @@
           </button>
         </div>
 
-        <p class="palette-hint">Pick a slot above, then tap a color to paint that half.</p>
-
-        <!-- Circle Color Options Grid -->
-        <div class="color-circles-grid" id="colorCirclesGrid">
-          <!-- Injected via JavaScript with rich colors and data attributes -->
-        </div>
-
-        <!-- Custom Color Picker Row -->
-        <div class="custom-color-row" id="customColorRow">
+        <!-- Custom Color Picker Row (Positioned directly under Slot selection for intuitive UX) -->
+        <div class="custom-color-row" id="customColorRow" title="Custom color for active slot">
           <div class="custom-color-circle-wrapper" id="customColorWrapper" title="Click to open Color Studio">
             <span class="custom-color-ring" id="customColorRing"></span>
             <span class="custom-color-badge-icon" aria-hidden="true">🎨</span>
           </div>
-          <div class="custom-hex-field-wrap">
+          <div class="custom-hex-field-wrap" title="Type any 6-digit HEX color">
             <span class="hex-hash-prefix">#</span>
-            <input type="text" id="customColorHex" class="custom-hex-input" value="FF007F" maxlength="6" placeholder="HEX" spellcheck="false" autocomplete="off" aria-label="Hex color value" />
+            <input type="text" id="customColorHex" class="custom-hex-input" value="FF3B30" maxlength="6" placeholder="HEX" spellcheck="false" autocomplete="off" aria-label="Hex color value" />
           </div>
-          <button type="button" id="applyCustomBtn" class="mini-btn apply-custom-btn" title="Apply custom color to selected slot">
-            <span>Apply</span>
+          <button type="button" id="applyCustomBtn" class="mini-btn apply-custom-btn" title="Open Color Studio or apply custom color">
+            <span>Studio</span>
             <span class="apply-slot-pill" id="applySlotPill">S1</span>
           </button>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="palette-filter-row" aria-label="Filter Palette by Category">
+          <button type="button" class="filter-pill active" data-filter="all">All</button>
+          <button type="button" class="filter-pill" data-filter="warm">Warm</button>
+          <button type="button" class="filter-pill" data-filter="cool">Cool</button>
+          <button type="button" class="filter-pill" data-filter="vibrant">Vivid</button>
+          <button type="button" class="filter-pill" data-filter="earth">Earth</button>
+        </div>
+
+        <!-- Circle Color Options Grid -->
+        <div class="color-circles-grid" id="colorCirclesGrid">
+          <!-- Injected via JavaScript with rich colors and data attributes -->
         </div>
 
         <!-- Custom In-App Color Studio Popover (Replaces generic OS picker) -->
