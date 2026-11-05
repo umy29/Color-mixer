@@ -48,11 +48,8 @@ An interactive single-page web application featuring an industrial motor apparat
   - 🔴 **Red** + 🟡 **Yellow** = 🟠 **Orange**
   - 🔵 **Blue** + 🟡 **Yellow** = 🟢 **Green**
   - 🔴 **Red** + 🔵 **Blue** = 🟣 **Purple**
-- **Why Spinning Mixes Colors**: When the disc spins rapidly, your eyes cannot separate the two rotating colors, so your brain fuses them into a single unified color.
-- **Paint vs. Light**: Real paint absorbs light to create rich deeper mixtures (subtractive), while screens emit light where all colors combine into white (additive).
-- **Easy Combos to Try**:
-  - *Opposites (High Contrast)*: Blue + Orange or Red + Green for bold dynamics.
-  - *Neighbors (Smooth Harmony)*: Blue + Cyan or Red + Orange for smooth transitions.
+- **Why Spinning Mixes Colors**: When the disc spins fast, your eyes see both colors at once and your brain merges them into one smooth color.
+- **Paint vs. Light**: Real paint absorbs light to make deeper colors (subtractive), while screen light combines into bright white (additive).
 
 ---
 
