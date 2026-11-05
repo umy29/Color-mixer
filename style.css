@@ -397,7 +397,7 @@ kbd,
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 5px 14px;
   border-radius: 24px;
-  margin-bottom: 18px;
+  margin-bottom: 12px;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
 }
@@ -533,7 +533,7 @@ kbd,
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 18px;
+  margin-bottom: 26px;
 }
 
 /* Spindle & Turntable Mount */
@@ -838,38 +838,38 @@ kbd,
    -------------------------------------------------------------------------- */
 .dynamo-control-desk {
   display: grid;
-  grid-template-columns: 216px 1fr;
+  grid-template-columns: 184px 1fr;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
   background: var(--bg-card);
   border: 1px solid var(--bg-card-border);
-  padding: 10px 18px;
-  border-radius: var(--radius-lg);
+  padding: 8px 14px;
+  border-radius: 14px;
   box-shadow: var(--shadow-elevation);
   backdrop-filter: blur(14px);
   width: 100%;
-  max-width: 530px;
+  max-width: 448px;
   box-sizing: border-box;
 }
 
 .control-unit {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
 }
 
 .control-label {
   font-family: var(--font-display);
-  font-size: 0.62rem;
+  font-size: 0.58rem;
   font-weight: 700;
   color: var(--text-muted);
-  letter-spacing: 1.2px;
+  letter-spacing: 1px;
 }
 
 /* Heavy-Duty ON / OFF Switch */
 .on-off-unit {
   align-items: center;
-  width: 216px;
+  width: 184px;
   flex-shrink: 0;
 }
 
@@ -881,18 +881,18 @@ kbd,
   padding: 0;
   outline: none;
   display: block;
-  width: 206px;
+  width: 176px;
 }
 
 .switch-bezel {
   display: block;
   width: 100%;
-  padding: 4px;
+  padding: 3.5px;
   background: linear-gradient(180deg, #334155, #0f172a);
-  border-radius: 12px;
+  border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 
-    0 6px 14px rgba(0, 0, 0, 0.6),
+    0 5px 12px rgba(0, 0, 0, 0.6),
     inset 0 1px 1px rgba(255, 255, 255, 0.2);
   transition: transform 0.15s ease;
   box-sizing: border-box;
@@ -902,18 +902,18 @@ kbd,
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 9px 16px;
+  gap: 8px;
+  padding: 7px 12px;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 7px;
   background: linear-gradient(180deg, #1e293b, #0f172a);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: #fff;
   font-family: var(--font-display);
-  font-size: 0.82rem;
+  font-size: 0.74rem;
   font-weight: 800;
-  letter-spacing: 1.1px;
-  min-height: 38px;
+  letter-spacing: 0.9px;
+  min-height: 33px;
   box-sizing: border-box;
   box-shadow: inset 0 2px 2px rgba(255, 255, 255, 0.1), 0 3px 5px rgba(0, 0, 0, 0.3);
   transition: all 0.25s ease;
@@ -921,7 +921,7 @@ kbd,
 }
 
 .toggle-icon {
-  font-size: 1rem;
+  font-size: 0.90rem;
   color: var(--accent-amber);
   display: inline-flex;
   align-items: center;
@@ -955,7 +955,7 @@ kbd,
 }
 
 .power-subtext {
-  font-size: 0.64rem;
+  font-size: 0.58rem;
   color: var(--text-muted);
   font-family: var(--font-mono);
   text-align: center;
@@ -964,7 +964,7 @@ kbd,
 
 /* RPM Slider Unit */
 .rpm-slider-unit {
-  min-width: 170px;
+  min-width: 150px;
   width: 100%;
 }
 
@@ -976,7 +976,7 @@ kbd,
 
 .rpm-value-badge {
   font-family: var(--font-mono);
-  font-size: 0.66rem;
+  font-size: 0.60rem;
   color: var(--accent-cyan);
   font-weight: 600;
 }
@@ -985,9 +985,9 @@ input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 5px;
+  height: 4px;
   background: #1e293b;
-  border-radius: 3px;
+  border-radius: 2px;
   outline: none;
   cursor: pointer;
 }
@@ -995,8 +995,8 @@ input[type="range"] {
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   background: var(--accent-cyan);
   box-shadow: 0 0 8px var(--accent-cyan);
@@ -1012,8 +1012,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
 .speed-presets-row {
   display: flex;
   justify-content: space-between;
-  gap: 4px;
-  margin-top: 3px;
+  gap: 3px;
+  margin-top: 2px;
 }
 
 .speed-preset-btn {
@@ -1021,8 +1021,8 @@ input[type="range"]::-webkit-slider-thumb:hover {
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--text-secondary);
   font-family: var(--font-mono);
-  font-size: 0.60rem;
-  padding: 2px 6px;
+  font-size: 0.56rem;
+  padding: 2px 5px;
   border-radius: 4px;
   cursor: pointer;
   transition: all 0.2s ease;
