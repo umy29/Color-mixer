@@ -77,8 +77,78 @@
       </div>
     </header>
 
-    <!-- Main Workspace Layout -->
+    <!-- Main Workspace Layout: 3 Independent Columns -->
     <div class="workspace-layout">
+      <!-- Left Column: Independent Custom Color Studio -->
+      <aside class="custom-studio-card" id="customPickerPopover" aria-label="Custom Color Studio">
+        <div class="studio-header">
+          <div class="studio-title-group">
+            <span class="studio-title-dot" id="popoverTitleDot"></span>
+            <h2>Custom Color</h2>
+          </div>
+          <span class="studio-badge" id="studioBadge">Studio</span>
+          <button type="button" class="studio-close-btn" id="pickerCloseBtn" style="display: none;" aria-hidden="true">✕</button>
+        </div>
+
+        <!-- 2D Saturation / Value Gradient Canvas -->
+        <div class="picker-sv-area" id="pickerSvArea" title="Drag to adjust saturation & brightness">
+          <div class="picker-sv-white"></div>
+          <div class="picker-sv-black"></div>
+          <div class="picker-sv-cursor" id="pickerSvCursor"></div>
+        </div>
+
+        <!-- Hue Rainbow Slider -->
+        <div class="picker-slider-row">
+          <span class="picker-slider-label">Hue</span>
+          <input type="range" class="picker-hue-slider" id="pickerHueSlider" min="0" max="360" value="356" aria-label="Hue spectrum slider" />
+        </div>
+
+        <!-- Quick Shade Presets -->
+        <div class="picker-shades-row" id="pickerShadesRow" title="Quick variations of current hue">
+          <!-- Dynamically populated shade chips -->
+        </div>
+
+        <!-- Numerical Values Card (HEX & RGB) -->
+        <div class="picker-values-card">
+          <div class="picker-val-group">
+            <label for="popoverHexVal">HEX</label>
+            <input type="text" id="popoverHexVal" class="picker-val-input hex-val" value="#FF3B30" maxlength="7" spellcheck="false" autocomplete="off" />
+          </div>
+          <div class="picker-rgb-group">
+            <div class="picker-val-group mini">
+              <label for="popoverRVal">R</label>
+              <input type="number" id="popoverRVal" class="picker-val-input num-val" min="0" max="255" value="255" />
+            </div>
+            <div class="picker-val-group mini">
+              <label for="popoverGVal">G</label>
+              <input type="number" id="popoverGVal" class="picker-val-input num-val" min="0" max="255" value="59" />
+            </div>
+            <div class="picker-val-group mini">
+              <label for="popoverBVal">B</label>
+              <input type="number" id="popoverBVal" class="picker-val-input num-val" min="0" max="255" value="48" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Studio Footer / Live Info & Target Controls -->
+        <div class="studio-footer">
+          <div class="studio-preview-wrap" id="customColorWrapper" title="Current custom color preview">
+            <span class="picker-preview-chip" id="popoverPreviewChip"></span>
+            <span class="custom-color-ring" id="customColorRing" style="display: none;"></span>
+            <div class="studio-name-group">
+              <span class="studio-color-name" id="popoverColorName">Crimson Red</span>
+              <span class="studio-slot-target">Target: <strong id="popoverSlotTarget">Slot 1</strong></span>
+            </div>
+          </div>
+          <button type="button" class="studio-apply-btn" id="popoverApplyBtn" title="Apply to active slot">
+            <span>Apply</span>
+            <span class="apply-slot-pill" id="applySlotPill">S1</span>
+          </button>
+          <input type="hidden" id="customColorHex" value="FF3B30" />
+          <button type="button" id="applyCustomBtn" style="display: none;" aria-hidden="true"></button>
+        </div>
+      </aside>
+
       <!-- Center Stage: The Dynamo Machine & CD Disc -->
       <main class="dynamo-stage">
         <!-- Live Color Equation Ribbon -->
@@ -215,22 +285,6 @@
           </button>
         </div>
 
-        <!-- Custom Color Picker Row (Positioned directly under Slot selection for intuitive UX) -->
-        <div class="custom-color-row" id="customColorRow" title="Custom color for active slot">
-          <div class="custom-color-circle-wrapper" id="customColorWrapper" title="Click to open Color Studio">
-            <span class="custom-color-ring" id="customColorRing"></span>
-            <span class="custom-color-badge-icon" aria-hidden="true">🎨</span>
-          </div>
-          <div class="custom-hex-field-wrap" title="Type any 6-digit HEX color">
-            <span class="hex-hash-prefix">#</span>
-            <input type="text" id="customColorHex" class="custom-hex-input" value="FF3B30" maxlength="6" placeholder="HEX" spellcheck="false" autocomplete="off" aria-label="Hex color value" />
-          </div>
-          <button type="button" id="applyCustomBtn" class="mini-btn apply-custom-btn" title="Open Color Studio or apply custom color">
-            <span>Studio</span>
-            <span class="apply-slot-pill" id="applySlotPill">S1</span>
-          </button>
-        </div>
-
         <!-- Category Filter Pills -->
         <div class="palette-filter-row" aria-label="Filter Palette by Category">
           <button type="button" class="filter-pill active" data-filter="all">All</button>
@@ -243,70 +297,6 @@
         <!-- Circle Color Options Grid -->
         <div class="color-circles-grid" id="colorCirclesGrid">
           <!-- Injected via JavaScript with rich colors and data attributes -->
-        </div>
-
-        <!-- Custom In-App Color Studio Popover (Replaces generic OS picker) -->
-        <div class="custom-picker-popover" id="customPickerPopover" hidden aria-hidden="true">
-          <div class="picker-popover-header">
-            <div class="picker-popover-title">
-              <span class="picker-title-dot" id="popoverTitleDot"></span>
-              <span>Color Studio</span>
-            </div>
-            <button type="button" class="picker-close-btn" id="pickerCloseBtn" title="Close Color Studio (Esc)" aria-label="Close">✕</button>
-          </div>
-
-          <!-- 2D Saturation / Value Gradient Canvas -->
-          <div class="picker-sv-area" id="pickerSvArea" title="Drag to adjust saturation & brightness">
-            <div class="picker-sv-white"></div>
-            <div class="picker-sv-black"></div>
-            <div class="picker-sv-cursor" id="pickerSvCursor"></div>
-          </div>
-
-          <!-- Hue Rainbow Slider -->
-          <div class="picker-slider-row">
-            <span class="picker-slider-label">Hue</span>
-            <input type="range" class="picker-hue-slider" id="pickerHueSlider" min="0" max="360" value="330" aria-label="Hue spectrum slider" />
-          </div>
-
-          <!-- Quick Shade Presets -->
-          <div class="picker-shades-row" id="pickerShadesRow" title="Quick variations of current hue">
-            <!-- Dynamically populated shade chips -->
-          </div>
-
-          <!-- RGB & HEX Numerical Controls -->
-          <div class="picker-values-card">
-            <div class="picker-val-group">
-              <label for="popoverHexVal">HEX</label>
-              <input type="text" id="popoverHexVal" class="picker-val-input hex-val" value="#FF007F" maxlength="7" spellcheck="false" />
-            </div>
-            <div class="picker-rgb-group">
-              <div class="picker-val-group mini">
-                <label for="popoverRVal">R</label>
-                <input type="number" id="popoverRVal" class="picker-val-input num-val" min="0" max="255" value="255" />
-              </div>
-              <div class="picker-val-group mini">
-                <label for="popoverGVal">G</label>
-                <input type="number" id="popoverGVal" class="picker-val-input num-val" min="0" max="255" value="0" />
-              </div>
-              <div class="picker-val-group mini">
-                <label for="popoverBVal">B</label>
-                <input type="number" id="popoverBVal" class="picker-val-input num-val" min="0" max="255" value="127" />
-              </div>
-            </div>
-          </div>
-
-          <!-- Popover Action Footer -->
-          <div class="picker-popover-footer">
-            <div class="picker-preview-chip-wrap" title="Current selected color">
-              <span class="picker-preview-chip" id="popoverPreviewChip"></span>
-              <span class="picker-color-name" id="popoverColorName">Fuchsia Magenta</span>
-            </div>
-            <div class="picker-footer-actions">
-              <button type="button" class="picker-confirm-btn" id="popoverApplyBtn">
-                <span>Apply to <span id="popoverSlotTarget">Slot 1</span></span>
-              </button>
-            </div>
-          </div>
         </div>
       </aside>
     </div>
