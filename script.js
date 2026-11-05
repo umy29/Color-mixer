@@ -193,11 +193,10 @@ const elements = {
   speedSlider: document.getElementById('speedSlider'),
   speedBadge: document.getElementById('speedBadge'),
 
-  // Modal & Toast
+  // Modal
   infoModal: document.getElementById('infoModal'),
   closeModalBtn: document.getElementById('closeModalBtn'),
-  modalUnderstoodBtn: document.getElementById('modalUnderstoodBtn'),
-  toastContainer: document.getElementById('toastContainer')
+  modalUnderstoodBtn: document.getElementById('modalUnderstoodBtn')
 };
 
 // ============================================================================
@@ -455,7 +454,6 @@ function renderPaletteSwatches() {
     // Click handler to assign to current active slot
     btn.addEventListener('click', () => {
       assignColorToSlot(state.activeSlot, preset.hex);
-      showToast(`Applied ${preset.name} to Slot ${state.activeSlot}`);
     });
 
     elements.colorCirclesGrid.appendChild(btn);
@@ -586,8 +584,6 @@ function setSlotCount(count) {
 
   updateAllPaletteIndicators();
   updateOutputDisplay();
-
-  showToast(is3 ? 'Activated 3-Color Spinner Mode (120° Sectors)' : 'Switched to 2-Color Spinner Mode (180° Halves)');
 }
 
 function updateOutputDisplay() {
@@ -644,12 +640,10 @@ function swapColors() {
     assignColorToSlot(1, c3);
     assignColorToSlot(2, c1);
     assignColorToSlot(3, c2);
-    showToast('Cycled colors: Slot 1 ➜ Slot 2 ➜ Slot 3 ➜ Slot 1');
   } else {
     const temp = state.slot1Color;
     assignColorToSlot(1, state.slot2Color);
     assignColorToSlot(2, temp);
-    showToast('Swapped Slot 1 and Slot 2 colors');
   }
 }
 
@@ -702,12 +696,10 @@ function renderRecentMixes() {
         assignColorToSlot(1, item.slot1);
         assignColorToSlot(2, item.slot2);
         assignColorToSlot(3, item.slot3);
-        showToast(`Restored trio: ${item.name}`);
       } else {
         setSlotCount(2);
         assignColorToSlot(1, item.slot1);
         assignColorToSlot(2, item.slot2);
-        showToast(`Restored pair: ${item.name}`);
       }
     });
 
@@ -760,7 +752,6 @@ function toggleDynamoPower() {
     const mixedHex = calculateCurrentMix();
     const name = getNearestColorName(mixedHex);
     addRecentMixToHistory(mixedHex, name);
-    showToast(`⚡ Dynamo engaged! Mixing ${name}...`);
   } else {
     elements.powerBtn.classList.remove('active');
     elements.powerBtnText.textContent = 'TURN ON';
@@ -815,29 +806,8 @@ function animationLoop(timestamp) {
 }
 
 // ============================================================================
-// TOAST NOTIFICATIONS & CLIPBOARD
+// CLIPBOARD COPY
 // ============================================================================
-
-function showToast(message) {
-  if (!elements.toastContainer) return;
-
-  // Keep max 2 simultaneous toasts for a clean, non-intrusive HUD
-  while (elements.toastContainer.children.length >= 2) {
-    elements.toastContainer.removeChild(elements.toastContainer.firstChild);
-  }
-
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.textContent = message;
-  elements.toastContainer.appendChild(toast);
-
-  setTimeout(() => {
-    toast.style.opacity = '0';
-    toast.style.transform = 'translateY(-12px) scale(0.96)';
-    toast.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
-    setTimeout(() => toast.remove(), 250);
-  }, 2000);
-}
 
 function setupCopyButtons() {
   document.querySelectorAll('.copy-pill-btn').forEach((btn) => {
@@ -847,12 +817,9 @@ function setupCopyButtons() {
       if (targetEl) {
         const textToCopy = targetEl.textContent.trim();
         navigator.clipboard.writeText(textToCopy).then(() => {
-          showToast(`Copied ${textToCopy} to clipboard!`);
           btn.textContent = '✓ Copied';
           setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
-        }).catch(() => {
-          showToast(`Copy failed. Value: ${textToCopy}`);
-        });
+        }).catch(() => {});
       }
     });
   });
@@ -868,7 +835,6 @@ function setupSectorClickHandlers() {
     elements.cdSector1.addEventListener('click', (e) => {
       e.stopPropagation();
       setActiveSlot(1);
-      showToast('Selected CD Slot 1 - Pick a color');
     });
   }
 
@@ -877,7 +843,6 @@ function setupSectorClickHandlers() {
     elements.cdSector2.addEventListener('click', (e) => {
       e.stopPropagation();
       setActiveSlot(2);
-      showToast('Selected CD Slot 2 - Pick a color');
     });
   }
 
@@ -886,7 +851,6 @@ function setupSectorClickHandlers() {
     elements.cdSector3.addEventListener('click', (e) => {
       e.stopPropagation();
       setActiveSlot(3);
-      showToast('Selected CD Slot 3 - Pick a color');
     });
   }
 
@@ -901,7 +865,6 @@ function setupSectorClickHandlers() {
           next = state.activeSlot === 1 ? 2 : 1;
         }
         setActiveSlot(next);
-        showToast(`Switched to CD Slot ${next}`);
       }
     });
   }
@@ -983,7 +946,6 @@ function toggleTheme() {
   }
 
   applyTheme(newTheme);
-  showToast(`Switched to ${newTheme === 'light' ? 'Light' : 'Dark'} Mode`);
 }
 
 // ============================================================================
@@ -1065,15 +1027,8 @@ function setupEventListeners() {
         return;
       }
       const hex = calculateCurrentMix();
-      const name = getNearestColorName(hex);
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(hex).then(() => {
-          showToast(`Copied ${name} (${hex}) to clipboard!`);
-        }).catch(() => {
-          showToast(`${name}: ${hex}`);
-        });
-      } else {
-        showToast(`${name}: ${hex}`);
+        navigator.clipboard.writeText(hex).catch(() => {});
       }
     });
   }
@@ -1083,7 +1038,6 @@ function setupEventListeners() {
     elements.clearHistoryBtn.addEventListener('click', () => {
       state.recentMixes = [];
       renderRecentMixes();
-      showToast('Recent history cleared');
     });
   }
 
@@ -1096,17 +1050,14 @@ function setupEventListeners() {
       toggleDynamoPower();
     } else if (e.key === '1') {
       setActiveSlot(1);
-      showToast('Selected CD Slot 1');
     } else if (e.key === '2') {
       setActiveSlot(2);
-      showToast('Selected CD Slot 2');
     } else if (e.key === '3') {
       if (state.slotCount === 2) {
         setSlotCount(3);
         setActiveSlot(3);
       } else {
         setActiveSlot(3);
-        showToast('Selected CD Slot 3');
       }
     } else if (e.key === 's' || e.key === 'S') {
       swapColors();
