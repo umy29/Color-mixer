@@ -284,27 +284,142 @@ function calculateCurrentMix() {
 }
 
 /**
- * Find the closest human-friendly color name
+ * Intelligent Perceptual Color Classifier
+ * Accurately identifies familiar basic color names without Euclidean distortion.
  */
 function getNearestColorName(hex) {
+  if (!hex) return '';
+  const cleanHex = hex.toUpperCase().trim();
+
+  // 1. Direct match with preset palette colors
+  const exactPreset = COLOR_PRESETS.find(p => p.hex.toUpperCase() === cleanHex);
+  if (exactPreset) return exactPreset.name;
+
   const rgb = hexToRgb(hex);
-  let bestMatch = COLOR_NAMES_DICT[0].name;
-  let minDistance = Infinity;
+  const { h, s, l } = rgbToHsl(rgb.r, rgb.g, rgb.b);
 
-  for (const item of COLOR_NAMES_DICT) {
-    // Weighted Euclidean distance for human perception
-    const dR = rgb.r - item.r;
-    const dG = rgb.g - item.g;
-    const dB = rgb.b - item.b;
-    const distance = 0.3 * dR * dR + 0.59 * dG * dG + 0.11 * dB * dB;
+  // 2. Extreme Achromatic: Pure Black & Pure White
+  if (l <= 12) return 'Black';
+  if (l >= 95) return 'White';
+  if (l >= 88 && s <= 12) return 'White';
 
-    if (distance < minDistance) {
-      minDistance = distance;
-      bestMatch = item.name;
-    }
+  // 3. Grayscale / Neutrals (low saturation)
+  if (s <= 10) {
+    if (l >= 78) return 'Light Gray';
+    if (l <= 32) return 'Dark Gray';
+    return 'Gray';
   }
 
-  return bestMatch;
+  // 4. Low saturation (11% - 18%)
+  if (s <= 18) {
+    if (l >= 82) return 'Light Gray';
+    if (l <= 24) return 'Dark Gray';
+    if (h >= 75 && h <= 165) return 'Green';
+    if (h >= 240 && h <= 300) return 'Purple';
+    if (h >= 180 && h < 240) return 'Slate Blue';
+    if (h >= 14 && h <= 50) return l >= 62 ? 'Tan' : 'Brown';
+    return 'Gray';
+  }
+
+  // 5. Hue-based classification with lightness & saturation thresholds
+
+  // Reds (345° - 360° and 0° - 14°)
+  if (h >= 345 || h < 14) {
+    if (l >= 75) return 'Pink';
+    if (l >= 60) return s > 65 ? 'Light Red' : 'Pink';
+    if (l <= 35) return 'Dark Red';
+    if (l <= 45 && s <= 45) return 'Dark Red';
+    return 'Red';
+  }
+
+  // Red-Orange & Orange (14° - 42°)
+  if (h >= 14 && h < 42) {
+    if (l <= 32) return 'Dark Brown';
+    if (s <= 45) return l >= 62 ? 'Tan' : 'Brown';
+    if (l <= 48 && s <= 60) return 'Brown';
+    if (l >= 76) return 'Peach';
+    if (l >= 64) return 'Light Orange';
+    if (h < 26 && s > 70) return 'Coral';
+    if (l <= 44) return 'Rust Brown';
+    return 'Orange';
+  }
+
+  // Orange-Yellow & Amber (42° - 55°)
+  if (h >= 42 && h < 55) {
+    if (l <= 32) return 'Dark Brown';
+    if (s <= 45) return l >= 62 ? 'Tan' : 'Brown';
+    if (l <= 48 && s <= 55) return 'Brown';
+    if (l >= 75) return 'Light Yellow';
+    if (s > 80 && l < 58) return 'Amber';
+    if (s > 70) return 'Gold';
+    return 'Yellow';
+  }
+
+  // Yellows (55° - 68°)
+  if (h >= 55 && h < 68) {
+    if (l <= 35) return 'Olive Green';
+    if (l <= 50 && s <= 55) return 'Olive Green';
+    if (l >= 82) return s <= 45 ? 'Cream' : 'Light Yellow';
+    if (l >= 70) return 'Bright Yellow';
+    return 'Yellow';
+  }
+
+  // Yellow-Green & Lime (68° - 95°)
+  if (h >= 68 && h < 95) {
+    if (l <= 35) return 'Olive Green';
+    if (l <= 50 && s <= 50) return 'Olive Green';
+    return 'Lime Green';
+  }
+
+  // Greens (95° - 155°)
+  if (h >= 95 && h < 155) {
+    if (l <= 25) return 'Forest Green';
+    if (l <= 40) return 'Dark Green';
+    if (l >= 74) return 'Light Green';
+    if (l >= 58 && s > 70) return 'Bright Green';
+    if (l <= 45 && s <= 40) return 'Olive Green';
+    return 'Green';
+  }
+
+  // Cyan, Aqua, Teal (155° - 195°)
+  if (h >= 155 && h < 195) {
+    if (l <= 30) return 'Dark Teal';
+    if (l <= 48 && s <= 65) return 'Teal';
+    if (l >= 70) return 'Aqua';
+    if (s > 75) return 'Cyan';
+    return 'Teal';
+  }
+
+  // Blues (195° - 235°)
+  if (h >= 195 && h < 235) {
+    if (l <= 20) return 'Midnight Blue';
+    if (l <= 35) return 'Navy Blue';
+    if (l <= 48 && s > 60) return 'Dark Blue';
+    if (l >= 70) return 'Sky Blue';
+    if (l >= 55 && s <= 50) return 'Light Blue';
+    if (h >= 220 && s > 65) return 'Royal Blue';
+    return 'Blue';
+  }
+
+  // Violet, Indigo, Purple (235° - 290°)
+  if (h >= 235 && h < 290) {
+    if (l <= 25) return 'Dark Purple';
+    if (h < 265 && s > 60 && l < 45) return 'Indigo';
+    if (l >= 70) return 'Lavender';
+    if (h >= 265) return 'Purple';
+    return 'Violet';
+  }
+
+  // Magenta & Pink (290° - 345°)
+  if (h >= 290 && h < 345) {
+    if (l >= 75) return 'Pink';
+    if (l >= 58 && s > 70) return 'Hot Pink';
+    if (l <= 30) return 'Dark Purple';
+    if (s > 60) return 'Magenta';
+    return 'Purple';
+  }
+
+  return 'Gray';
 }
 
 // ============================================================================
