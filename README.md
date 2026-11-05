@@ -8,10 +8,10 @@ An interactive single-page web application featuring an industrial motor apparat
 
 ### 1. 📐 Top-Right Rectangular Color Palette Holder
 - **Rectangular Container**: Cleanly boxed in the upper-right corner per design specifications.
-- **45 Curated Circular Swatches**: Rich, expanded palette across 5 categories: Warm, Cool, Vivid, and Earth/Nature hues.
+- **45 Basic Circular Swatches**: Clean, standard basic palette across 5 categories: Warm, Cool, Vivid, and Earth/Nature hues.
 - **Category Filter Pills**: Quickly filter colors between `All (45)`, `Warm (14)`, `Cool (12)`, `Vivid (10)`, and `Earth (9)`.
-- **Instant Click-to-Assign**: Select **CD Slot 1** or **CD Slot 2**, then click any circular swatch to instantly assign that color.
-- **Dual Slot Control**: Active indicator dots showing which sector will receive the color, plus a one-click **Swap Colors (⇄)** button.
+- **Instant Click-to-Assign**: Select **CD Slot 1**, **CD Slot 2**, or **CD Slot 3**, then click any circular swatch to instantly assign that color.
+- **Multi-Slot Control**: Active indicator dots showing which sector will receive the color, plus a one-click **Cycle Colors (⇄)** button.
 
 ### 2. ⚙️ Centered Dynamo Disc & Turntable Assembly
 - **Clean Disc Presentation**: Streamlined turntable spindle with tachometer speed ring, holographic sheen, and dynamic electromagnetic aura.
@@ -32,9 +32,9 @@ An interactive single-page web application featuring an industrial motor apparat
 
 ### 4. 🧪 Output & Color Analysis Station
 - **Chamber Preview**: Dynamic preview with subtle energy ripples and animated gradient borders.
-- **Nearest-Color Naming Algorithm**: Intelligently identifies color names like *Amethyst Violet*, *Sunset Orange*, *Kelly Green*, and *Royal Indigo*.
+- **Nearest-Color Naming Algorithm**: Intelligently identifies clear, familiar color names like *Purple*, *Orange*, *Green*, *Cyan*, and *Navy Blue*.
 - **Color Values**: Real-time HEX, RGB, and HSL readouts with 1-click **Copy** buttons.
-- **Physical Pigment Mixing Engine**: Real-world subtractive CMY light absorption blending (e.g. Electric Blue + Sunshine Yellow blends to Green, Red + Blue blends to Purple).
+- **Physical Pigment Mixing Engine**: Real-world subtractive CMY light absorption blending (e.g. Blue + Yellow blends to Green, Red + Blue blends to Purple).
 - **Recent Mixes Strip**: Saves recent combinations for one-click restoration.
 
 ### 5. ☀️ Light & Dark Mode Theming
