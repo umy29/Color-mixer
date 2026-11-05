@@ -1336,14 +1336,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   flex-shrink: 0;
 }
 
-.custom-color-circle-wrapper input[type="color"] {
-  position: absolute;
-  width: 0;
-  height: 0;
-  opacity: 0;
-  pointer-events: none;
-}
-
 .custom-color-ring {
   width: 24px;
   height: 24px;
@@ -1413,36 +1405,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
 
 .custom-hex-input.invalid {
   color: #f87171;
-}
-
-.eyedropper-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--text-secondary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 0;
-}
-
-.eyedropper-btn:hover {
-  background: rgba(0, 242, 254, 0.15);
-  border-color: var(--accent-cyan);
-  color: #fff;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 242, 254, 0.2);
-}
-
-.eyedropper-svg {
-  width: 13px;
-  height: 13px;
-  display: block;
 }
 
 .apply-custom-btn {
@@ -1784,25 +1746,6 @@ input[type="range"]::-webkit-slider-thumb:hover {
   display: flex;
   align-items: center;
   gap: 5px;
-}
-
-.picker-native-btn {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--text-muted);
-  padding: 4px 7px;
-  border-radius: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.60rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.picker-native-btn:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.12);
 }
 
 .picker-confirm-btn {
@@ -2489,17 +2432,6 @@ kbd {
   color: #0f172a;
 }
 
-[data-theme="light"] .eyedropper-btn {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(148, 163, 184, 0.35);
-  color: #475569;
-}
-
-[data-theme="light"] .eyedropper-btn:hover {
-  background: rgba(2, 132, 199, 0.12);
-  color: #0284c7;
-}
-
 [data-theme="light"] .apply-custom-btn {
   background: linear-gradient(135deg, #0284c7, #2563eb);
   border-color: transparent;
@@ -2536,17 +2468,6 @@ kbd {
   background: #ffffff;
   border-color: rgba(148, 163, 184, 0.4);
   color: #0f172a;
-}
-
-[data-theme="light"] .picker-native-btn {
-  background: rgba(15, 23, 42, 0.05);
-  border-color: rgba(148, 163, 184, 0.3);
-  color: #475569;
-}
-
-[data-theme="light"] .picker-native-btn:hover {
-  background: rgba(2, 132, 199, 0.12);
-  color: #0284c7;
 }
 
 [data-theme="light"] .app-footer {
